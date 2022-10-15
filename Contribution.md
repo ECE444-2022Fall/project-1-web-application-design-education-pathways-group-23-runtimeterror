@@ -1,7 +1,7 @@
 # Contributing to Maple
 
 ## We Develop with GitHub
-We use a GitHub Repository to host code, as well as accept pull requests, and [GitHub Projects] (https://github.com/orgs/ECE444-2022Fall/projects/2/views/2) to track issues and feature requests.
+We use a GitHub Repository to host code, as well as accept pull requests, and [GitHub Projects](https://github.com/orgs/ECE444-2022Fall/projects/2/views/2) to track issues and feature requests.
 
 ## We Use [Github Flow](https://docs.github.com/en/get-started/quickstart/github-flow), So All Code Changes Happen Through Pull Requests
 Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
