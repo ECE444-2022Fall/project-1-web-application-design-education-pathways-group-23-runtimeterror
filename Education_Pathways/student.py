@@ -68,6 +68,37 @@ class Student:
 
         return courses
 
+    def get_credits(self, status=["complete"]):
+        """
+            Returns a number of credits from applicable Semesters
+
+            Inputs
+            ------------------
+            status (list) - Specifies which status Semesters credits should be
+                            tallied from
+                            Defaults to including "complete" Semesters
+            Output
+            ------------------
+            credits (float) - The number of credits earned in applicable Semesters
+        """
+        credits = 0
+
+        # Get unique courses from applicable Semesters
+        courses = set(self.get_courses(status=status))
+        for course in courses:
+            # Assume H1 courses are weighted 0.5 credits and
+            # Y1 courses are weighted 1.0 credits
+            # Implementation of weighting may be moved to the Course
+            # Class once that is complete
+
+            if(course[-2:] == "Y1"):
+                credits += 1.0
+            elif(course[-2:] == "H1"):
+                credits += 0.5
+
+        return credits
+
+
 # Unit Tests are in if __name__ = main until we've decided on a test suite
 def test_semester():
     # Test data
@@ -100,7 +131,7 @@ def test_student():
 
     name_2 = "Winter 2021"
     status_2 = "complete"
-    courses_2 = ["ECE496Y1", "ECE444H1", "ECE454H1", "ECE552H1", "ECE568H1"]
+    courses_2 = ["ECE396Y1", "ECE344H1", "ECE354H1", "ECE352H1", "ECE368H1"]
     w2021 = Semester(name=name_2, status=status_2, courses=courses_2)
     semesters = [w2021, f2022]
     
@@ -122,6 +153,9 @@ def test_student():
             == courses_2 + courses_1, \
            "The courses in progress should match the sum of course_2" \
            + "and courses_1"
+
+    # Check get_credits
+    assert test_student.get_credits() == 3, "There should be 3 credits"
 
     print("Student Class is working as expected")
 
