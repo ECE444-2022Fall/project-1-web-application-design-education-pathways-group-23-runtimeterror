@@ -86,14 +86,14 @@ class Student:
         # Get unique courses from applicable Semesters
         courses = set(self.get_courses(status=status))
         for course in courses:
-            # Assume H1 courses are weighted 0.5 credits and
-            # Y1 courses are weighted 1.0 credits
+            # Assume H courses are weighted 0.5 credits and
+            # Y courses are weighted 1.0 credits
             # Implementation of weighting may be moved to the Course
             # Class once that is complete
 
-            if(course[-2:] == "Y1"):
+            if(course[-2:-1] == "Y"):
                 credits += 1.0
-            elif(course[-2:] == "H1"):
+            elif(course[-2:-1] == "H"):
                 credits += 0.5
 
         return credits
