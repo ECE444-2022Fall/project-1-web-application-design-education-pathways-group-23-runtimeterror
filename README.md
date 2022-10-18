@@ -1,13 +1,50 @@
+<a name="readme-top"></a>
+
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=8523853&assignment_repo_type=AssignmentRepo)
-# Assignment 1: Education Pathway
 
-This repository host the source code for Education Pathway project. You can view the online deployed version [here](https://assignment-1-starter-template.herokuapp.com/). We are using this repo as a starting point for assignment 1.
+# Maple
 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#project-management">Project Management</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) for frontend, and [Flask-tdd](https://github.com/mjhea0/flaskr-tdd) for backend.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
+Maple is a fork of the [Education Pathway project](https://github.com/ECE444-2022Fall/Assignment_1_starter_template) created by Team RuntimeTerror.
 
-## 0. Before the project
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Built With
+
+* [![React][React.js]][React-url]
+* [![Flask][Flask]][Flask-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Prerequisites
 
 Make sure you have all the prerequisites installed
 * [Git](https://git-scm.com/downloads)
@@ -16,125 +53,110 @@ Make sure you have all the prerequisites installed
 
 To install nodejs, go to [nodejs download]( https://nodejs.org/en/download/). Add `npm` to `PATH` as global variable.
  
-## 1. Clone the repository to your local machine
+### Installation
+
+#### 1. Clone the repository to your local machine
 ```sh
-$ git clone https://github.com/ECE444-2022Fall/Assignment_1_starter_template.git
+$ git clone https://github.com/ECE444-2022Fall/project-1-web-application-design-education-pathways-group-23-runtimeterror
 ```
-## 2. To run the app in development
+#### 2. To run the app locally
 
-First, go to the `frontend` directory 
-```sh
-$ cd .\Education_Pathways\frontend\
++ Enter the repo directory
++ Create a virtual environment if you haven't done this before. Activate it. 
+```powershell
+# Windows
+py -3 -m venv venv
+venv\Scripts\activate
+
+# For Mac and Linux, please check the link: https://flask.palletsprojects.com/en/2.2.x/installation/
 ```
-
-to install the nodejs modules needed, run
-```sh
-$ npm install
++ Install dependencies (if you haven't done this before).
+```powershell
+pip install -r requirements.txt
 ```
-then to start the app in development mode
-```sh
-$ npm start
++ Enter the `Education_Pathways/` directory, run the backend
+```powershell
+flask --app index --debug run
 ```
-## 3. To build the app for production to the `build` folder. Under the same `frontend` directory, run
-```sh
-$ npm run build
++ Enter the `Education_Pathways/frontend/` directory
++ Make sure the `baseURL` is set as `localhost:5000`
+```javascript
+# Education_Pathways/frontend/src/api.js
+export default axios.create({
+   baseURL: "http://localhost:5000/"
+});
 ```
-## 4. Deploy the project
-   
-We use Heroku to deploy the project online. To do this, first [sign up](https://signup.heroku.com/) for a Heroku account,  and then install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli). The following steps are the complete guide for deploying to Heroku. But for deploying this project, some steps are optional (marked as `optional`), as the required files are already provided in the repo. 
-
-4.1 If you are currently under the `frontend` directory, go back to the root directory
-```sh
-$ cd ..\..
-```
-
-4.2 Next, install a production-grade WSGI web server called [Gunicorn](http://gunicorn.org/):
-
-```sh
-$ pip install gunicorn==20.0.4
-```
-
-4.3 (`optional`) Create a [Procfile](https://devcenter.heroku.com/articles/procfile) in the project root:
-
-```sh
-$ touch Procfile
++ Make sure the proxy link in package.json is set as "http://localhost:5000/"
+```json
+// Part of Education_Pathways\frontend\package.json
+"private": true,
+"proxy": "http://localhost:5000/",
 ```
 
-4.4 (`optional`) And add the following code:
++ Build and run the frontend:
+```powershell
+npm run build
+npm start
+```
++ Then you will see the application at `localhost:3000`
 
-```sh
-web: gunicorn --chdir Education_Pathways index:app
+#### 4. Build and Run with Docker
+
++ Change the proxy link in package. Remember to change it back to "http://localhost:5000/"
+```json
+// Part of Education_Pathways/frontend/package.json
+"private": true,
+"proxy": "http://host.docker.internal:5000/",
 ```
 
-4.5 (`optional`) Create a *requirements.txt* file to specify the external dependencies that need to be installed for the app to work:
-
-```sh
-$ touch requirements.txt
+```powershell
+# Under the root directory
+docker compose up --build
 ```
 
-4.6 (`optional`) Add the requirements:
-
+#### 5. Deploy the project
++ Make sure the baseURL is set as [URL to your deployed project]
+```javascript
+// Education_Pathways/frontend/src/api.js
+export default axios.create({
+   baseURL: "[URL to your deployed project]" -- baseURL for deployment
+});
 ```
-Flask==2.1.1
-gunicorn==20.0.4
-pytest==7.1.2
++ Re-build the frontend to update the baseURL
+```powershell
+# Under the frontend/ directory
+npm run build
 ```
-
-4.7 (`optional`) Create a *.gitignore* file in the project root:
-
-```sh
-$ touch .gitignore
-```
-
-4.8 (`optional`) And include the following files and folders (so they are not included in version control):
-
-```sh
-env
-*.pyc
-*.DS_Store
-__pycache__
-test.db
++ Deploy your changes to heroku
+```powershell
+git push heroku main
 ```
 
-4.9 (`optional`) To specify the correct Python runtime, add a new file to the project root called *runtime.txt*:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-```
-python-3.10.4
-```
+<!-- PROJECT MANAGEMENT -->
+## Project Management
 
-4.10 (`optional`) Add a local Git repo:
+Maple uses [GitHub Projects](https://github.com/orgs/ECE444-2022Fall/projects/2/views/2) track progress on the implementation of User Stories and Bugfixes. 
 
-```sh
-$ git init
-$ git add -A
-$ git commit -m "initial"
-```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-4.11 Login to your Heroku account
+<!-- LICENSE -->
+## License
 
-```sh
-$ heroku login
-```
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-4.12 Deploy to Heroku, give your application a name on Heroku, for example, we name it `myapp-unique-name` here:
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-```sh
-$ heroku create myapp-unique-name
-```
-4.13 Then set your heroku remote to the application you just created
-```sh
-$ heroku git:remote -a myapp-unique-name
-```
-4.14 Commit your local repo to Heroku remote
-```sh
-$ git add .
-$ git commit -am "inital commit to heroku remote"
-$ git push heroku main
-```
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+* The ECE444 2022 teaching team for providing the [Assignment_1_starter_template](https://github.com/ECE444-2022Fall/Assignment_1_starter_template) for us to build upon
+* This document was adapted from [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
-4.15 Then to view the deployed app online, run the following command to open the webpage in your default browser.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-```sh
-$ heroku open
-```
-or go to your [Heroku account](https://dashboard.heroku.com/apps) and check your the url of your deployed app. (`https://myapp-unique-name.herokuapp.com/`)
+<!-- MARKDOWN LINKS & IMAGES -->
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Flask]: https://img.shields.io/badge/Flask-000?logo=flask&logoColor=fff&style=for-the-badge
+[Flask-url]: https://flask.palletsprojects.com/
