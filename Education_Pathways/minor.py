@@ -51,8 +51,7 @@ class Minor:
             ------------------
             bool:   Whether the course is a requirement for this Minor
         """
-        is_in_minor = any(course in requirement for requirement in self.requirements)
-        return is_in_minor
+        return any(course in requirement for requirement in self.requirements)
 
     def check_minor_completion(self, course_list):
         """
@@ -60,7 +59,7 @@ class Minor:
 
             Inputs
             ------------------
-            course_list (list)  - A List of Courses taken by a studen
+            course_list (list)  - A List of Courses taken by a student
 
             Output
             ------------------
