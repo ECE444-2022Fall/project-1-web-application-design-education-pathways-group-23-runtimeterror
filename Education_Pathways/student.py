@@ -199,6 +199,21 @@ class Student:
 
         return courses
 
+    def swap_course(self, course, name_1, name_2):
+        """
+            Swaps a course from one Semester to Another
+
+            Inputs
+            ------------------
+            course  - The course to swap
+            name_1  - The name of the Semester the course is being taken from
+            name_2  - The name of the Semester the course is being swapped to
+        """
+        self.semesters[name_1].remove_course(course)
+        self.semesters[name_2].add_course(course)
+
+
+
     def get_credits(self, status=["complete"]) -> float:
         """
             Returns a number of credits from applicable Semesters
@@ -273,8 +288,8 @@ def test_student():
     w2021 = Semester(name=name_2, status=status_2, courses=courses_2)
 
     semesters = OrderedDict()
-    semesters[name_1] = w2021
-    semesters[name_2] = f2022
+    semesters[name_2] = w2021
+    semesters[name_1] = f2022
     
 
     # Check class construction
@@ -310,6 +325,12 @@ def test_student():
     assert test_student.has_semester("Winter 2022"), "Should have this Semester"
     assert not test_student.has_semester("Winter 2021"), \
                                       "Should not have this Semester"
+
+    # Test course swapping
+    test_student.swap_course("ECE568H1", "Fall 2022", "Winter 2022")
+    assert not "ECE568H1" in test_student.get_semester("Fall 2022"), \
+                "Course should not be in this Semester"
+    assert "ECE568H1" in test_student.get_semester("Winter 2022")
 
     print("Student Class is working as expected")
 
