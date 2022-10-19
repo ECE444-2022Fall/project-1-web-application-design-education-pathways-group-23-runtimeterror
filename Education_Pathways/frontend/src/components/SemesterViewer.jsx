@@ -1,10 +1,8 @@
-import React, { Component, useImperativeHandle } from "react";
+import React, { Component } from "react";
 import './css/semester-viewer.css'
 
-class SemesterViewer{
-
+class SemesterViewer extends Component {
     addCourseBox(column_id) {
-
         var newCourseBox = document.createElement("li");
         newCourseBox.setAttribute("class", "drag-item");
 
@@ -29,7 +27,6 @@ class SemesterViewer{
         } else {
             document.getElementById("notification-" + column_id).innerHTML = "You can add maximum 6 courses per semester.";
         }
-
     }
 
     render() {
