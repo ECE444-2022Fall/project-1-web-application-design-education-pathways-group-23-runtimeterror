@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 class Semester:
     """
         Class for storing the name, status, and courses of a Semester
@@ -11,7 +13,7 @@ class Semester:
                           or plans to take that Semester
     """
 
-    def __init__(self, name, status, courses):
+    def __init__(self, name: str, status: str, courses: list):
         self.name = name
         self.status = status
         self.courses = courses
@@ -19,8 +21,42 @@ class Semester:
     def __str__(self):
         return self.name
 
+    def __len__(self):
+        return len(self.courses)
+
     def __contains__(self, course):
         return course in self.courses
+
+    def add_course(self, course):
+        """
+            Adds a course to a Semester
+
+            Inputs
+            ------------------
+            course  - The course to add to the Semester
+        """
+        self.courses.append(course)
+
+    def remove_course(self, course):
+        """
+            Removes a course from a Semester
+
+            Inputs
+            ------------------
+            course  - The course to remove from the Semester
+        """
+        self.courses.remove(course)
+
+    def set_status(self, status):
+        """
+            Change status of a Semester
+
+            Inputs
+            ------------------
+            status (str)    - The status ("complete", "in progress", "planned")
+                              to change the semester to
+        """
+        self.status = status
 
     def get_courses(self):
         """
@@ -34,20 +70,115 @@ class Student:
 
         Attributes
         ----------------
-        major (str)     - What a student is majoring in
-        year (int)      - What year a student is in
-        minors (list)   - A list of minors (using the Minor class) a student is
-                          interested in
-        semesters (list)  - A nested list of Semesters
+        major ()                - What a student is majoring in
+        year (int)              - What year a student is in
+        minors (list)           - A list of minors (using the Minor class)
+                                  a student is interested in
+        semesters (OrderedDict) - A Dictionary of Semesters
                         
     """
-    def __init__(self, major, year, minors, semesters):
+    def __init__(self, major, year: int, minors: list, semesters: OrderedDict=OrderedDict()):
         self.major = major
         self.year = year
         self.minors = minors
         self.semesters = semesters
 
-    def get_courses(self, status=["complete", "in progress", "planned"]):
+    def set_major(self, major):
+        """
+            Change the major of a student
+
+            Inputs
+            ------------------
+            major (Major)   - The major to switch to
+        """
+        self.major = major
+
+    def add_minor(self, minor):
+        """
+            Adds a minor to a student
+
+            Inputs
+            ------------------
+            minor (Minor)   - The minor to add
+        """
+        self.minors.append(minor)
+    
+    def remove_minor(self, minor):
+        """
+            Removes a minor from a student
+
+            Inputs
+            ------------------
+            minor (Minor)   - The minor to add
+        """
+        self.minors.remove(minor)
+
+    def has_minor(self, minor) -> bool:
+        """
+            Check if a Student has a specific minor
+
+            Inputs
+            ------------------
+            minor (Minor)   - The minor to check
+
+            Output
+            ------------------
+            bool: Whether the Student has the specified minor
+        """
+        return minor in self.minors
+
+
+    def get_semester(self, name: str):
+        """
+            Retrieves a Semester given a name
+
+            Inputs
+            ------------------
+            name (str)  - The name of the Semester
+
+            Output
+            ------------------
+            Semester: The corresponding Semester
+        """
+        return self.semesters[name]
+
+    def add_semester(self, name: str, status: str, courses: list=[]):
+        """
+            Adds a Semester given a name and status
+
+            Inputs
+            ------------------
+            name (str)      - The name of the Semester
+            status (str)    - The status of the Semester
+            courses (list)  - (Optional) A list of courses taken in the Semester
+        """
+        self.semesters[name] = Semester(name=name, status=status, courses=courses)
+
+    def remove_semester(self, name):
+        """
+            Removes a Semester of a given name
+
+            Inputs
+            ------------------
+            name (str)      - The name of the Semester
+        """
+        self.semesters.pop(name)
+
+    def has_semester(self, name):
+        """
+            Check if a Student has a specific Semester
+
+            Inputs
+            ------------------
+            name (str)  - The name of the Semester to check
+
+            Output
+            ------------------
+            bool: Whether the Student has the specified Semester
+        """
+        return name in self.semesters.keys()
+    
+    def get_courses(self, status=["complete", "in progress", "planned"]) -> list:
         """
             Returns a list of courses from applicable Semesters
 
@@ -62,13 +193,13 @@ class Student:
         """
         courses = []
 
-        for semester in self.semesters:
+        for semester in self.semesters.values():
             if(semester.status in status):
                 courses += semester.get_courses()
 
         return courses
 
-    def get_credits(self, status=["complete"]):
+    def get_credits(self, status=["complete"]) -> float:
         """
             Returns a number of credits from applicable Semesters
 
@@ -115,6 +246,13 @@ def test_semester():
     # Check get_courses
     assert f2022.get_courses() == courses, "The incorrect courses were returned"
 
+    # Check adding and removing courses
+    f2022.add_course("MIE451H1")
+    f2022.remove_course("ECE454H1")
+    assert "MIE451H1" in f2022, "This course should be in" + f2022
+    assert not "ECE454H1" in f2022, "This course should not be in" + f2022
+
+
     print("Semester Class is working as expected")
 
 # Unit Tests are in if __name__ = main until we've decided on a test suite
@@ -133,7 +271,10 @@ def test_student():
     status_2 = "complete"
     courses_2 = ["ECE396Y1", "ECE344H1", "ECE354H1", "ECE352H1", "ECE368H1"]
     w2021 = Semester(name=name_2, status=status_2, courses=courses_2)
-    semesters = [w2021, f2022]
+
+    semesters = OrderedDict()
+    semesters[name_1] = w2021
+    semesters[name_2] = f2022
     
 
     # Check class construction
@@ -156,6 +297,19 @@ def test_student():
 
     # Check get_credits
     assert test_student.get_credits() == 3, "There should be 3 credits"
+
+    # Check adding and removing Semesters and minors
+    test_student.add_minor("Biomedical Minor")
+    test_student.remove_minor("Robotics and Mechatronics Minor")
+    assert test_student.has_minor("Biomedical Minor"), "Should have this minor"
+    assert not test_student.has_minor("Robotics and Mechatronics Minor"), \
+                                      "Should not have this minor"
+
+    test_student.add_semester("Winter 2022", "planned")
+    test_student.remove_semester("Winter 2021")
+    assert test_student.has_semester("Winter 2022"), "Should have this Semester"
+    assert not test_student.has_semester("Winter 2021"), \
+                                      "Should not have this Semester"
 
     print("Student Class is working as expected")
 
