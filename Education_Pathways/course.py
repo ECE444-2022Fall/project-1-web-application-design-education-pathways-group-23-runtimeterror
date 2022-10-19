@@ -1,5 +1,3 @@
-from tomlkit import document
-
 
 class Course:
     """
@@ -101,6 +99,9 @@ class Course:
             float: return the course weight, either 0.5 or 1.0
         """
 
+        # We assume that a course code with a Y is a full year course
+        # and worth 1.0 credits, while H is a half year course and
+        # worth 0.5 credits
         if(self.code[-2:-1] == "Y"):
             return 1.0
         elif(self.code[-2] == "H"):
