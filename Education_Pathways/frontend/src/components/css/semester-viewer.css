@@ -118,6 +118,9 @@
     margin-top: 0px;
     color: red;
 }
+.section{
+    margin-top: 25px;
+}
 
 .drag-item.is-moving {
     transform: scale(1.5);
