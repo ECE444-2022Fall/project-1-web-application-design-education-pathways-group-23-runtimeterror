@@ -33,7 +33,10 @@ class SemesterViewer extends Component {
         }
     }
     removeCourseBox(column_id){
-
+        var CourseName = document.getElementById("course_name_" + column_id).value;
+        var courseBox = document.getElementById(CourseName);
+        var courseList = document.getElementById(column_id);
+        courseList.removeChild(courseBox);
     }
     
     dragulaDecorator = (componentBackingInstance) => {

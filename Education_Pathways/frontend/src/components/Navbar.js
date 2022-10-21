@@ -21,13 +21,13 @@ export default class NavbarComp extends Component {
                     <Navbar.Toggle />
                     <Navbar.Collapse>
                         <Nav>
-                            <Nav.Link as={Link} to="/about">
-                                About Us
+                            <Nav.Link as={Link} to="/semester-viewer">
+                                Semester Viewer
                             </Nav.Link>
                         </Nav>
                         <Nav>
-                            <Nav.Link as={Link} to="/semester-viewer">
-                                Semester Viewer
+                            <Nav.Link as={Link} to="/about">
+                                About Us
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
