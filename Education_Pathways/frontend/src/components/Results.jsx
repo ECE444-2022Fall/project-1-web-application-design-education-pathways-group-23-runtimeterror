@@ -6,10 +6,7 @@ import Col from 'react-bootstrap/Col'
 import './css/Result.css'
 import unstarred from './img/star.png'
 import starred from './img/starred.png'
-<<<<<<< HEAD
-=======
 import API from '../api';
->>>>>>> b27eb9c45c4749e266bafdb6cff7ff2ebc70ab9b
 
 let star;
 
@@ -32,25 +29,6 @@ class Result extends Component{
     this.props.history.push(`/course/details/${this.props.course_code}`, {course_code: this.props.course_code})
   }
   
-<<<<<<< HEAD
-  componentDidMount() {
-    axios.get(`https://assignment-1-starter-template.herokuapp.com/user/wishlist?username=${this.state.username}`)
-    .then(res => {
-      let len = res.data.wishlist.course.length
-      for (let i = 0; i < len; i++) {
-        if (res.data.wishlist.course[i].code === this.state.course_code) {
-          star = starred
-          this.setState({starred: true})
-        }
-      }
-    })
-  }
-
-
-
-
-=======
->>>>>>> b27eb9c45c4749e266bafdb6cff7ff2ebc70ab9b
 
   render(){
     return (
