@@ -19,12 +19,12 @@ app.config['TESTING'] = True
 # Provide the mongodb atlas url to connect python to mongodb using pymongo
 CONNECTION_STRING = f"mongodb+srv://admin:{os.environ.get('MONGO_PASS')}@cluster0.o7bvcw3.mongodb.net/test"
 
-# Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
+# Create a connection using MongoClient.
 client = MongoClient(CONNECTION_STRING)
 
-# Create the database for our example (we will use the same database throughout the tutorial
+# Grab and store the test database and the course collection
 db = client['test']
-collection = db["courses"]
+course_collection = db["courses"]
 
 config.init_app(app)
 config.init_db(app)
@@ -35,7 +35,7 @@ config.init_cors(app)
 def search_course_by_code(s):
     # return all the courses whose course code contains the str s
     regx = re.compile(f'.*{s.upper()}.*', re.IGNORECASE)
-    course_ids = list(collection.find({'Code': regx}))
+    course_ids = list(course_collection.find({'Code': regx}))
     print(len(course_ids))
     if len(course_ids) == 0:
         return []
