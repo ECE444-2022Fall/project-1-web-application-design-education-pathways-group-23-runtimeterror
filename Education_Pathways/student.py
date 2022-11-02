@@ -64,6 +64,21 @@ class Semester:
         """
         return self.courses
 
+    def serialize(self):
+        """
+            Returns a dictionary representation of semester for jsonification purposes
+        """
+        return {
+            "name" : self.name,
+            "status" : self.status,
+            "courses" : self.courses
+        }
+
+    @classmethod
+    def deserialize(cls, dict):
+        semester = cls(name = dict["name"], status = dict["status"], courses =  dict["courses"])
+        return semester
+
 class Student:
     """
         Class for storing the major, year, minors, and courses of a student
@@ -243,6 +258,23 @@ class Student:
                 credits += 0.5
 
         return credits
+
+    def serialize(self):
+        """
+            Returns a dictionary representation of Student for jsonification purposes
+        """
+        return {
+            "major" : self.major,
+            "year" : self.year,
+            "minors" : self.minors,
+            "semesters" : [semester[1].serialize() for semester in self.semesters.items()] 
+        }
+
+    @classmethod
+    def deserialize(cls, dict):
+        student = cls(major = dict["major"], year = dict["year"], minors = dict["minors"], \
+            semesters = OrderedDict({sem_dict["name"]: Semester.deserialize(sem_dict) for sem_dict in dict["semesters"]}))
+        return student
 
 
 # Unit Tests are in if __name__ = main until we've decided on a test suite
