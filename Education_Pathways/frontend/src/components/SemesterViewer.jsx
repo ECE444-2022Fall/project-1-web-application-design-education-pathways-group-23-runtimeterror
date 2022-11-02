@@ -3,8 +3,25 @@ import './css/semester-viewer.css';
 
 import * as ReactDOM from 'react-dom';
 import Dragula from 'react-dragula';
+import API from '../api';
 
 class SemesterViewer extends Component {
+    constructor() {
+        super();
+        this.state = {
+            major: "",
+            year: 1,
+            minors: [],
+            semesters: []
+        };
+        this.addCourseBox = this.addCourseBox.bind(this);
+        }
+
+    componentDidMount() {
+        API.get("/api/load_student")
+        }
+    
+
     addCourseBox(column_id) {
         var newCourseBox = document.createElement("li");
         newCourseBox.className = "drag-item";
@@ -25,17 +42,26 @@ class SemesterViewer extends Component {
         newCourseBox.id = String(newCourseName);
         var courseList = document.getElementById(column_id);
         var coursesNumber = courseList.childElementCount;
-        if (coursesNumber < 6) {
-            courseList.appendChild(newCourseBox);
-            document.getElementById("notification-" + column_id).innerHTML = "";
-        } else {
+        if (coursesNumber > 6) {
             document.getElementById("notification-" + column_id).innerHTML = "You can add maximum 6 courses per semester.";
-        }
+            return;
+        } 
+        
+        API.post("/api/add_course", {semester: column_id, course: newCourseBox.id})
+        courseList.appendChild(newCourseBox);
+        document.getElementById("notification-" + column_id).innerHTML = "";
     }
     removeCourseBox(column_id){
         var CourseName = document.getElementById("course_name_" + column_id).value;
         var courseBox = document.getElementById(CourseName);
         var courseList = document.getElementById(column_id);
+
+        if (courseBox === null)  {
+            document.getElementById("notification-" + column_id).innerHTML = "This course does not exist.";
+            return;
+        }
+
+        API.post("/api/remove_course", {semester: column_id, course: CourseName})
         courseList.removeChild(courseBox);
     }
     
