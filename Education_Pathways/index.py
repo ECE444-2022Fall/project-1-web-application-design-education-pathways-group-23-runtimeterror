@@ -1,18 +1,21 @@
 # this is the flask core
 
-from flask import Flask, send_from_directory, jsonify, request
+from flask import Flask, send_from_directory, jsonify, request, session
 from flask_restful import Api,Resource, reqparse
+from flask_cors import CORS
 import os
 
 import pandas as pd
 df = pd.read_csv("resources/courses.csv")
 
-
+from student import Student
 import config
 app = Flask(__name__, static_folder='frontend/build')
+app.config['SECRET_KEY'] = "Totally a secret"
 app.config['ENV'] = 'development'
 app.config['DEBUG'] = True
 app.config['TESTING'] = True
+
 # MongoDB URI
 # DB_URI = "mongodb+srv://Cansin:cv190499@a-star.roe6s.mongodb.net/A-Star?retryWrites=true&w=majority"
 # app.config["MONGODB_HOST"] = DB_URI
@@ -20,7 +23,6 @@ app.config['TESTING'] = True
 config.init_app(app)
 config.init_db(app)
 config.init_cors(app)
-
 
 # route functions
 def search_course_by_code(s):
@@ -122,13 +124,100 @@ rest_api.add_resource(SearchCourse, '/searchc')
 rest_api.add_resource(ShowCourse, '/course/details')
 
 
+# Temporary Hack to allow Flask Sessions
+CORS_ALLOW_ORIGIN="*,*"
+CORS_EXPOSE_HEADERS="*,*"
+CORS_ALLOW_HEADERS="content-type,*"
+cors = CORS(app, origins=CORS_ALLOW_ORIGIN.split(","), allow_headers=CORS_ALLOW_HEADERS.split(",") , expose_headers= CORS_EXPOSE_HEADERS.split(","),   supports_credentials = True)
+
+# Semester Viewer API
+# SV API for loading student information
+@app.route("/api/load_student", methods=["GET", "POST"])
+def load_student():
+    if(session.get("student")):
+        student = Student.deserialize(session.get("student"))
+        
+    else:
+        student = init_student()
+        session["student"] = student.serialize()
+
+    resp = jsonify(student.serialize())
+    resp.status_code = 200
+    return resp
+
+# Temporary Solution for initializing students (will replace with more dynamic method)
+default_semesters = ["Fall 2022", "Winter 2023", "Fall 2023", "Winter 2024", "Fall 2024", "Winter 2025", "Fall 2025", "Winter 2026"]
+def init_student():
+    student = Student("", 1, [] )
+
+    for semester in default_semesters:
+        student.add_semester(semester, "planned")
+
+    return student
+
+# SV API for adding a course
+@app.route("/api/add_course", methods=["POST"])
+def add_course():
+    parser = reqparse.RequestParser()
+    parser.add_argument('semester', required=True)
+    parser.add_argument('course', required=True)
+    data = parser.parse_args()
+
+    course = data['course']
+    semester = data["semester"]
+
+    if(session.get("student")):
+        student = Student.deserialize(session["student"])
+        student.get_semester(default_semesters[int(semester)]).add_course(course)
+        print(student.serialize())
+
+        resp = jsonify({
+            "course": course
+            })
+        resp.status_code = 200
+    
+    else:
+        resp = jsonify({})
+        resp.status_code = 400
+
+    return resp
+
+# SV API for removing a course
+@app.route("/api/remove_course", methods=["POST"])
+def remove_course():
+    parser = reqparse.RequestParser()
+    parser.add_argument('semester', required=True)
+    parser.add_argument('course', required=True)
+    data = parser.parse_args()
+
+    course = data['course']
+    semester = data["semester"]
+
+    if(session.get("student")):
+        student = Student.deserialize(session["student"])
+        student.get_semester(default_semesters[int(semester)]).remove_course(course)
+        print(student.serialize())
+
+        resp = jsonify({
+            "course": course
+            })
+        resp.status_code = 200
+    
+    else:
+        resp = jsonify({})
+        resp.status_code = 400
+
+    return resp
+
 @app.route("/", defaults={'path': ''})
+
 @app.route('/<path:path>')
 def serve(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
+
 
 
 if __name__ == '__main__':
