@@ -1,21 +1,30 @@
 # this is the flask core
 
+import re
+import config
 from flask import Flask, send_from_directory, jsonify, request
-from flask_restful import Api,Resource, reqparse
+from pymongo import MongoClient
+from flask_restful import Api, Resource, reqparse
 import os
 
-import pandas as pd
-df = pd.read_csv("resources/courses.csv")
+# import pandas as pd
+# df = pd.read_csv("resources/courses.csv")
 
 
-import config
 app = Flask(__name__, static_folder='frontend/build')
 app.config['ENV'] = 'development'
 app.config['DEBUG'] = True
 app.config['TESTING'] = True
-# MongoDB URI
-# DB_URI = "mongodb+srv://Cansin:cv190499@a-star.roe6s.mongodb.net/A-Star?retryWrites=true&w=majority"
-# app.config["MONGODB_HOST"] = DB_URI
+
+# Provide the mongodb atlas url to connect python to mongodb using pymongo
+CONNECTION_STRING = f"mongodb+srv://admin:{os.environ.get('MONGO_PASS')}@cluster0.o7bvcw3.mongodb.net/test"
+
+# Create a connection using MongoClient.
+client = MongoClient(CONNECTION_STRING)
+
+# Grab and store the test database and the course collection
+db = client['test']
+course_collection = db["courses"]
 
 config.init_app(app)
 config.init_db(app)
@@ -25,26 +34,28 @@ config.init_cors(app)
 # route functions
 def search_course_by_code(s):
     # return all the courses whose course code contains the str s
-    course_ids = df[df['Code'].str.contains(s.upper())].index.tolist()
+    regx = re.compile(f'.*{s.upper()}.*', re.IGNORECASE)
+    course_ids = list(course_collection.find({'Code': regx}))
+    print(len(course_ids))
     if len(course_ids) == 0:
         return []
     if len(course_ids) > 10:
         course_ids = course_ids[:10]
     res = []
     for i, course_id in enumerate(course_ids):
-        d = df.iloc[course_id].to_dict()
         res_d = {
             '_id': i,
-            'code': d['Code'],
-            'name': d['Name'],
+            'code': course_id['Code'],
+            'name': course_id['Name'],
             'description': "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.",
             'syllabus': "Course syllabus here.",
             'prereq': ['APS101H1, ECE101H1'],
             'coreq': ['APS102H1, ECE102H1'],
-            'exclusion': ['APS102H1, ECE102H1'] ,
+            'exclusion': ['APS102H1, ECE102H1'],
         }
         res.append(res_d)
     return res
+
 
 class SearchCourse(Resource):
     def get(self):
@@ -77,6 +88,7 @@ class SearchCourse(Resource):
                 resp.status_code = 400
                 return resp
 
+
 class ShowCourse(Resource):
     def get(self):
         code = request.args.get('code')
@@ -93,7 +105,7 @@ class ShowCourse(Resource):
             resp = jsonify({'error': 'something went wrong'})
             resp.status_code = 400
             return resp
-    
+
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('code', required=True)
@@ -139,6 +151,3 @@ if __name__ == '__main__':
     # for i in range(75):
     #     i = str(i)
     #     Course(name=data["name"][i], code=data["code"][i], description=data["description"][i], prereq=data["prereq"][i], coreq=data["coreq"][i], exclusion=data["exclusion"][i]).save()
-
-    
-    
