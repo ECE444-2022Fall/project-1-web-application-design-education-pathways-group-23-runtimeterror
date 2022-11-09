@@ -1,6 +1,7 @@
 # this is the flask core
 
 import config
+from search import SearchCourse, search_course
 from flask import Flask, send_from_directory, jsonify, request
 from flask_restful import Api, Resource, reqparse
 import os
@@ -22,7 +23,7 @@ config.init_cors(app)
 class ShowCourse(Resource):
     def get(self):
         code = request.args.get('code')
-        courses = search_course_by_code(code)
+        courses = search_course(code, "")
         if len(courses) == 0:
             resp = jsonify({'message': f"Course {code} doesn't exist"})
             resp.status_code = 404
@@ -41,7 +42,7 @@ class ShowCourse(Resource):
         parser.add_argument('code', required=True)
         data = parser.parse_args()
         code = data['code']
-        courses = search_course_by_code(code)
+        courses = search_course(code, "")
         if len(courses) == 0:
             resp = jsonify({'message': f"Course {code} doesn't exist"})
             resp.status_code = 404
