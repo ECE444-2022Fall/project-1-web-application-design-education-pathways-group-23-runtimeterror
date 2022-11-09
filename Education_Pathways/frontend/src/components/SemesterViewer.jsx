@@ -12,7 +12,7 @@ class SemesterViewer extends Component {
             major: "",
             year: 1,
             minors: [],
-            semesters: []
+            semesters: [{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""}]
         };
         this.addCourseBox = this.addCourseBox.bind(this);
         }
@@ -125,7 +125,7 @@ class SemesterViewer extends Component {
                     <ul className="drag-list">
                         <li className="drag-column drag-column-1">
                             <span className="drag-column-header">
-                                <h2>Fall 2022</h2>
+                                <h2>{this.state.semesters[0].name}</h2>
                             </span>
                             <ul className="drag-inner-list" id={1} ref={this.dragulaDecorator}>
                             </ul>
@@ -139,7 +139,7 @@ class SemesterViewer extends Component {
                         </li>
                         <li className="drag-column drag-column-2">
                             <span className="drag-column-header">
-                                <h2>Winter 2023</h2>
+                                <h2>{this.state.semesters[1].name}</h2>
                             </span>
                             <ul className="drag-inner-list" id={2} ref={this.dragulaDecorator}>
                             </ul>
@@ -153,7 +153,7 @@ class SemesterViewer extends Component {
                         </li>
                         <li className="drag-column drag-column-3">
                             <span className="drag-column-header">
-                                <h2>Fall 2023</h2>
+                                <h2>{this.state.semesters[2].name}</h2>
                             </span>
                             <ul className="drag-inner-list" id={3} ref={this.dragulaDecorator}>
                             </ul>
@@ -167,7 +167,7 @@ class SemesterViewer extends Component {
                         </li>
                         <li className="drag-column drag-column-4">
                             <span className="drag-column-header">
-                                <h2>Winter 2024</h2>
+                                <h2>{this.state.semesters[3].name}</h2>
                             </span>
                             <ul className="drag-inner-list" id={4} ref={this.dragulaDecorator}>
                             </ul>
