@@ -92,7 +92,10 @@ class Student:
         semesters (OrderedDict) - A Dictionary of Semesters
                         
     """
-    def __init__(self, major, year: int, minors: list, semesters: OrderedDict=OrderedDict()):
+    def __init__(self, major, year: int, minors: list=[], semesters: OrderedDict=None):
+        if(semesters == None):
+            semesters = OrderedDict()
+            
         self.major = major
         self.year = year
         self.minors = minors

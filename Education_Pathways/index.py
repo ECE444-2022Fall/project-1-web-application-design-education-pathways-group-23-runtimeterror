@@ -4,6 +4,7 @@ from flask import Flask, send_from_directory, jsonify, request, session
 from flask_restful import Api,Resource, reqparse
 from flask_cors import CORS
 import os
+from datetime import date
 
 import pandas as pd
 df = pd.read_csv("resources/courses.csv")
@@ -134,6 +135,42 @@ def load_student():
     else:
         student = init_student()
         session["student"] = student.serialize()
+
+    resp = jsonify(student.serialize())
+    resp.status_code = 200
+    return resp
+
+# SV API for creating new student
+@app.route("/api/create_student", methods=["POST"])
+def create_student():
+    parser = reqparse.RequestParser()
+    parser.add_argument('major', required=True)
+    parser.add_argument('year', required=True)
+    data = parser.parse_args()
+
+    major = data['major']
+    year = int(data["year"])
+
+    student = Student(major, year)
+    
+    y = 1
+    for i in range(8):
+        if(y == year):
+            status = "in progess"
+        elif(y > year):
+            status = "planned"
+        else:
+            status = "complete"
+
+        if(i%2==0):
+            semester = "Fall {}".format(int(date.today().year) - year + y)
+        else:
+            semester = "Winter {}".format(int(date.today().year) - year + y + 1)
+            y += 1
+
+        student.add_semester(semester, status)
+        
+    session["student"] = student.serialize()
 
     resp = jsonify(student.serialize())
     resp.status_code = 200
