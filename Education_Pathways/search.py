@@ -21,7 +21,7 @@ def search_course(search_term, minor):
                     that match the query
 
     """
-    # return all the courses whose course code contains the str s
+    # return all the courses whose course code contains the str search_Term
     regx = re.compile(f'.*{search_term.upper()}.*', re.IGNORECASE)
     query_object = {
         "$and": [
@@ -53,11 +53,11 @@ def search_course(search_term, minor):
             '_id': i,
             'code': course_id['Code'],
             'name': course_id['Name'],
-            'description': "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.",
+            'description': course_id["Course Description"],
             'syllabus': "Course syllabus here.",
-            'prereq': ['APS101H1, ECE101H1'],
-            'coreq': ['APS102H1, ECE102H1'],
-            'exclusion': ['APS102H1, ECE102H1'],
+            'prereq': course_id["Pre-requisites"],
+            'coreq': course_id["Corequisite"],
+            'exclusion': course_id["Exclusion"],
         }
         res.append(res_d)
     return res
