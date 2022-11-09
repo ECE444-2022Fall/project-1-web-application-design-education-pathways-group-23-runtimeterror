@@ -124,12 +124,6 @@ rest_api.add_resource(SearchCourse, '/searchc')
 rest_api.add_resource(ShowCourse, '/course/details')
 
 
-# Temporary Hack to allow Flask Sessions
-CORS_ALLOW_ORIGIN="*,*"
-CORS_EXPOSE_HEADERS="*,*"
-CORS_ALLOW_HEADERS="content-type,*"
-cors = CORS(app, origins=CORS_ALLOW_ORIGIN.split(","), allow_headers=CORS_ALLOW_HEADERS.split(",") , expose_headers= CORS_EXPOSE_HEADERS.split(","),   supports_credentials = True)
-
 # Semester Viewer API
 # SV API for loading student information
 @app.route("/api/load_student", methods=["GET", "POST"])
