@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component , useEffect} from "react";
 import './css/semester-viewer.css';
 
 import * as ReactDOM from 'react-dom';
@@ -17,10 +17,37 @@ class SemesterViewer extends Component {
         this.addCourseBox = this.addCourseBox.bind(this);
         }
 
-    componentDidMount() {
-        API.get("/api/load_student")
-        }
+    componentDidMount () {
+        API.get("/api/load_student").then(res => {
+            this.setState({
+                major: res.data.major,
+                year: res.data.year,
+                minors: res.data.minors,
+                semesters: res.data.semesters
+            },
+            this.restoreSemsterViewer
+            );
+        });
+    }
     
+
+    restoreSemsterViewer() {
+        for(let i=0; i<this.state.semesters.length; i++){
+            
+            for(let j=0; j<this.state.semesters[i].courses.length; j++) {
+                var newCourseBox = document.createElement("li");
+                newCourseBox.className = "drag-item";
+
+                var newCourseName = this.state.semesters[i].courses[j];
+                newCourseBox.innerHTML = newCourseName;
+                newCourseBox.id = String(newCourseName);
+
+                var courseList = document.getElementById(i+1);
+                courseList.appendChild(newCourseBox);
+            }
+        } 
+        return;
+    }
 
     addCourseBox(column_id) {
         var newCourseBox = document.createElement("li");
@@ -47,10 +74,11 @@ class SemesterViewer extends Component {
             return;
         } 
         
-        API.post("/api/add_course", {semester: column_id, course: newCourseBox.id})
+        API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id})
         courseList.appendChild(newCourseBox);
         document.getElementById("notification-" + column_id).innerHTML = "";
     }
+
     removeCourseBox(column_id){
         var CourseName = document.getElementById("course_name_" + column_id).value;
         var courseBox = document.getElementById(CourseName);
@@ -61,7 +89,7 @@ class SemesterViewer extends Component {
             return;
         }
 
-        API.post("/api/remove_course", {semester: column_id, course: CourseName})
+        API.post("/api/remove_course", {semester: column_id-1, course: CourseName})
         courseList.removeChild(courseBox);
     }
     
