@@ -36,14 +36,13 @@ def search_course(search_term, minor):
 
     # TODO: Handle whatever unhappy message is sent for minor when not needed
     if minor != "":
-        query_object["$and"].append({
+        query_object["$and"].append(
             {
-                "Minor": minor
+                "MinorsOutcomes": minor
             }
-        })
+        )
 
     course_ids = list(config.course_collection.find(query_object))
-    print(len(course_ids))
     if len(course_ids) == 0:
         return []
     if len(course_ids) > 10:
