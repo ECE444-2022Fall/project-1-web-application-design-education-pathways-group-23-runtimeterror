@@ -121,8 +121,22 @@ class SemesterViewer extends Component {
                 <section className="section">
                     <h1>Semester Viewer</h1>
                 </section>
+
                 <div className="drag-container">
                     <ul className="drag-list">
+                        <li className="drag-column">
+                            {/* For Dean to add student info from backend */}              
+                            <table>
+                                <tr>
+                                    <td rowspan="2"><span className="student-info-header"><h2>Current Status</h2></span></td>
+                                    <td className="student-info">Your Major is: {this.state.major}</td>
+                                </tr>
+                                <tr>
+                                    <td className="student-info">Earned Credits:</td>
+                                </tr>
+                            </table>
+                            
+                        </li>
                         <li className="drag-column">
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[0].name}</h2>
