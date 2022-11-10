@@ -47,19 +47,12 @@
     margin: 0;
     text-transform: uppercase;
     font-weight: 600;
+    color: white;
 }
-.drag-column-1 .drag-column-header, .drag-column-1 .is-moved, .drag-column-1 .drag-options {
-    background: #7ba6de;
+.drag-column .drag-column-header, .drag-column .is-moved, .drag-column .drag-options {
+    background: #1c3e6f;
 }
-.drag-column-2 .drag-column-header, .drag-column-2 .is-moved, .drag-column-2 .drag-options {
-    background: #9ea2a2;
-}
-.drag-column-3 .drag-column-header, .drag-column-3 .is-moved, .drag-column-3 .drag-options {
-    background: #e4bec3;
-}
-.drag-column-4 .drag-column-header, .drag-column-4 .is-moved, .drag-column-4 .drag-options {
-    background: #bfcc80;
-}
+
 .drag-column-header {
     display: flex;
     align-items: center;

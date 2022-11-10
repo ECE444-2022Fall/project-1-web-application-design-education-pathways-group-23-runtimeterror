@@ -123,7 +123,7 @@ class SemesterViewer extends Component {
                 </section>
                 <div className="drag-container">
                     <ul className="drag-list">
-                        <li className="drag-column drag-column-1">
+                        <li className="drag-column">
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[0].name}</h2>
                             </span>
@@ -137,7 +137,7 @@ class SemesterViewer extends Component {
                             </form>
                             <p className="notification" id="notification-1"> </p>
                         </li>
-                        <li className="drag-column drag-column-2">
+                        <li className="drag-column">
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[1].name}</h2>
                             </span>
@@ -151,7 +151,7 @@ class SemesterViewer extends Component {
                             </form>
                             <p className="notification" id="notification-2"> </p>
                         </li>
-                        <li className="drag-column drag-column-3">
+                        <li className="drag-column">
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[2].name}</h2>
                             </span>
@@ -165,7 +165,7 @@ class SemesterViewer extends Component {
                             </form>
                             <p className="notification" id="notification-3"> </p>
                         </li>
-                        <li className="drag-column drag-column-4">
+                        <li className="drag-column">
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[3].name}</h2>
                             </span>
@@ -176,6 +176,62 @@ class SemesterViewer extends Component {
                                 <input type="text" className="form-input" id="course_name_4" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('4')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('4')}>Remove</button>
+                            </form>
+                            <p className="notification" id="notification-4"> </p>
+                        </li>
+                        <li className="drag-column">
+                            <span className="drag-column-header">
+                                <h2>{this.state.semesters[4].name}</h2>
+                            </span>
+                            <ul className="drag-inner-list" id={5} ref={this.dragulaDecorator}>
+                            </ul>
+                            <form className="add-course">
+                                <label htmlFor="course_name_5" className="form-input">Course Name:</label>
+                                <input type="text" className="form-input" id="course_name_5" />
+                                <button type="button" className="form-button" onClick={() => this.addCourseBox('5')}>Add</button>
+                                <button type="button" className="form-button" onClick={() => this.removeCourseBox('5')}>Remove</button>
+                            </form>
+                            <p className="notification" id="notification-5"> </p>
+                        </li>
+                        <li className="drag-column">
+                            <span className="drag-column-header">
+                                <h2>{this.state.semesters[5].name}</h2>
+                            </span>
+                            <ul className="drag-inner-list" id={6} ref={this.dragulaDecorator}>
+                            </ul>
+                            <form className="add-course">
+                                <label htmlFor="course_name_6" className="form-input">Course Name:</label>
+                                <input type="text" className="form-input" id="course_name_6" />
+                                <button type="button" className="form-button" onClick={() => this.addCourseBox('6')}>Add</button>
+                                <button type="button" className="form-button" onClick={() => this.removeCourseBox('6')}>Remove</button>
+                            </form>
+                            <p className="notification" id="notification-6"> </p>
+                        </li>
+                        <li className="drag-column">
+                            <span className="drag-column-header">
+                                <h2>{this.state.semesters[6].name}</h2>
+                            </span>
+                            <ul className="drag-inner-list" id={7} ref={this.dragulaDecorator}>
+                            </ul>
+                            <form className="add-course">
+                                <label htmlFor="course_name_7" className="form-input">Course Name:</label>
+                                <input type="text" className="form-input" id="course_name_7" />
+                                <button type="button" className="form-button" onClick={() => this.addCourseBox('7')}>Add</button>
+                                <button type="button" className="form-button" onClick={() => this.removeCourseBox('7')}>Remove</button>
+                            </form>
+                            <p className="notification" id="notification-7"> </p>
+                        </li>
+                        <li className="drag-column">
+                            <span className="drag-column-header">
+                                <h2>{this.state.semesters[7].name}</h2>
+                            </span>
+                            <ul className="drag-inner-list" id={8} ref={this.dragulaDecorator}>
+                            </ul>
+                            <form className="add-course">
+                                <label htmlFor="course_name_8" className="form-input">Course Name:</label>
+                                <input type="text" className="form-input" id="course_name_8" />
+                                <button type="button" className="form-button" onClick={() => this.addCourseBox('8')}>Add</button>
+                                <button type="button" className="form-button" onClick={() => this.removeCourseBox('8')}>Remove</button>
                             </form>
                             <p className="notification" id="notification-4"> </p>
                         </li>
