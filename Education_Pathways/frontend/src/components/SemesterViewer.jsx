@@ -12,7 +12,9 @@ class SemesterViewer extends Component {
             major: "",
             year: 1,
             minors: [],
-            semesters: [{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""}]
+            semesters: [{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""}],
+            earned_credits: 0.0,
+            planned_credits: 0.0
         };
         this.addCourseBox = this.addCourseBox.bind(this);
         }
@@ -23,7 +25,9 @@ class SemesterViewer extends Component {
                 major: res.data.major,
                 year: res.data.year,
                 minors: res.data.minors,
-                semesters: res.data.semesters
+                semesters: res.data.semesters,
+                earned_credits: res.data.earned_credits,
+                planned_credits: res.data.planned_credits
             },
             this.restoreSemsterViewer
             );
@@ -74,7 +78,13 @@ class SemesterViewer extends Component {
             return;
         } 
         
-        API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id})
+        API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id}).then(res => {
+            this.setState({
+                earned_credits: res.data.earned_credits,
+                planned_credits: res.data.planned_credits
+            },
+            );
+        });
         courseList.appendChild(newCourseBox);
         document.getElementById("notification-" + column_id).innerHTML = "";
     }
@@ -89,7 +99,13 @@ class SemesterViewer extends Component {
             return;
         }
 
-        API.post("/api/remove_course", {semester: column_id-1, course: CourseName})
+        API.post("/api/remove_course", {semester: column_id-1, course: CourseName}).then(res => {
+            this.setState({
+                earned_credits: res.data.earned_credits,
+                planned_credits: res.data.planned_credits
+            },
+            );
+        });
         courseList.removeChild(courseBox);
     }
     
@@ -132,7 +148,8 @@ class SemesterViewer extends Component {
                                     <td className="student-info">Your Major is: {this.state.major}</td>
                                 </tr>
                                 <tr>
-                                    <td className="student-info">Earned Credits:</td>
+                                    <td className="student-info">Earned Credits: {this.state.earned_credits}</td>
+                                    <td className="student-info">Planned Credits: {this.state.planned_credits}</td>
                                 </tr>
                             </table>
                             
