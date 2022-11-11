@@ -1,24 +1,24 @@
 import React from 'react'
-import NavbarComp from "./components/Navbar.js";
+import BodyComp from "./components/Body.js";
 import ReactComp from "./components/Footer.js";
 import './App.css';
 
 
 function App() {
 
-  return (
-    <div>
-    <div className="App">
-      <NavbarComp />
-    </div>
+    return (
+        <div>
+            <div className="App">
+                <BodyComp />
+            </div>
 
-    <div className="App">
-    <ReactComp />
-    </div>
-    </div>
-  );
+            <div className="App">
+                <ReactComp />
+            </div>
+        </div>
+    );
 
- 
+
 
 }
 
