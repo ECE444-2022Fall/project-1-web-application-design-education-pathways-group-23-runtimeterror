@@ -267,3 +267,98 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+/* LEGEND */
+
+.student-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.my-legend .legend-title {
+    font-size: 15px;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #1c3e6f;
+}
+
+.my-legend .legend-scale ul {
+    margin-top: 2px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    display: flex;
+}
+
+.my-legend .legend-scale ul li {
+    list-style: none;
+    margin-right: 35px;
+    line-height: 18px;
+}
+
+.my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 16px;
+    width: 30px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid #999;
+}
+.core{
+    background-color: #F47C7C;
+}
+.electives{
+    background-color: #70A1D7;
+}
+.minor{
+    background-color: #A1DE93;
+}
+.cs-hss{
+    background-color: #F7F48B;
+}
+
+.column {
+    float: left;
+    padding: 10px;
+}
+
+.left {
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.right {
+    width: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 0px;
+    padding-top: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.course-core{
+    color: #F47C7C;
+}
+.course-electives{
+    color: #70A1D7;
+}
+.course-minor{
+    color: #A1DE93;
+}
+.course-cs-hss{
+    color: #F7F48B;
+}
