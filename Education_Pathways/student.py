@@ -223,18 +223,26 @@ class Student:
 
         return courses
 
-    def swap_course(self, course, name_1, name_2):
+    def swap_course(self, course, names=None, indices=None):
         """
             Swaps a course from one Semester to Another
 
             Inputs
             ------------------
             course  - The course to swap
-            name_1  - The name of the Semester the course is being taken from
-            name_2  - The name of the Semester the course is being swapped to
+            names   - The names of the Semesters the course is being swapped between
+                    - First name is Semester the course is being taken from
+                    - Second name is Semester the course is being swapped to
+            indices - The indices of the Semester the course is being swapped between
+                    - Same order as names
         """
-        self.semesters[name_1].remove_course(course)
-        self.semesters[name_2].add_course(course)
+        
+        if(names is not None):
+            self.semesters[names[0]].remove_course(course)
+            self.semesters[names[1]].add_course(course)
+        elif(indices is not None):
+            list(self.semesters.values())[indices[0]].remove_course(course)
+            list(self.semesters.values())[indices[1]].add_course(course)
 
     def calculate_credits(self):
         """
@@ -377,12 +385,14 @@ def test_student():
                                       "Should not have this Semester"
 
     # Test course swapping
-    test_student.swap_course("ECE568H1", "Fall 2022", "Winter 2022")
+    test_student.swap_course("ECE568H1", ("Fall 2022", "Winter 2022"))
     assert not "ECE568H1" in test_student.get_semester("Fall 2022"), \
                 "Course should not be in this Semester"
-    assert not "ECE568H1" in test_student.get_semester(index=0)
     assert "ECE568H1" in test_student.get_semester("Winter 2022")
-    assert "ECE568H1" in test_student.get_semester(index=1)
+    
+    test_student.swap_course("ECE496Y1", indices=(0, 1))
+    assert not "ECE496Y1" in test_student.get_semester(index=0)
+    assert "ECE496Y1" in test_student.get_semester(index=1)
 
     print("Student Class is working as expected")
 

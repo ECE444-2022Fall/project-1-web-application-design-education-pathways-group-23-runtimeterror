@@ -229,6 +229,34 @@ def remove_course():
 
     return resp
 
+# SV API for swapping semesters for a course
+@app.route("/api/swap_semester", methods=["POST"])
+def swap_semester():
+    parser = reqparse.RequestParser()
+    parser.add_argument('course', required=True)
+    parser.add_argument('source_semester', required=True)
+    parser.add_argument('target_semester', required=True)
+    data = parser.parse_args()
+
+    course = data["course"]
+    source_semester = int(data['source_semester'])
+    target_semester = int(data['target_semester'])
+
+    if(session.get("student")):
+        student = Student.deserialize(session["student"])
+        student.swap_course(course, indices=(source_semester, target_semester))
+        student.calculate_credits()
+        session["student"] = student.serialize()
+        
+        resp = jsonify(student.serialize())
+        resp.status_code = 200
+    
+    else:
+        resp = jsonify({})
+        resp.status_code = 400
+
+    return resp
+
 @app.route("/", defaults={'path': ''})
 
 @app.route('/<path:path>')

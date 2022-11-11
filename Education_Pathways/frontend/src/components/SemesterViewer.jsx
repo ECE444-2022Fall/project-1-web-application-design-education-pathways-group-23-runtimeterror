@@ -21,6 +21,23 @@ class SemesterViewer extends Component {
         }
 
     componentDidMount () {
+        //Initialize Dragula
+        const container = Array.from(
+            document.getElementsByClassName('drag-inner-list')
+          );
+        var drake = Dragula(container);
+        drake.on('drop', (el, target, source) => {
+            API.post("/api/swap_semester", {course: el.id, source_semester: source.id-1, target_semester: target.id-1}).then(res => {
+                this.setState({
+                    semesters: res.data.semesters,
+                    earned_credits: res.data.earned_credits,
+                    planned_credits: res.data.planned_credits
+                },
+                );
+            });
+         });
+
+        //Load Student from backend
         API.get("/api/load_student").then(res => {
             if(res.status === 200) {
                 this.setState({
@@ -149,28 +166,6 @@ class SemesterViewer extends Component {
         });
         courseList.removeChild(courseBox);
     }
-    
-    dragulaDecorator = (componentBackingInstance) => {
-        if (componentBackingInstance) {
-            let options = {};
-            Dragula([componentBackingInstance], options)
-            .on('drag', function (el) {
-                // add 'is-moving' class to element being dragged
-                el.classList.add('is-moving');
-            })
-            .on('dragend', function (el) {
-                // remove 'is-moving' class from element after dragging has stopped
-                el.classList.remove('is-moving');
-                // add the 'is-moved' class for 600ms then remove it
-                window.setTimeout(function () {
-                    el.classList.add('is-moved');
-                    window.setTimeout(function () {
-                        el.classList.remove('is-moved');
-                    }, 600);
-                }, 100);
-            });
-        }
-    };
 
     render() {
         return (
@@ -230,7 +225,7 @@ class SemesterViewer extends Component {
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[0].name}</h2>
                             </span>
-                            <ul className="drag-inner-list" id={1} ref={this.dragulaDecorator}>
+                            <ul className="drag-inner-list" id={1}>
                             </ul>
                             <form className="add-course">
                                 <label htmlFor="course_name_1" className="form-input">Course Name:</label>
@@ -244,7 +239,7 @@ class SemesterViewer extends Component {
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[1].name}</h2>
                             </span>
-                            <ul className="drag-inner-list" id={2} ref={this.dragulaDecorator}>
+                            <ul className="drag-inner-list" id={2}>
                             </ul>
                             <form className="add-course">
                                 <label htmlFor="course_name_2" className="form-input">Course Name:</label>
@@ -258,7 +253,7 @@ class SemesterViewer extends Component {
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[2].name}</h2>
                             </span>
-                            <ul className="drag-inner-list" id={3} ref={this.dragulaDecorator}>
+                            <ul className="drag-inner-list" id={3}>
                             </ul>
                             <form className="add-course">
                                 <label htmlFor="course_name_3" className="form-input">Course Name:</label>
@@ -272,7 +267,7 @@ class SemesterViewer extends Component {
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[3].name}</h2>
                             </span>
-                            <ul className="drag-inner-list" id={4} ref={this.dragulaDecorator}>
+                            <ul className="drag-inner-list" id={4}>
                             </ul>
                             <form className="add-course">
                                 <label htmlFor="course_name_4" className="form-input">Course Name:</label>
@@ -286,7 +281,7 @@ class SemesterViewer extends Component {
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[4].name}</h2>
                             </span>
-                            <ul className="drag-inner-list" id={5} ref={this.dragulaDecorator}>
+                            <ul className="drag-inner-list" id={5}>
                             </ul>
                             <form className="add-course">
                                 <label htmlFor="course_name_5" className="form-input">Course Name:</label>
@@ -300,7 +295,7 @@ class SemesterViewer extends Component {
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[5].name}</h2>
                             </span>
-                            <ul className="drag-inner-list" id={6} ref={this.dragulaDecorator}>
+                            <ul className="drag-inner-list" id={6}>
                             </ul>
                             <form className="add-course">
                                 <label htmlFor="course_name_6" className="form-input">Course Name:</label>
@@ -314,7 +309,7 @@ class SemesterViewer extends Component {
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[6].name}</h2>
                             </span>
-                            <ul className="drag-inner-list" id={7} ref={this.dragulaDecorator}>
+                            <ul className="drag-inner-list" id={7}>
                             </ul>
                             <form className="add-course">
                                 <label htmlFor="course_name_7" className="form-input">Course Name:</label>
@@ -328,7 +323,7 @@ class SemesterViewer extends Component {
                             <span className="drag-column-header">
                                 <h2>{this.state.semesters[7].name}</h2>
                             </span>
-                            <ul className="drag-inner-list" id={8} ref={this.dragulaDecorator}>
+                            <ul className="drag-inner-list" id={8}>
                             </ul>
                             <form className="add-course">
                                 <label htmlFor="course_name_8" className="form-input">Course Name:</label>
