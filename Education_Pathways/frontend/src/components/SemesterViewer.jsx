@@ -200,15 +200,14 @@ class SemesterViewer extends Component {
                         <button type="button" class="btn" onClick={this.closeForm}>Submit</button>
                     </form>
                 </div>
-                
+
                 <section className="section">
                     <h1>Semester Viewer</h1>
                 </section>
 
                 <div className="drag-container">
                     <ul className="drag-list">
-                        <li className="drag-column">
-                            {/* For Dean to add student info from backend */}              
+                        <li className="drag-column">        
                             <table>
                                 <tr>
                                     <td rowspan="2"><span className="student-info-header"><h2>Current Status</h2></span></td>
