@@ -86,7 +86,7 @@ class Student:
         Attributes
         ----------------
         major ()                - What a student is majoring in
-        year (int)              - What year a student is in
+        year (int)              - What year a student will graduate
         minors (list)           - A list of minors (using the Minor class)
                                   a student is interested in
         semesters (OrderedDict) - A Dictionary of Semesters
@@ -148,19 +148,23 @@ class Student:
         return minor in self.minors
 
 
-    def get_semester(self, name: str):
+    def get_semester(self, name: str=None, index: int=None):
         """
-            Retrieves a Semester given a name
+            Retrieves a Semester given a name or index
 
             Inputs
             ------------------
             name (str)  - The name of the Semester
+            index (int) - The index of the Semester
 
             Output
             ------------------
             Semester: The corresponding Semester
         """
-        return self.semesters[name]
+        if(name is not None):
+            return self.semesters[name]
+        elif(index is not None):
+            return list(self.semesters.values())[index]
 
     def add_semester(self, name: str, status: str, courses: list=[]):
         """
@@ -376,7 +380,9 @@ def test_student():
     test_student.swap_course("ECE568H1", "Fall 2022", "Winter 2022")
     assert not "ECE568H1" in test_student.get_semester("Fall 2022"), \
                 "Course should not be in this Semester"
+    assert not "ECE568H1" in test_student.get_semester(index=0)
     assert "ECE568H1" in test_student.get_semester("Winter 2022")
+    assert "ECE568H1" in test_student.get_semester(index=1)
 
     print("Student Class is working as expected")
 

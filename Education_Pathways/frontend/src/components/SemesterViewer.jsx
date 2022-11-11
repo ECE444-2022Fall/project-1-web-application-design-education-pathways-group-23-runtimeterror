@@ -10,29 +10,34 @@ class SemesterViewer extends Component {
         super();
         this.state = {
             major: "",
-            year: 1,
+            year: 2022,
             minors: [],
             semesters: [{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""}],
             earned_credits: 0.0,
             planned_credits: 0.0
         };
         this.addCourseBox = this.addCourseBox.bind(this);
+        this.closeForm = this.closeForm.bind(this);
         }
 
     componentDidMount () {
         API.get("/api/load_student").then(res => {
-            this.setState({
-                major: res.data.major,
-                year: res.data.year,
-                minors: res.data.minors,
-                semesters: res.data.semesters,
-                earned_credits: res.data.earned_credits,
-                planned_credits: res.data.planned_credits
-            },
-            this.restoreSemsterViewer
-            );
+            if(res.status === 200) {
+                this.setState({
+                    major: res.data.major,
+                    year: res.data.year,
+                    minors: res.data.minors,
+                    semesters: res.data.semesters,
+                    earned_credits: res.data.earned_credits,
+                    planned_credits: res.data.planned_credits
+                },
+                this.restoreSemsterViewer
+                );
+            }
+            else if(res.status === 204) {
+                this.openForm()
+            }
         });
-        window.addEventListener('load', this.openForm);
     }
 
     openForm() {
@@ -42,10 +47,33 @@ class SemesterViewer extends Component {
     }
       
     closeForm() {
+        if(document.getElementById("major").value === "true") {
+            document.getElementById("notification-form").innerHTML = "Please select a major.";
+            return;
+            }
+        if(document.getElementById("year").value === "true") {
+            document.getElementById("notification-form").innerHTML = "Please select a graduation year.";
+            return;
+            }
+
         if(document.getElementById("studentForm")){
             document.getElementById("studentForm").style.display = "none";
         }
         // store info in backend here
+        var major = document.getElementById("major").value;
+        var year = document.getElementById("year").value;
+        API.post("/api/create_student", {major:major, year:year}).then(res => {
+            console.log(res)
+            this.setState({
+                major: res.data.major,
+                year: res.data.year,
+                minors: res.data.minors,
+                semesters: res.data.semesters,
+                earned_credits: res.data.earned_credits,
+                planned_credits: res.data.planned_credits
+                },
+            );
+        });
     }
 
     restoreSemsterViewer() {
@@ -155,7 +183,7 @@ class SemesterViewer extends Component {
                             <option value="Chemical">Chemical</option>
                             <option value="Civil">Civil</option>
                             <option value="Electrical & Computer">Electrical & Computer</option>
-                            <option value="Indistrial">Indistrial</option>
+                            <option value="Industrial">Industrial</option>
                             <option value="Materials">Materials</option>
                             <option value="Mechanical">Mechanical</option>
                             <option value="Mineral">Mineral</option>
@@ -172,7 +200,8 @@ class SemesterViewer extends Component {
                             <option value="2027">2027</option>
                             <option value="2028">2028</option>
                         </select>
-                        
+                        <p> By pressing Submit, you consent to the use of cookies </p>
+                        <p className="notification" id="notification-form"> </p>
                         <button type="button" class="btn" onClick={this.closeForm}>Submit</button>
                     </form>
                 </div>

@@ -131,13 +131,13 @@ rest_api.add_resource(ShowCourse, '/course/details')
 def load_student():
     if(session.get("student")):
         student = Student.deserialize(session.get("student"))
+        resp = jsonify(student.serialize())
+        resp.status_code = 200
         
     else:
-        student = init_student()
-        session["student"] = student.serialize()
+        resp = jsonify({})
+        resp.status_code = 204
 
-    resp = jsonify(student.serialize())
-    resp.status_code = 200
     return resp
 
 # SV API for creating new student
@@ -153,38 +153,28 @@ def create_student():
 
     student = Student(major, year)
     
-    y = 1
-    for i in range(8):
-        if(y == year):
-            status = "in progess"
-        elif(y > year):
-            status = "planned"
+    for i in range(year-4, year):
+        if(i + 1 < date.today().year or (i < date.today().year and 4 < date.today().month)):
+            status = ["complete"]*2
+        elif(i > date.today().year or (i + 1 > date.today().year and 9 > date.today().month)):
+            status = ["planned"]*2
         else:
-            status = "complete"
+            if(i == date.today().year):
+                status = ["in progress", "planned"]
+            else:
+                status = ["complete", "in progress"]
 
-        if(i%2==0):
-            semester = "Fall {}".format(int(date.today().year) - year + y)
-        else:
-            semester = "Winter {}".format(int(date.today().year) - year + y + 1)
-            y += 1
+        semester = "Fall {}".format(i)
+        student.add_semester(semester, status[0])
 
-        student.add_semester(semester, status)
+        semester = "Winter {}".format(i+1)
+        student.add_semester(semester, status[1])
         
     session["student"] = student.serialize()
 
     resp = jsonify(student.serialize())
     resp.status_code = 200
     return resp
-
-# Temporary Solution for initializing students (will replace with more dynamic method)
-default_semesters = ["Fall 2022", "Winter 2023", "Fall 2023", "Winter 2024", "Fall 2024", "Winter 2025", "Fall 2025", "Winter 2026"]
-def init_student():
-    student = Student("", 1, [] )
-
-    for semester in default_semesters:
-        student.add_semester(semester, "planned")
-
-    return student
 
 # SV API for adding a course
 @app.route("/api/add_course", methods=["POST"])
@@ -199,7 +189,7 @@ def add_course():
 
     if(session.get("student")):
         student = Student.deserialize(session["student"])
-        student.get_semester(default_semesters[int(semester)]).add_course(course)
+        student.get_semester(index=int(semester)).add_course(course)
         student.calculate_credits()
         session["student"] = student.serialize()
 
@@ -226,7 +216,7 @@ def remove_course():
 
     if(session.get("student")):
         student = Student.deserialize(session["student"])
-        student.get_semester(default_semesters[int(semester)]).remove_course(course)
+        student.get_semester(index=int(semester)).remove_course(course)
         student.calculate_credits()
         session["student"] = student.serialize()
         
