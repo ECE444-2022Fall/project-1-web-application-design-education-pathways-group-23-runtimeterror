@@ -95,11 +95,13 @@ class Student:
     def __init__(self, major, year: int, minors: list=[], semesters: OrderedDict=None):
         if(semesters == None):
             semesters = OrderedDict()
-            
+
         self.major = major
         self.year = year
         self.minors = minors
         self.semesters = semesters
+        self.earned_credits = self.get_credits(status = ["complete", "in progress"])
+        self.planned_credits = self.get_credits(status = ["planned"])
 
     def set_major(self, major):
         """
@@ -230,6 +232,13 @@ class Student:
         self.semesters[name_1].remove_course(course)
         self.semesters[name_2].add_course(course)
 
+    def calculate_credits(self):
+        """
+            Calculate the number of earned (complete and in progress) and planned credits
+        """
+
+        self.earned_credits = self.get_credits(status = ["complete", "in progress"])
+        self.planned_credits = self.get_credits(status = ["planned"])
 
 
     def get_credits(self, status=["complete"]) -> float:
@@ -270,7 +279,9 @@ class Student:
             "major" : self.major,
             "year" : self.year,
             "minors" : self.minors,
-            "semesters" : [semester[1].serialize() for semester in self.semesters.items()] 
+            "semesters" : [semester[1].serialize() for semester in self.semesters.items()],
+            "earned_credits": self.earned_credits,
+            "planned_credits": self.planned_credits,
         }
 
     @classmethod

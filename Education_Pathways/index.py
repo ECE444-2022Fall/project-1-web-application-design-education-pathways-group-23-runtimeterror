@@ -200,11 +200,11 @@ def add_course():
     if(session.get("student")):
         student = Student.deserialize(session["student"])
         student.get_semester(default_semesters[int(semester)]).add_course(course)
+        student.calculate_credits()
         session["student"] = student.serialize()
+
         
-        resp = jsonify({
-            "course": course
-            })
+        resp = jsonify(student.serialize())
         resp.status_code = 200
     
     else:
@@ -227,11 +227,10 @@ def remove_course():
     if(session.get("student")):
         student = Student.deserialize(session["student"])
         student.get_semester(default_semesters[int(semester)]).remove_course(course)
+        student.calculate_credits()
         session["student"] = student.serialize()
-
-        resp = jsonify({
-            "course": course
-            })
+        
+        resp = jsonify(student.serialize())
         resp.status_code = 200
     
     else:
