@@ -312,26 +312,15 @@ option {
     line-height: 18px;
 }
 
-.my-legend ul.legend-labels li span {
+.my-legend ul.legend-labels li input {
     display: block;
     float: left;
-    height: 16px;
-    width: 30px;
+    height: 20px;
+    width: 40px;
     margin-right: 5px;
     margin-left: 0;
-    border: 1px solid #999;
-}
-.core{
-    background-color: #F47C7C;
-}
-.electives{
-    background-color: #70A1D7;
-}
-.minor{
-    background-color: #A1DE93;
-}
-.cs-hss{
-    background-color: #F7F48B;
+    border: 0px;
+    background-color: #e5e5e5
 }
 
 .column {

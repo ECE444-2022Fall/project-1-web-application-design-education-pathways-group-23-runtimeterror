@@ -225,10 +225,12 @@ class SemesterViewer extends Component {
                                     <div class="column left legend-title">Courses Legend</div>
                                     <div class="column right legend-scale">
                                         <ul class="legend-labels">
-                                            <li><span class="core"></span>Core</li>
-                                            <li><span class="electives"></span>Electives</li>
-                                            <li><span class="minor"></span>Minor</li>
-                                            <li><span class="cs-hss"></span>CS/HSS</li>
+                                            {/* TODO: Create a form + submit button to flush the color inputs and change courses colors*/}
+                                            {/* See end of CSS file for classes where to flush input colors */}
+                                            <li><input type="color" id="core-color" value="#F47C7C"></input>Core</li>
+                                            <li><input type="color" id="elective-color" value="#70A1D7"></input>Electives</li>
+                                            <li><input type="color" id="minor-color" value="#A1DE93"></input>Minor</li>
+                                            <li><input type="color" id="cs-hss-color" value="#F7F48B"></input>CS/HSS</li>
                                         </ul>
                                     </div>
                                 </div>
