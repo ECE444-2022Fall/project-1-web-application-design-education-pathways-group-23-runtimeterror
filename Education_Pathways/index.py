@@ -2,7 +2,7 @@
 
 import re
 import config
-from flask import Flask, send_from_directory, jsonify, request
+from flask import Flask, send_from_directory, jsonify, request, session
 from pymongo import MongoClient
 from flask_restful import Api, Resource, reqparse
 
