@@ -28,8 +28,21 @@ class SemesterViewer extends Component {
             this.restoreSemsterViewer
             );
         });
+        window.addEventListener('load', this.openForm);
     }
-    
+
+    openForm() {
+        if(document.getElementById("studentForm")){
+            document.getElementById("studentForm").style.display = "block";
+        }
+    }
+      
+    closeForm() {
+        if(document.getElementById("studentForm")){
+            document.getElementById("studentForm").style.display = "none";
+        }
+        // store info in backend here
+    }
 
     restoreSemsterViewer() {
         for(let i=0; i<this.state.semesters.length; i++){
@@ -118,6 +131,36 @@ class SemesterViewer extends Component {
     render() {
         return (
             <div>
+                <div class="form-popup" id="studentForm">
+                    <form onSubmit={this.handleSubmit} class="form-container">
+                        <label for="major"><b>Major</b></label>
+                        <select id="major" name="major" required>
+                            <option disabled selected value> -- select an option -- </option>
+                            <option value="Chemical">Chemical</option>
+                            <option value="Civil">Civil</option>
+                            <option value="Electrical & Computer">Electrical & Computer</option>
+                            <option value="Indistrial">Indistrial</option>
+                            <option value="Materials">Materials</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Mineral">Mineral</option>
+                            <option value="EngSci">EngSci</option>
+                        </select>
+
+                        <label for="year"><b>Graduation Year</b></label>
+                        <select id="year" name="year" required>
+                            <option disabled selected value> -- select a year -- </option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                        </select>
+                        
+                        <button type="button" class="btn" onClick={this.closeForm}>Submit</button>
+                    </form>
+                </div>
+                
                 <section className="section">
                     <h1>Semester Viewer</h1>
                 </section>
@@ -252,6 +295,7 @@ class SemesterViewer extends Component {
                     </ul>
                 </div>
             </div>
+
         );
     }
 }
