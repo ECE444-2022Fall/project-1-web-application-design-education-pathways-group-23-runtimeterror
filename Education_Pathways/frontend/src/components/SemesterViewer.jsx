@@ -203,9 +203,8 @@ class SemesterViewer extends Component {
 
                 <section className="section">
                     <h1>Semester Viewer</h1>
-                </section>
-
-                <div className="drag-container">
+                </section>                    
+                <div className=" drag-container">
                     <ul className="drag-list">
                         <li className="drag-column">        
                             <table>
@@ -219,6 +218,21 @@ class SemesterViewer extends Component {
                                 </tr>
                             </table>
                             
+                        </li>
+                        <li className="drag-column">
+                            <div class="row">
+                                <div class="my-legend">
+                                    <div class="column left legend-title">Courses Legend</div>
+                                    <div class="column right legend-scale">
+                                        <ul class="legend-labels">
+                                            <li><span class="core"></span>Core</li>
+                                            <li><span class="electives"></span>Electives</li>
+                                            <li><span class="minor"></span>Minor</li>
+                                            <li><span class="cs-hss"></span>CS/HSS</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                         <li className="drag-column">
                             <span className="drag-column-header">
