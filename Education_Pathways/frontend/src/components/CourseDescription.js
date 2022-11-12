@@ -6,12 +6,12 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import requisite_label from './img/requisite-label.png'
 import empty_star from './img/star.png'
-<<<<<<< HEAD
+
 import starred from './img/starred.png'
 import axios from "axios"
-=======
+
 import API from '../api';
->>>>>>> b27eb9c45c4749e266bafdb6cff7ff2ebc70ab9b
+
 
 let star = empty_star;
 
@@ -40,7 +40,7 @@ class CourseDescriptionPage extends Component {
 
 
   componentDidMount() {
-<<<<<<< HEAD
+
     console.log("pass in course code: ", this.props.match.params.code)
 
     axios.get(`https://assignment-1-starter-template.herokuapp.com/course/details?code=${this.props.match.params.code}`, {
@@ -48,13 +48,13 @@ class CourseDescriptionPage extends Component {
     })
       .then(res => {
         console.log(res.data)
-=======
+
     API.get(`/course/details?code=${this.props.match.params.code}`, {
       code: this.props.course_code
     })
       .then(res => {
         console.log(res.data.course)
->>>>>>> b27eb9c45c4749e266bafdb6cff7ff2ebc70ab9b
+
         this.setState({course_code: res.data.course.code})
         this.setState({course_name: res.data.course.name})
         this.setState({course_description : res.data.course.description})
@@ -98,7 +98,9 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({exclusions : res.data.course.exclusion})
         }
-        let syllabus_link = "http://courses.skule.ca/course/" + this.props.code
+        #change later
+        syllabus = "/Users/mehakkalra/project-1-web-application-design-education-pathways-group-23-runtimeterror/Education_Pathways/Syllabi" + this.props.code + ".pdf"
+        let syllabus_link = syllabus
         this.setState({syllabus : syllabus_link})
 
         let temp_graph = []
@@ -143,7 +145,7 @@ class CourseDescriptionPage extends Component {
               <p>{this.state.department}</p>
             </Col>
             <Col className="col-item">
-              <h3>Past Tests and Syllabi</h3>
+              <h3>Course Syllabus</h3>
               <button className={"syllabus-link"} onClick={this.openLink}>View</button>
             </Col>
           </Row>
