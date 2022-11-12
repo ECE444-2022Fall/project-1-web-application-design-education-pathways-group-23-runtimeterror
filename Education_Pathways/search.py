@@ -96,21 +96,3 @@ class SearchCourse(Resource):
             return resp
 
 
-if __name__ == '__main__':
-    config.init_db()
-
-    # Course name, no minor
-    assert search_course("Software Engineering", "")[0]["code"] == "ECE444H1", \
-        "Incorrect course code"
-
-    # Course code, no minor
-    assert search_course("ECE444", "")[0]["name"] == "Software Engineering", \
-        "Incorrect course name"
-
-    # Course name, minor
-    assert search_course("Algorithms and Data Structures", "AEMINAIEN")[0]["code"] == "ECE345H1", \
-        "Incorrect course found or course not found"
-
-    # Course code, minor
-    assert search_course("ECE345", "AEMINAIEN")[0]["code"] == "ECE345H1", \
-        "Incorrect course found or course not found"
