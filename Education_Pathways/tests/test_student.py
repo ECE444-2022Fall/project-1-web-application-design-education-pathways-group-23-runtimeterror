@@ -96,8 +96,12 @@ def test_student_add_remove_semester(student):
 
 def test_student_course_swap(student):
     # Test course swapping
-    student.swap_course("ECE568H1", "Fall 2022", "Winter 2021")
+    student.swap_course("ECE568H1", ("Fall 2022", "Winter 2021"))
     assert not "ECE568H1" in student.get_semester("Fall 2022"), \
                 "Course should not be in this Semester"
     assert "ECE568H1" in student.get_semester("Winter 2021"), \
                 "Course should be in this Semester"
+
+    student.swap_course("ECE396Y1", indices=(0, 1))
+    assert not "ECE396Y1" in student.get_semester(index=0)
+    assert "ECE396Y1" in student.get_semester(index=1)
