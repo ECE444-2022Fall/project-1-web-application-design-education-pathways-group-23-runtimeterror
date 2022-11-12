@@ -59,9 +59,7 @@ class ShowCourse(Resource):
 
 # API Endpoints
 rest_api = Api(app)
-# rest_api.add_resource(controller.SearchCourse, '/searchc')
-rest_api.add_resource(SearchCourse, '/searchc')
-# rest_api.add_resource(controller.ShowCourse, '/course/details')
+rest_api.add_resource(SearchCourse, '/api/search')
 rest_api.add_resource(ShowCourse, '/course/details')
 
 

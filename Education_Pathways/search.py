@@ -70,15 +70,14 @@ class SearchCourse(Resource):
 
         courses = search_course(input, minor)
         # courses =[{'_id': 1, 'code': 'ECE444', 'name': 'SE'}]
-        if len(courses) > 0:
-            try:
-                resp = jsonify(courses)
-                resp.status_code = 200
-                return resp
-            except Exception as e:
-                resp = jsonify({'error': str(e)})
-                resp.status_code = 400
-                return resp
+        try:
+            resp = jsonify(courses)
+            resp.status_code = 200
+            return resp
+        except Exception as e:
+            resp = jsonify({'error': str(e)})
+            resp.status_code = 400
+            return resp
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -88,15 +87,14 @@ class SearchCourse(Resource):
         input = data['input']
         minor = data['minor']
         courses = search_course(input, minor)
-        if len(courses) > 0:
-            try:
-                resp = jsonify(courses)
-                resp.status_code = 200
-                return resp
-            except Exception as e:
-                resp = jsonify({'error': 'something went wrong'})
-                resp.status_code = 400
-                return resp
+        try:
+            resp = jsonify(courses)
+            resp.status_code = 200
+            return resp
+        except Exception as e:
+            resp = jsonify({'error': 'something went wrong'})
+            resp.status_code = 400
+            return resp
 
 
 if __name__ == '__main__':
