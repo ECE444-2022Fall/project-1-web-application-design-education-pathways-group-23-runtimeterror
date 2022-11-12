@@ -60,31 +60,6 @@ class SearchResultDisplay extends Component {
             })
     }
 
-    // search_render = (input) => {
-
-    //   <div className="SearchQuery">
-    //       <div style={{ marginTop: "10%" }}>
-    //           <h1> Education Pathways Search</h1>
-    //           <br></br>
-    //           <form onSubmit={this.handleSubmit} className={"search"}>
-    //               <input placeholder={"Search for course code, course name, keyword ..."} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
-    //               <input type="submit" value="Submit" className={"submit-button"}/>
-    //           </form>
-    //       </div>
-
-    //       <div className={"search-result-display"} >
-    //           {this.state.results}
-    //       </div>
-
-
-    //     </div>
-
-
-
-
-
-    // }
-
     render() {
         return (
             <div className="SearchQuery">
@@ -92,6 +67,7 @@ class SearchResultDisplay extends Component {
                     <h1> Education Pathways</h1>
                     <br></br>
                     <form onSubmit={this.handleSubmit} className={"search"}>
+                        <label for="minor" class="minor-label">Filter by Minor </label>
                         <select id="minor" name="minor" className={"minor-dropdown"}>
                             <option value=""> -- select a minor -- </option>
                             <option value="AEMINENV">Environmental Engineering Minor</option>
