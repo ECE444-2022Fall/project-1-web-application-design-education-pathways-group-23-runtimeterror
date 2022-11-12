@@ -34,7 +34,7 @@ class ShowCourse(Resource):
             return resp
         except Exception as e:
             resp = jsonify({'error': 'something went wrong'})
-            resp.status_code = 400
+            resp.status_code = 500
             return resp
 
     def post(self):
@@ -53,7 +53,7 @@ class ShowCourse(Resource):
             return resp
         except Exception as e:
             resp = jsonify({'error': 'something went wrong'})
-            resp.status_code = 400
+            resp.status_code = 500
             return resp
 
 
