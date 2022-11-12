@@ -64,6 +64,21 @@ class Semester:
         """
         return self.courses
 
+    def serialize(self):
+        """
+            Returns a dictionary representation of semester for jsonification purposes
+        """
+        return {
+            "name" : self.name,
+            "status" : self.status,
+            "courses" : self.courses
+        }
+
+    @classmethod
+    def deserialize(cls, dict):
+        semester = cls(name = dict["name"], status = dict["status"], courses =  dict["courses"])
+        return semester
+
 class Student:
     """
         Class for storing the major, year, minors, and courses of a student
@@ -71,17 +86,22 @@ class Student:
         Attributes
         ----------------
         major ()                - What a student is majoring in
-        year (int)              - What year a student is in
+        year (int)              - What year a student will graduate
         minors (list)           - A list of minors (using the Minor class)
                                   a student is interested in
         semesters (OrderedDict) - A Dictionary of Semesters
                         
     """
-    def __init__(self, major, year: int, minors: list, semesters: OrderedDict=OrderedDict()):
+    def __init__(self, major, year: int, minors: list=[], semesters: OrderedDict=None):
+        if(semesters == None):
+            semesters = OrderedDict()
+
         self.major = major
         self.year = year
         self.minors = minors
         self.semesters = semesters
+        self.earned_credits = self.get_credits(status = ["complete", "in progress"])
+        self.planned_credits = self.get_credits(status = ["planned"])
 
     def set_major(self, major):
         """
@@ -128,19 +148,23 @@ class Student:
         return minor in self.minors
 
 
-    def get_semester(self, name: str):
+    def get_semester(self, name: str=None, index: int=None):
         """
-            Retrieves a Semester given a name
+            Retrieves a Semester given a name or index
 
             Inputs
             ------------------
             name (str)  - The name of the Semester
+            index (int) - The index of the Semester
 
             Output
             ------------------
             Semester: The corresponding Semester
         """
-        return self.semesters[name]
+        if(name is not None):
+            return self.semesters[name]
+        elif(index is not None):
+            return list(self.semesters.values())[index]
 
     def add_semester(self, name: str, status: str, courses: list=[]):
         """
@@ -199,19 +223,34 @@ class Student:
 
         return courses
 
-    def swap_course(self, course, name_1, name_2):
+    def swap_course(self, course, names=None, indices=None):
         """
             Swaps a course from one Semester to Another
 
             Inputs
             ------------------
             course  - The course to swap
-            name_1  - The name of the Semester the course is being taken from
-            name_2  - The name of the Semester the course is being swapped to
+            names   - The names of the Semesters the course is being swapped between
+                    - First name is Semester the course is being taken from
+                    - Second name is Semester the course is being swapped to
+            indices - The indices of the Semester the course is being swapped between
+                    - Same order as names
         """
-        self.semesters[name_1].remove_course(course)
-        self.semesters[name_2].add_course(course)
+        
+        if(names is not None):
+            self.semesters[names[0]].remove_course(course)
+            self.semesters[names[1]].add_course(course)
+        elif(indices is not None):
+            list(self.semesters.values())[indices[0]].remove_course(course)
+            list(self.semesters.values())[indices[1]].add_course(course)
 
+    def calculate_credits(self):
+        """
+            Calculate the number of earned (complete and in progress) and planned credits
+        """
+
+        self.earned_credits = self.get_credits(status = ["complete", "in progress"])
+        self.planned_credits = self.get_credits(status = ["planned"])
 
 
     def get_credits(self, status=["complete"]) -> float:
