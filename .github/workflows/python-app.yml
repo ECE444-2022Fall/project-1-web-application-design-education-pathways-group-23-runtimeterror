@@ -36,4 +36,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest tests/test_degree.py tests/test_student.py tests/test_course.py
+        pytest Education_Pathways/tests/test_degree.py Education_Pathways/tests/test_student.py Education_Pathways/tests/test_course.py
