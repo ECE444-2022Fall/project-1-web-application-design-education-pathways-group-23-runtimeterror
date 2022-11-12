@@ -5,7 +5,7 @@ from flask_restful import Resource, reqparse
 # route functions
 
 
-def search_course(search_term, minor):
+def search_course(search_term, minor=""):
     """
         Search for courses that match a given search_term in the given minor
         Inputs
