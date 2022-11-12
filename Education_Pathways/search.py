@@ -21,7 +21,6 @@ def search_course(search_term, minor):
                     that match the query
 
     """
-    print(search_term, minor)
     # return all the courses whose course code contains the str search_Term
     regx = re.compile(f'.*{search_term.upper()}.*', re.IGNORECASE)
     query_object = {
