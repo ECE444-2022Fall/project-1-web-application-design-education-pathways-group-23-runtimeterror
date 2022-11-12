@@ -99,7 +99,7 @@ class CourseDescriptionPage extends Component {
           this.setState({exclusions : res.data.course.exclusion})
         }
         #change later
-        syllabus = "/Users/mehakkalra/project-1-web-application-design-education-pathways-group-23-runtimeterror/Education_Pathways/Syllabi" + this.props.code + ".pdf"
+        syllabus = "project-1-web-application-design-education-pathways-group-23-runtimeterror/Education_Pathways/Syllabi/" + this.props.code + ".pdf"
         let syllabus_link = syllabus
         this.setState({syllabus : syllabus_link})
 
