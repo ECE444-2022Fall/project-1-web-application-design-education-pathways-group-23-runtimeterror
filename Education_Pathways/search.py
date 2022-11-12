@@ -34,7 +34,6 @@ def search_course(search_term, minor):
         ]
     }
 
-    # TODO: Handle whatever unhappy message is sent for minor when not needed
     if minor != "":
         query_object["$and"].append(
             {
