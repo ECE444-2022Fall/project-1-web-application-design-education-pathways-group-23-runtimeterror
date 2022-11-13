@@ -1,7 +1,7 @@
 from datetime import date
 
-from flask import Flask, send_from_directory, jsonify, request, session
-from flask_restful import Api, Resource, reqparse
+from flask import jsonify, session
+from flask_restful import Resource, reqparse
 
 import config
 from student import Student
