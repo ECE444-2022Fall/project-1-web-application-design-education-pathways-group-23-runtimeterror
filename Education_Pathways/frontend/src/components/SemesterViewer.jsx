@@ -184,30 +184,13 @@ class SemesterViewer extends Component {
     }
 
     updateColor(type) {
-        let newColor;
+        let color = type.concat('-color');
+        let newColor = document.getElementById(color).value;
 
-        switch(type){
-            case 'core':
-                newColor = document.getElementById('core-color').value;
-                document.querySelectorAll('.course-core').forEach(element => {
-                    element.style.color = newColor;
-                });
-            case 'elective':
-                newColor = document.getElementById('elective-color').value;
-                document.querySelectorAll('.course-elective').forEach(element => {
-                    element.style.color = newColor;
-                });
-            case 'minor':
-                newColor = document.getElementById('minor-color').value;
-                document.querySelectorAll('.course-minor').forEach(element => {
-                    element.style.color = newColor;
-                });
-            case 'extra':
-                newColor = document.getElementById('extra-color').value;
-                document.querySelectorAll('.course-extra').forEach(element => {
-                    element.style.color = newColor;
-                });
-        }
+        let course = '.course-'.concat(type);
+        document.querySelectorAll(course).forEach(element => {
+            element.style.color = newColor;
+        });
     }
 
     render() {
