@@ -171,6 +171,10 @@ class SemesterViewer extends Component {
         if (courseBox === null)  {
             document.getElementById("notification-" + column_id).innerHTML = "This course does not exist.";
             return;
+        } else if(courseList.querySelector(CourseName) === null) {
+            document.getElementById("notification-" + column_id).innerHTML = "This course is not in this semester.";
+            return;
+
         }
 
         API.post("/api/remove_course", {semester: column_id-1, course: CourseName}).then(res => {
@@ -191,6 +195,7 @@ class SemesterViewer extends Component {
         document.querySelectorAll(course).forEach(element => {
             element.style.color = newColor;
         });
+        console.log(type.concat('-color'))
     }
 
     render() {
