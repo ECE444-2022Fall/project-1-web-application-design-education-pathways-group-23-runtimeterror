@@ -122,10 +122,15 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You have already added this course.";
             return;
         }
-        if (newCourseName == "") {
-            document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
-            return;
-        }
+        API.post("/api/get_course_category", {course: newCourseBox.id}).then(res => {
+            if (res.status === 200) {
+                //Valentina: Do stuff to change course colour
+                console.log(res.data.category)
+            } else if (res.status === 404) {
+                document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
+                return;
+            }
+        });
 
         newCourseBox.innerHTML = newCourseName;
         newCourseBox.id = String(newCourseName);

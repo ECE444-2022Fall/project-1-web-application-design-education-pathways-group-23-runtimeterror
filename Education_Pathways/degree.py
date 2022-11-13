@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import config
 
 class Degree(ABC):
     """
@@ -151,6 +152,13 @@ class Major(Degree):
                 return True
 
         return False
+        
+    @classmethod
+    def load_from_collection(cls, code):
+        major_collection = config.db["majors"]
+        major = list(major_collection.find({"code":code}))[0]
+        major = cls(name=major["name"], requirements=(major["core_requirements"], major["elective_requirements"]))
+        return major
         
 
 class Minor(Degree):

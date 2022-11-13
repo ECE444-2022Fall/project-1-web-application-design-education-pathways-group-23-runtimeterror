@@ -2,7 +2,6 @@
 
 import config
 from flask import Flask, send_from_directory, jsonify, request, session
-from search import SearchCourse, search_course
 from flask_restful import Api, Resource, reqparse
 
 import os
@@ -12,6 +11,8 @@ from datetime import date
 # df = pd.read_csv("resources/courses.csv")
 
 from student import Student
+from search import SearchCourse, search_course
+from degree import Major, Minor
 import config
 
 app = Flask(__name__, static_folder='frontend/build')
@@ -118,6 +119,47 @@ def create_student():
     resp.status_code = 200
     return resp
 
+# SV API for checking course category
+@app.route("/api/get_course_category", methods=["POST"])
+def get_course_category():
+    parser = reqparse.RequestParser()
+    parser.add_argument('course', required=True)
+    data = parser.parse_args()
+
+    course = data['course']
+
+    if(session.get("student")):
+        student = Student.deserialize(session["student"])
+
+        # Check if course code is valid
+        if(not list(config.course_collection.find({"Code": course}))):
+            resp = jsonify({})
+            resp.status_code = 404
+
+        course = list(config.course_collection.find({"Code": course}))[0]
+
+        # Temporarily hardcoded
+        major_code = "AEESCBASEL"
+        major = Major.load_from_collection(major_code)
+
+        if(course in major.requirements.core_requirements):
+            category = "core"
+        elif(course in major.requirements.core_requirements):
+            category = "elective"
+        elif(course["MinorsOutcomes"]):
+            category = "minor"
+        else:
+            category = "extra"
+
+        resp = jsonify({"category": category})
+        resp.status_code = 200
+    
+    else:
+        resp = jsonify({})
+        resp.status_code = 400
+
+    return resp
+
 # SV API for adding a course
 @app.route("/api/add_course", methods=["POST"])
 def add_course():
@@ -135,7 +177,7 @@ def add_course():
         student.calculate_credits()
         session["student"] = student.serialize()
 
-        
+
         resp = jsonify(student.serialize())
         resp.status_code = 200
     
