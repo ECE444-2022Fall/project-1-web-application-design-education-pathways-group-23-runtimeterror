@@ -42,6 +42,7 @@
     position: relative;
     background: rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    border-radius: 15px;
 }
 
 @media (max-width: 690px) {
@@ -111,6 +112,7 @@
     transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     text-align: center;
     display: inline-block;
+    border-radius: 5px;
 }
 
 .course-name {
