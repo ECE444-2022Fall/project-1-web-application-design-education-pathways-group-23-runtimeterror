@@ -67,6 +67,8 @@ def create_app():
     rest_api.add_resource(sv.AddCourse, '/api/add_course')
     rest_api.add_resource(sv.RemoveCourse, '/api/remove_course')
     rest_api.add_resource(sv.SwapSemester, '/api/swap_semester')
+    rest_api.add_resource(sv.GetColor, '/api/get_color')
+    rest_api.add_resource(sv.SetColor, '/api/set_color')
 
 
     @app.route("/", defaults={'path': ''})

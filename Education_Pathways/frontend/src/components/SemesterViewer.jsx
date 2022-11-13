@@ -14,7 +14,11 @@ class SemesterViewer extends Component {
             minors: [],
             semesters: [{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""}],
             earned_credits: 0.0,
-            planned_credits: 0.0
+            planned_credits: 0.0,
+            core: "#F47C7C",
+            elective: "#70A1D7",
+            minor: "#A1DE93",
+            extra: "#F7F48B"
         };
         this.addCourseBox = this.addCourseBox.bind(this);
         this.closeForm = this.closeForm.bind(this);
@@ -84,7 +88,6 @@ class SemesterViewer extends Component {
         var major = document.getElementById("major").value;
         var year = document.getElementById("year").value;
         API.post("/api/create_student", {major:major, year:year}).then(res => {
-            console.log(res)
             this.setState({
                 major: res.data.major,
                 year: res.data.year,
@@ -109,6 +112,7 @@ class SemesterViewer extends Component {
                     newCourseBox.id = String(newCourseName);
                     
                     newCourseBox.classList.add("course-" + res.data.categories[i][j]);
+                    newCourseBox.style.color = this.state[res.data.categories[i][j]];
 
                     var courseList = document.getElementById(i+1);
                     courseList.appendChild(newCourseBox);
@@ -116,6 +120,7 @@ class SemesterViewer extends Component {
             } 
 
         });
+        this.restoreColor()
         return;
     }
 
@@ -143,6 +148,7 @@ class SemesterViewer extends Component {
         API.post("/api/get_course_category", {course: newCourseBox.id}).then(res => {
             if (res.status === 200) {
                 newCourseBox.classList.add("course-" + res.data.category);
+                newCourseBox.style.color = this.state[res.data.category];
 
                 API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id, category: res.data.category}).then(res => {
                     this.setState({
@@ -195,7 +201,45 @@ class SemesterViewer extends Component {
         document.querySelectorAll(course).forEach(element => {
             element.style.color = newColor;
         });
-        console.log(type.concat('-color'))
+        
+        this.setState({
+            [type]: newColor
+        })
+
+        API.post("/api/set_color", {"color": {
+            "core": this.state.core,
+            "elective": this.state.elective,
+            "minor": this.state.minor,
+            "extra": this.state.extra,
+            [type]: newColor
+        }});
+
+    }
+
+    restoreColor() {
+        API.get("/api/get_color").then(res => {
+            this.restoreColorHelper(res)
+            this.setState({
+                core: res.data.color.core,
+                elective: res.data.color.elective,
+                minor: res.data.color.minor,
+                extra: res.data.color.extra
+            },
+            );
+        });
+    }
+    
+    restoreColorHelper(res) {
+        for (const [key, value] of Object.entries(res.data.color)) {
+            let color = key.concat('-color');
+            document.getElementById(color).style.backgroundColor = value;
+
+            let course = '.course-'.concat(key);
+            document.querySelectorAll(course).forEach(element => {
+                element.style.color = value;
+            });
+            
+        }
     }
 
     render() {
@@ -256,10 +300,10 @@ class SemesterViewer extends Component {
                                     <div class="column left legend-title">Courses Legend</div>
                                     <div class="column right legend-scale">
                                         <ul class="legend-labels">
-                                            <li><input type="color" id="core-color" defaultValue="#F47C7C" onChange={() => this.updateColor('core')}/>Core</li>
-                                            <li><input type="color" id="elective-color" defaultValue="#70A1D7" onChange={() => this.updateColor('elective')}/>Elective</li>
-                                            <li><input type="color" id="minor-color" defaultValue="#A1DE93" onChange={() => this.updateColor('minor')}/>Minor</li>
-                                            <li><input type="color" id="extra-color" defaultValue="#F7F48B" onChange={() => this.updateColor('extra')}/>Extra</li>
+                                            <li><input type="color" id="core-color" value={this.state.core} onChange={() => this.updateColor('core')}/>Core</li>
+                                            <li><input type="color" id="elective-color" value={this.state.elective} onChange={() => this.updateColor('elective')}/>Elective</li>
+                                            <li><input type="color" id="minor-color" value={this.state.minor} onChange={() => this.updateColor('minor')}/>Minor</li>
+                                            <li><input type="color" id="extra-color" value={this.state.extra} onChange={() => this.updateColor('extra')}/>Extra</li>
                                         </ul>
                                     </div>
                                 </div>

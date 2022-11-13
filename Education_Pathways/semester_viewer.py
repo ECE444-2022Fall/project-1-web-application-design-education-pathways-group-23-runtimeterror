@@ -1,3 +1,4 @@
+import ast
 from datetime import date
 
 from flask import jsonify, session
@@ -257,5 +258,33 @@ class SwapSemester(Resource):
         else:
             resp = jsonify({})
             resp.status_code = 400
+
+        return resp
+
+DEFAULT_COLORS = {"core": "#F47C7C", "elective": "#70A1D7", "minor": "#A1DE93", "extra": "#F7F48B"}
+
+class GetColor(Resource):
+    def get(self):
+        if(not session.get("color")):
+            session["color"] = DEFAULT_COLORS
+        
+        resp = jsonify({"color": session["color"]})
+        resp.status_code = 200
+
+        return resp
+        
+
+class SetColor(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('color', required=True)
+
+        data = parser.parse_args()
+        color = ast.literal_eval(data["color"])
+        session["color"] = color
+
+        resp = jsonify({"color": session["color"]})
+        resp.status_code = 200
+        print(color)
 
         return resp
