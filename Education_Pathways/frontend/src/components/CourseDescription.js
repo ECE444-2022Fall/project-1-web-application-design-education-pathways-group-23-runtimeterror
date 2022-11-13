@@ -83,7 +83,10 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({exclusions : res.data.course.exclusion})
         }
-        let syllabus_link = "http://courses.skule.ca/course/" + this.props.code
+
+
+        let syllabus_link = "/Users/mehakkalra/project-1-web-application-design-education-pathways-group-23-runtimeterror/Education_Pathways/Syllabi" + this.props.code + ".pdf"
+         
         this.setState({syllabus : syllabus_link})
 
         let temp_graph = []
@@ -128,7 +131,7 @@ class CourseDescriptionPage extends Component {
               <p>{this.state.department}</p>
             </Col>
             <Col className="col-item">
-              <h3>Past Tests and Syllabi</h3>
+              <h3>Course Syllabus</h3>
               <button className={"syllabus-link"} onClick={this.openLink}>View</button>
             </Col>
           </Row>
