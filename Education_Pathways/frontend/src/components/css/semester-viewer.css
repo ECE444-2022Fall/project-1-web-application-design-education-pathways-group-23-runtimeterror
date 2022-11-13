@@ -145,6 +145,9 @@
     cursor: pointer;
     margin: 10px;
 }
+.form-button:hover{
+    color:#1c3e6f;
+}
 
 .notification {
     padding-left: 50px;
