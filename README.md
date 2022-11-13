@@ -74,21 +74,21 @@ venv\Scripts\activate
 ```powershell
 pip install -r requirements.txt
 ```
-+ Enter the `Education_Pathways/` directory, run the backend
++ Enter the `Maple/` directory, run the backend
 ```powershell
 flask --app index --debug run
 ```
-+ Enter the `Education_Pathways/frontend/` directory
++ Enter the `Maple/frontend/` directory
 + Make sure the `baseURL` is set as `localhost:5000`
 ```javascript
-# Education_Pathways/frontend/src/api.js
+# Maple/frontend/src/api.js
 export default axios.create({
    baseURL: "http://localhost:5000/"
 });
 ```
 + Make sure the proxy link in package.json is set as "http://localhost:5000/"
 ```json
-// Part of Education_Pathways\frontend\package.json
+// Part of Maple\frontend\package.json
 "private": true,
 "proxy": "http://localhost:5000/",
 ```
@@ -104,7 +104,7 @@ npm start
 
 + Change the proxy link in package. Remember to change it back to "http://localhost:5000/"
 ```json
-// Part of Education_Pathways/frontend/package.json
+// Part of Maple/frontend/package.json
 "private": true,
 "proxy": "http://host.docker.internal:5000/",
 ```
@@ -117,7 +117,7 @@ docker compose up --build
 #### 5. Deploy the project
 + Make sure the baseURL is set as [URL to your deployed project]
 ```javascript
-// Education_Pathways/frontend/src/api.js
+// Maple/frontend/src/api.js
 export default axios.create({
    baseURL: "[URL to your deployed project]" -- baseURL for deployment
 });

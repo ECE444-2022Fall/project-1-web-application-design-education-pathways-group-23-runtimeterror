@@ -37,10 +37,10 @@ jobs:
     - name: Test with pytest
       run: |
         # Unit Tests
-        pytest Education_Pathways/tests/test_degree.py Education_Pathways/tests/test_student.py Education_Pathways/tests/test_course.py
+        pytest Maple/tests/test_degree.py Maple/tests/test_student.py Maple/tests/test_course.py
         # Integration Tests
-        pytest Education_Pathways/tests/test_search.py
+        pytest Maple/tests/test_search.py
         # API endpoints Tests
-        pytest Education_Pathways/tests/test_sv_api.py
+        pytest Maple/tests/test_sv_api.py
       env:
         MONGO_PASS: ${{ secrets.MONGO_PASS }} 

@@ -1,4 +1,4 @@
-from Education_Pathways.index import create_app
+from Maple.index import create_app
 if __name__ == "__main__":
     app = create_app()
     app.run()
