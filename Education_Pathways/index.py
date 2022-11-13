@@ -1,19 +1,12 @@
-# this is the flask core
-# dummy change to pix PR
+import os
 
-import config
-from flask import Flask, send_from_directory, jsonify, request, session
-from search import SearchCourse, search_course
+# this is the flask core
+from flask import Flask, send_from_directory, jsonify, request
 from flask_restful import Api, Resource, reqparse
 
-import os
-from datetime import date
-
-# import pandas as pd
-# df = pd.read_csv("resources/courses.csv")
-
-from student import Student
 import config
+from search import SearchCourse, search_course
+import semester_viewer as sv
 
 app = Flask(__name__, static_folder='frontend/build')
 app.config['SECRET_KEY'] = "Totally a secret"
@@ -67,138 +60,14 @@ rest_api = Api(app)
 rest_api.add_resource(SearchCourse, '/api/search')
 rest_api.add_resource(ShowCourse, '/course/details')
 
+rest_api.add_resource(sv.LoadStudent, '/api/load_student')
+rest_api.add_resource(sv.CreateStudent, '/api/create_student')
+rest_api.add_resource(sv.GetCourseCategory, '/api/get_course_category')
+rest_api.add_resource(sv.GetCourseCategories, '/api/get_course_categories')
+rest_api.add_resource(sv.AddCourse, '/api/add_course')
+rest_api.add_resource(sv.RemoveCourse, '/api/remove_course')
+rest_api.add_resource(sv.SwapSemester, '/api/swap_semester')
 
-# Semester Viewer API
-# SV API for loading student information
-@app.route("/api/load_student", methods=["GET", "POST"])
-def load_student():
-    if(session.get("student")):
-        student = Student.deserialize(session.get("student"))
-        resp = jsonify(student.serialize())
-        resp.status_code = 200
-        
-    else:
-        resp = jsonify({})
-        resp.status_code = 204
-
-    return resp
-
-# SV API for creating new student
-@app.route("/api/create_student", methods=["POST"])
-def create_student():
-    parser = reqparse.RequestParser()
-    parser.add_argument('major', required=True)
-    parser.add_argument('year', required=True)
-    data = parser.parse_args()
-
-    major = data['major']
-    year = int(data["year"])
-
-    student = Student(major, year)
-    
-    for i in range(year-4, year):
-        if(i + 1 < date.today().year or (i < date.today().year and 4 < date.today().month)):
-            status = ["complete"]*2
-        elif(i > date.today().year or (i + 1 > date.today().year and 9 > date.today().month)):
-            status = ["planned"]*2
-        else:
-            if(i == date.today().year):
-                status = ["in progress", "planned"]
-            else:
-                status = ["complete", "in progress"]
-
-        semester = "Fall {}".format(i)
-        student.add_semester(semester, status[0])
-
-        semester = "Winter {}".format(i+1)
-        student.add_semester(semester, status[1])
-        
-    session["student"] = student.serialize()
-
-    resp = jsonify(student.serialize())
-    resp.status_code = 200
-    return resp
-
-# SV API for adding a course
-@app.route("/api/add_course", methods=["POST"])
-def add_course():
-    parser = reqparse.RequestParser()
-    parser.add_argument('semester', required=True)
-    parser.add_argument('course', required=True)
-    data = parser.parse_args()
-
-    course = data['course']
-    semester = data["semester"]
-
-    if(session.get("student")):
-        student = Student.deserialize(session["student"])
-        student.get_semester(index=int(semester)).add_course(course)
-        student.calculate_credits()
-        session["student"] = student.serialize()
-
-        
-        resp = jsonify(student.serialize())
-        resp.status_code = 200
-    
-    else:
-        resp = jsonify({})
-        resp.status_code = 400
-
-    return resp
-
-# SV API for removing a course
-@app.route("/api/remove_course", methods=["POST"])
-def remove_course():
-    parser = reqparse.RequestParser()
-    parser.add_argument('semester', required=True)
-    parser.add_argument('course', required=True)
-    data = parser.parse_args()
-
-    course = data['course']
-    semester = data["semester"]
-
-    if(session.get("student")):
-        student = Student.deserialize(session["student"])
-        student.get_semester(index=int(semester)).remove_course(course)
-        student.calculate_credits()
-        session["student"] = student.serialize()
-        
-        resp = jsonify(student.serialize())
-        resp.status_code = 200
-    
-    else:
-        resp = jsonify({})
-        resp.status_code = 400
-
-    return resp
-
-# SV API for swapping semesters for a course
-@app.route("/api/swap_semester", methods=["POST"])
-def swap_semester():
-    parser = reqparse.RequestParser()
-    parser.add_argument('course', required=True)
-    parser.add_argument('source_semester', required=True)
-    parser.add_argument('target_semester', required=True)
-    data = parser.parse_args()
-
-    course = data["course"]
-    source_semester = int(data['source_semester'])
-    target_semester = int(data['target_semester'])
-
-    if(session.get("student")):
-        student = Student.deserialize(session["student"])
-        student.swap_course(course, indices=(source_semester, target_semester))
-        student.calculate_credits()
-        session["student"] = student.serialize()
-        
-        resp = jsonify(student.serialize())
-        resp.status_code = 200
-    
-    else:
-        resp = jsonify({})
-        resp.status_code = 400
-
-    return resp
 
 @app.route("/", defaults={'path': ''})
 
