@@ -140,7 +140,7 @@ class SemesterViewer extends Component {
             if (res.status === 200) {
                 newCourseBox.classList.add("course-" + res.data.category);
 
-                API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id}).then(res => {
+                API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id, category: res.data.category}).then(res => {
                     this.setState({
                         earned_credits: res.data.earned_credits,
                         planned_credits: res.data.planned_credits

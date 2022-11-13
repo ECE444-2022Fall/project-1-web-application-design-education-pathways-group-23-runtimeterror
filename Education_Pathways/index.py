@@ -113,7 +113,10 @@ def create_student():
         semester = "Winter {}".format(i+1)
         student.add_semester(semester, status[1])
         
+    categories = [[] for _ in range(8)]
+
     session["student"] = student.serialize()
+    session["categories"] = categories
 
     resp = jsonify(student.serialize())
     resp.status_code = 200
@@ -132,22 +135,16 @@ def get_course_category():
         student = Student.deserialize(session["student"])
 
         # Check if course code is valid
-        if(list(config.course_collection.find({"Code": course}))):
-            course_info = list(config.course_collection.find({"Code": course}))[0]
-
-            # Temporarily hardcoded
-            major_code = "AEESCBASEL"
-            major = Major.load_from_collection(major_code)
-
-            minor_code = "AEMINBUS"
-            minor = Minor.load_from_collection(minor_code)
+        if(config.course_collection.count_documents({"Code": course}, limit = 1) != 0):
+            major = get_major()
+            minor = get_minor()
 
 
             if(any(course in requirement for requirement in major.requirements.core_requirements)):
                 category = "core"
             elif(any(course in requirement for requirement in major.requirements.elective_requirements)):
                 category = "elective"
-            elif(course in minor.requirements):
+            elif(course in minor):
                 category = "minor"
             else:
                 category = "extra"
@@ -168,18 +165,17 @@ def get_course_category():
 # SV API for checking multiple course categories
 @app.route("/api/get_course_categories", methods=["GET"])
 def get_course_categories():
+    if(session.get("categories")):
+        resp = jsonify({"categories": session["categories"]})
+        resp.status_code = 200
 
-    if(session.get("student")):
+    elif(session.get("student")):
         student = Student.deserialize(session["student"])
 
         categories = []
 
-        # Temporarily hardcoded
-        major_code = "AEESCBASEL"
-        major = Major.load_from_collection(major_code)
-
-        minor_code = "AEMINBUS"
-        minor = Minor.load_from_collection(minor_code)
+        major = get_major()
+        minor = get_minor()
 
         for semester in student.semesters.values():
             semester_categories = []
@@ -188,7 +184,7 @@ def get_course_categories():
                     category = "core"
                 elif(any(course in requirement for requirement in major.requirements.elective_requirements)):
                     category = "elective"
-                elif(any(course in requirement for requirement in minor.requirements)):
+                elif(course in minor):
                     category = "minor"
                 else:
                     category = "extra"
@@ -196,8 +192,9 @@ def get_course_categories():
                 semester_categories.append(category)
 
             categories.append(semester_categories)
-        print(categories)
-        print(student.get_courses())
+        
+        session["categories"] = categories
+
         resp = jsonify({"categories": categories})
         resp.status_code = 200
     
@@ -206,6 +203,26 @@ def get_course_categories():
         resp.status_code = 400
 
     return resp
+    
+def get_major():
+    # Temporarily hardcoded
+    if(session.get("major")):
+        major = Major.deserialize(session["major"])
+    else:
+        major_code = "AEESCBASEL"
+        major = Major.load_from_collection(major_code)
+
+    return major
+    
+def get_minor():
+    # Temporarily hardcoded
+    if(session.get("minor")):
+        minor = Minor.deserialize(session["minor"])
+    else:
+        minor_code = "AEMINBUS"
+        minor = Minor.load_from_collection(minor_code)
+
+    return minor
 
 # SV API for adding a course
 @app.route("/api/add_course", methods=["POST"])
@@ -213,14 +230,17 @@ def add_course():
     parser = reqparse.RequestParser()
     parser.add_argument('semester', required=True)
     parser.add_argument('course', required=True)
+    parser.add_argument('category', required=True)
     data = parser.parse_args()
 
     course = data['course']
     semester = data["semester"]
+    category = data["category"]
 
     if(session.get("student")):
         student = Student.deserialize(session["student"])
         student.get_semester(index=int(semester)).add_course(course)
+        session["categories"][int(semester)].append(category)
         student.calculate_credits()
         session["student"] = student.serialize()
 
@@ -247,6 +267,10 @@ def remove_course():
 
     if(session.get("student")):
         student = Student.deserialize(session["student"])
+
+        index = student.get_semester(index=int(semester)).get_courses().index(course)
+        del session["categories"][int(semester)][index]
+
         student.get_semester(index=int(semester)).remove_course(course)
         student.calculate_credits()
         session["student"] = student.serialize()
@@ -275,6 +299,13 @@ def swap_semester():
 
     if(session.get("student")):
         student = Student.deserialize(session["student"])
+
+        
+        index = student.get_semester(index=int(source_semester)).get_courses().index(course)
+        category = session["categories"][int(source_semester)][index]
+        del session["categories"][int(source_semester)][index]
+        session["categories"][int(target_semester)].append(category)
+
         student.swap_course(course, indices=(source_semester, target_semester))
         student.calculate_credits()
         session["student"] = student.serialize()
