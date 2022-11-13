@@ -30,7 +30,8 @@ class SearchResultDisplay extends Component {
 
     getData = (input) => {
         var minor = document.getElementById("minor").value;
-        API.post("/api/search", {input:input, minor:minor})
+        var mse_theme = document.getElementById("mse_theme").value;
+        API.post("/api/search", {input:input, minor:minor, mse_theme: mse_theme})
             .then(res => {
                 if (res.status === 200) {
                     this.setState({ results: [] })
@@ -63,34 +64,64 @@ class SearchResultDisplay extends Component {
     render() {
         return (
             <div className="SearchQuery">
-                <div style={{ marginTop: "10%" }}>
-                    <h1> Education Pathways</h1>
-                    <br></br>
+                <div style={{ marginTop: "7%" }}>                  
                     <form onSubmit={this.handleSubmit} className={"search"}>
-                        <label for="minor" class="minor-label">Filter by Minor </label>
-                        <select id="minor" name="minor" className={"minor-dropdown"}>
-                            <option value=""> -- select a minor -- </option>
-                            <option value="AEMINENV">Environmental Engineering Minor</option>
-                            <option value="AEMINADVM">Advanced Manufacturing Minor</option>
-                            <option value="AEMINAIEN">Artificial Intelligence Minor</option>
-                            <option value="AEMINBIO">Bioengineering Minor</option>
-                            <option value="AEMINBUS">Engineering Business Minor</option>
-                            <option value="AEMINMUSP">Engineering Music Performance Minor</option>
-                            <option value="AEMINGLOB">Global Leadership Minor</option>
-                            <option value="AEMINNANO">Nanoengineering Minor</option>
-                            <option value="AEMINRAM">Robotics and Mechantronics Minor</option>
-                            <option value="AEMINENR">Sustainable Energy Minor Minor</option>
-                        </select>
-                        <br></br>
-                        <input placeholder={"Search for course code or course name"} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
-                        <input type="submit" value="Search" className={"submit-button"} />
+                        <div class="row">
+                            <div class="column left">
+                                <div class="filters-box">
+                                    <p>Filter by</p>
+                                    <div class="filters">
+                                    <label for="minor">Minor</label>
+                                    <select id="minor" name="minor" class="filter-dropdown">
+                                        <option value="" class="filter-default"> -- select a minor -- </option>
+                                        <option value="AEMINENV">Environmental Engineering</option>
+                                        <option value="AEMINADVM">Advanced Manufacturing</option>
+                                        <option value="AEMINAIEN">Artificial Intelligence</option>
+                                        <option value="AEMINBIO">Bioengineering</option>
+                                        <option value="AEMINBUS">Engineering Business</option>
+                                        <option value="AEMINMUSP">Engineering Music Performance</option>
+                                        <option value="AEMINGLOB">Global Leadership</option>
+                                        <option value="AEMINNANO">Nanoengineering</option>
+                                        <option value="AEMINRAM">Robotics and Mechantronics</option>
+                                        <option value="AEMINENR">Sustainable Energy</option>
+                                    </select>
+                                    <label for="mse-theme">MSE Theme</label>
+                                    <select id="mse_theme" name="mse-theme" class="filter-dropdown">
+                                        <option value="" class="filter-default"> -- select a theme -- </option>
+                                        <option value="Biomaterials">Biomaterials</option>
+                                        <option value="Design of Materials">Design of Materials</option>
+                                        <option value="Sustainable Materials Processing">Sustainable Materials Processing</option>
+                                        <option value="Manufacturing with Materials">Manufacturing with Materials</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="column right">
+                                <h1>Maple</h1>
+                                <input placeholder={"Search for course code or course name"} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
+                                <input type="submit" value="Search" className={"submit-button"} />
+                            </div>
+                        </div>
                     </form>
+                    
                 </div>
 
                 <div className={"search-result-display"} >
                     {this.state.results}
                 </div>
+                {/* <h2>Two Unequal Columns</h2>
 
+<div class="row">
+  <div class="column left">
+    <h2>Column 1</h2>
+    <p>Some text..</p>
+  </div>
+  <div class="column right">
+    <h2>Column 2</h2>
+    <p>Some text..</p>
+  </div>
+</div> */}
 
             </div>
         );
