@@ -94,24 +94,20 @@ class SemesterViewer extends Component {
     }
 
     restoreSemsterViewer() {
-        API.get("/api/get_course_categories").then(res => {
-            for(let i=0; i<this.state.semesters.length; i++){
-                for(let j=0; j<this.state.semesters[i].courses.length; j++) {
-                    var newCourseBox = document.createElement("li");
-                    newCourseBox.className = "drag-item";
-                    
-                    var newCourseName = this.state.semesters[i].courses[j];
-                    newCourseBox.innerHTML = newCourseName;
-                    newCourseBox.id = String(newCourseName);
-                    
-                    newCourseBox.classList.add("course-" + res.data.categories[i][j]);
+        for(let i=0; i<this.state.semesters.length; i++){
+            
+            for(let j=0; j<this.state.semesters[i].courses.length; j++) {
+                var newCourseBox = document.createElement("li");
+                newCourseBox.className = "drag-item";
 
-                    var courseList = document.getElementById(i+1);
-                    courseList.appendChild(newCourseBox);
-                }
-            } 
+                var newCourseName = this.state.semesters[i].courses[j];
+                newCourseBox.innerHTML = newCourseName;
+                newCourseBox.id = String(newCourseName);
 
-        });
+                var courseList = document.getElementById(i+1);
+                courseList.appendChild(newCourseBox);
+            }
+        } 
         return;
     }
 
@@ -126,6 +122,10 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You have already added this course.";
             return;
         }
+        if (newCourseName == "") {
+            document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
+            return;
+        }
 
         newCourseBox.innerHTML = newCourseName;
         newCourseBox.id = String(newCourseName);
@@ -135,26 +135,16 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You can add maximum 6 courses per semester.";
             return;
         } 
-
-        API.post("/api/get_course_category", {course: newCourseBox.id}).then(res => {
-            if (res.status === 200) {
-                newCourseBox.classList.add("course-" + res.data.category);
-
-                API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id, category: res.data.category}).then(res => {
-                    this.setState({
-                        earned_credits: res.data.earned_credits,
-                        planned_credits: res.data.planned_credits
-                    },
-                    );
-                });
-                courseList.appendChild(newCourseBox);
-                document.getElementById("notification-" + column_id).innerHTML = "";
-
-            } else if (res.status === 204) {
-                document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
-                return;
-            }
+        
+        API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id}).then(res => {
+            this.setState({
+                earned_credits: res.data.earned_credits,
+                planned_credits: res.data.planned_credits
+            },
+            );
         });
+        courseList.appendChild(newCourseBox);
+        document.getElementById("notification-" + column_id).innerHTML = "";
     }
 
     removeCourseBox(column_id){
@@ -236,12 +226,10 @@ class SemesterViewer extends Component {
                                     <div class="column left legend-title">Courses Legend</div>
                                     <div class="column right legend-scale">
                                         <ul class="legend-labels">
-                                            {/* TODO: Create a form + submit button to flush the color inputs and change courses colors*/}
-                                            {/* See end of CSS file for classes where to flush input colors */}
-                                            <li><input type="color" id="core-color" value="#F47C7C"></input>Core</li>
-                                            <li><input type="color" id="elective-color" value="#70A1D7"></input>Elective</li>
-                                            <li><input type="color" id="minor-color" value="#A1DE93"></input>Minor</li>
-                                            <li><input type="color" id="cs-hss-color" value="#F7F48B"></input>Extra</li>
+                                            <li><span class="core"></span>Core</li>
+                                            <li><span class="electives"></span>Electives</li>
+                                            <li><span class="minor"></span>Minor</li>
+                                            <li><span class="cs-hss"></span>CS/HSS</li>
                                         </ul>
                                     </div>
                                 </div>
