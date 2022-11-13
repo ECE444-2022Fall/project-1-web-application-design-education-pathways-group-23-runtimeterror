@@ -282,4 +282,22 @@ class Student:
                 credits += 0.5
 
         return credits
+        
+    def serialize(self):
+        """
+            Returns a dictionary representation of Student for jsonification purposes
+        """
+        return {
+            "major" : self.major,
+            "year" : self.year,
+            "minors" : self.minors,
+            "semesters" : [semester[1].serialize() for semester in self.semesters.items()],
+            "earned_credits": self.earned_credits,
+            "planned_credits": self.planned_credits,
+        }
 
+    @classmethod
+    def deserialize(cls, dict):
+        student = cls(major = dict["major"], year = dict["year"], minors = dict["minors"], \
+            semesters = OrderedDict({sem_dict["name"]: Semester.deserialize(sem_dict) for sem_dict in dict["semesters"]}))
+        return student

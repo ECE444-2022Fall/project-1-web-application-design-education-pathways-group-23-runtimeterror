@@ -5,7 +5,7 @@ from flask_restful import Resource, reqparse
 # route functions
 
 
-def search_course(search_term, minor=""):
+def search_course(search_term, minor="", mse_theme=""):
     """
         Search for courses that match a given search_term in the given minor
         Inputs
@@ -14,6 +14,8 @@ def search_course(search_term, minor=""):
                               names or codes
         minor (str)         - An optional minor to restrict the search
                               ("" means no minor selected)
+        mse_theme (str)     - An optional theme to restrict the search
+                              ("" means no theme selected)
 
         Output
         ------------------
@@ -38,6 +40,13 @@ def search_course(search_term, minor=""):
         query_object["$and"].append(
             {
                 "MinorsOutcomes": minor
+            }
+        )
+
+    if mse_theme != "":
+        query_object["$and"].append(
+            {
+                "MSE Themes": mse_theme
             }
         )
 
@@ -66,8 +75,9 @@ class SearchCourse(Resource):
     def get(self):
         input = request.args.get('input')
         minor = request.args.get('minor')
+        mse_theme = request.args.get('mse_theme')
 
-        courses = search_course(input, minor)
+        courses = search_course(input, minor, mse_theme)
         # courses =[{'_id': 1, 'code': 'ECE444', 'name': 'SE'}]
         try:
             resp = jsonify(courses)
@@ -82,10 +92,14 @@ class SearchCourse(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('input', required=True)
         parser.add_argument('minor', required=True)
+        parser.add_argument('mse_theme', required=True)
+
         data = parser.parse_args()
         input = data['input']
         minor = data['minor']
-        courses = search_course(input, minor)
+        mse_theme = data['mse_theme']
+
+        courses = search_course(input, minor, mse_theme)
         try:
             resp = jsonify(courses)
             resp.status_code = 200
@@ -96,21 +110,3 @@ class SearchCourse(Resource):
             return resp
 
 
-if __name__ == '__main__':
-    config.init_db()
-
-    # Course name, no minor
-    assert search_course("Software Engineering", "")[0]["code"] == "ECE444H1", \
-        "Incorrect course code"
-
-    # Course code, no minor
-    assert search_course("ECE444", "")[0]["name"] == "Software Engineering", \
-        "Incorrect course name"
-
-    # Course name, minor
-    assert search_course("Algorithms and Data Structures", "AEMINAIEN")[0]["code"] == "ECE345H1", \
-        "Incorrect course found or course not found"
-
-    # Course code, minor
-    assert search_course("ECE345", "AEMINAIEN")[0]["code"] == "ECE345H1", \
-        "Incorrect course found or course not found"

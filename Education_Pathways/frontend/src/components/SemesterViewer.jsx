@@ -18,6 +18,7 @@ class SemesterViewer extends Component {
         };
         this.addCourseBox = this.addCourseBox.bind(this);
         this.closeForm = this.closeForm.bind(this);
+        this.updateColor = this.updateColor.bind(this);
         }
 
     componentDidMount () {
@@ -53,6 +54,9 @@ class SemesterViewer extends Component {
             }
             else if(res.status === 204) {
                 this.openForm()
+            }
+            else {
+                alert("System Error. Please refresh")
             }
         });
     }
@@ -94,20 +98,24 @@ class SemesterViewer extends Component {
     }
 
     restoreSemsterViewer() {
-        for(let i=0; i<this.state.semesters.length; i++){
-            
-            for(let j=0; j<this.state.semesters[i].courses.length; j++) {
-                var newCourseBox = document.createElement("li");
-                newCourseBox.className = "drag-item";
+        API.get("/api/get_course_categories").then(res => {
+            for(let i=0; i<this.state.semesters.length; i++){
+                for(let j=0; j<this.state.semesters[i].courses.length; j++) {
+                    var newCourseBox = document.createElement("li");
+                    newCourseBox.className = "drag-item";
+                    
+                    var newCourseName = this.state.semesters[i].courses[j];
+                    newCourseBox.innerHTML = newCourseName;
+                    newCourseBox.id = String(newCourseName);
+                    
+                    newCourseBox.classList.add("course-" + res.data.categories[i][j]);
 
-                var newCourseName = this.state.semesters[i].courses[j];
-                newCourseBox.innerHTML = newCourseName;
-                newCourseBox.id = String(newCourseName);
+                    var courseList = document.getElementById(i+1);
+                    courseList.appendChild(newCourseBox);
+                }
+            } 
 
-                var courseList = document.getElementById(i+1);
-                courseList.appendChild(newCourseBox);
-            }
-        } 
+        });
         return;
     }
 
@@ -122,10 +130,6 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You have already added this course.";
             return;
         }
-        if (newCourseName == "") {
-            document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
-            return;
-        }
 
         newCourseBox.innerHTML = newCourseName;
         newCourseBox.id = String(newCourseName);
@@ -135,16 +139,28 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You can add maximum 6 courses per semester.";
             return;
         } 
-        
-        API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id}).then(res => {
-            this.setState({
-                earned_credits: res.data.earned_credits,
-                planned_credits: res.data.planned_credits
-            },
-            );
+
+        API.post("/api/get_course_category", {course: newCourseBox.id}).then(res => {
+            if (res.status === 200) {
+                newCourseBox.classList.add("course-" + res.data.category);
+
+                API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id, category: res.data.category}).then(res => {
+                    this.setState({
+                        earned_credits: res.data.earned_credits,
+                        planned_credits: res.data.planned_credits
+                    },
+                    );
+                });
+                courseList.appendChild(newCourseBox);
+                document.getElementById("notification-" + column_id).innerHTML = "";
+
+            } else if (res.status === 204) {
+                document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
+                return;
+            } else {
+                alert("System Error. Please refresh")
+            }
         });
-        courseList.appendChild(newCourseBox);
-        document.getElementById("notification-" + column_id).innerHTML = "";
     }
 
     removeCourseBox(column_id){
@@ -165,6 +181,16 @@ class SemesterViewer extends Component {
             );
         });
         courseList.removeChild(courseBox);
+    }
+
+    updateColor(type) {
+        let color = type.concat('-color');
+        let newColor = document.getElementById(color).value;
+
+        let course = '.course-'.concat(type);
+        document.querySelectorAll(course).forEach(element => {
+            element.style.color = newColor;
+        });
     }
 
     render() {
@@ -203,12 +229,10 @@ class SemesterViewer extends Component {
                 
                 <section className="section">
                     <h1>Semester Viewer</h1>
-                </section>
-
-                <div className="drag-container">
+                </section>                    
+                <div className=" drag-container">
                     <ul className="drag-list">
-                        <li className="drag-column">
-                            {/* For Dean to add student info from backend */}              
+                        <li className="drag-column">            
                             <table>
                                 <tr>
                                     <td rowspan="2"><span className="student-info-header"><h2>Current Status</h2></span></td>
@@ -220,6 +244,21 @@ class SemesterViewer extends Component {
                                 </tr>
                             </table>
                             
+                        </li>
+                        <li className="drag-column">
+                            <div class="row">
+                                <div class="my-legend">
+                                    <div class="column left legend-title">Courses Legend</div>
+                                    <div class="column right legend-scale">
+                                        <ul class="legend-labels">
+                                            <li><input type="color" id="core-color" defaultValue="#F47C7C" onChange={() => this.updateColor('core')}/>Core</li>
+                                            <li><input type="color" id="elective-color" defaultValue="#70A1D7" onChange={() => this.updateColor('elective')}/>Elective</li>
+                                            <li><input type="color" id="minor-color" defaultValue="#A1DE93" onChange={() => this.updateColor('minor')}/>Minor</li>
+                                            <li><input type="color" id="extra-color" defaultValue="#F7F48B" onChange={() => this.updateColor('extra')}/>Extra</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                         <li className="drag-column">
                             <span className="drag-column-header">

@@ -30,7 +30,8 @@ class SearchResultDisplay extends Component {
 
     getData = (input) => {
         var minor = document.getElementById("minor").value;
-        API.post("/api/search", {input:input, minor:minor})
+        var mse_theme = document.getElementById("mse_theme").value;
+        API.post("/api/search", {input:input, minor:minor, mse_theme: mse_theme})
             .then(res => {
                 if (res.status === 200) {
                     this.setState({ results: [] })
@@ -60,61 +61,48 @@ class SearchResultDisplay extends Component {
             })
     }
 
-    // search_render = (input) => {
-
-    //   <div className="SearchQuery">
-    //       <div style={{ marginTop: "10%" }}>
-    //           <h1> Education Pathways Search</h1>
-    //           <br></br>
-    //           <form onSubmit={this.handleSubmit} className={"search"}>
-    //               <input placeholder={"Search for course code, course name, keyword ..."} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
-    //               <input type="submit" value="Submit" className={"submit-button"}/>
-    //           </form>
-    //       </div>
-
-    //       <div className={"search-result-display"} >
-    //           {this.state.results}
-    //       </div>
-
-
-    //     </div>
-
-
-
-
-
-    // }
-
     render() {
         return (
             <div className="SearchQuery">
-                <div style={{ marginTop: "10%" }}>
-                    <h1> Education Pathways</h1>
-                    <br></br>
+                <div style={{ marginTop: "7%" }}>   
+                <h1>Maple</h1>               
                     <form onSubmit={this.handleSubmit} className={"search"}>
-                        <select id="minor" name="minor" className={"minor-dropdown"}>
-                            <option value=""> -- select a minor -- </option>
-                            <option value="AEMINENV">Environmental Engineering Minor</option>
-                            <option value="AEMINADVM">Advanced Manufacturing Minor</option>
-                            <option value="AEMINAIEN">Artificial Intelligence Minor</option>
-                            <option value="AEMINBIO">Bioengineering Minor</option>
-                            <option value="AEMINBUS">Engineering Business Minor</option>
-                            <option value="AEMINMUSP">Engineering Music Performance Minor</option>
-                            <option value="AEMINGLOB">Global Leadership Minor</option>
-                            <option value="AEMINNANO">Nanoengineering Minor</option>
-                            <option value="AEMINRAM">Robotics and Mechantronics Minor</option>
-                            <option value="AEMINENR">Sustainable Energy Minor Minor</option>
-                        </select>
-                        <br></br>
+                        <div class="container">
                         <input placeholder={"Search for course code or course name"} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
                         <input type="submit" value="Search" className={"submit-button"} />
+                        </div>
+                        <div class="filters-box container">
+                            <p>Filter by</p>
+                            <label for="minor" class="filter-label">Minor</label>
+                            <select id="minor" name="minor" class="filter-dropdown">
+                                <option value="" class="filter-default"> -- select a minor -- </option>
+                                <option value="AEMINENV">Environmental Engineering</option>
+                                <option value="AEMINADVM">Advanced Manufacturing</option>
+                                <option value="AEMINAIEN">Artificial Intelligence</option>
+                                <option value="AEMINBIO">Bioengineering</option>
+                                <option value="AEMINBUS">Engineering Business</option>
+                                <option value="AEMINMUSP">Engineering Music Performance</option>
+                                <option value="AEMINGLOB">Global Leadership</option>
+                                <option value="AEMINNANO">Nanoengineering</option>
+                                <option value="AEMINRAM">Robotics and Mechantronics</option>
+                                <option value="AEMINENR">Sustainable Energy</option>
+                            </select>
+                            <label for="mse-theme" class="filter-label">MSE Theme</label>
+                            <select id="mse_theme" name="mse-theme" class="filter-dropdown">
+                                <option value="" class="filter-default"> -- select a theme -- </option>
+                                <option value="Biomaterials">Biomaterials</option>
+                                <option value="Design of Materials">Design of Materials</option>
+                                <option value="Sustainable Materials Processing">Sustainable Materials Processing</option>
+                                <option value="Manufacturing with Materials">Manufacturing with Materials</option>
+                            </select>
+                        </div>  
                     </form>
+                    
                 </div>
 
                 <div className={"search-result-display"} >
                     {this.state.results}
                 </div>
-
 
             </div>
         );
