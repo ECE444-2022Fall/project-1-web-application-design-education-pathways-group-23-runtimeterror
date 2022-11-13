@@ -18,6 +18,7 @@ class SemesterViewer extends Component {
         };
         this.addCourseBox = this.addCourseBox.bind(this);
         this.closeForm = this.closeForm.bind(this);
+        this.updateColor = this.updateColor.bind(this);
         }
 
     componentDidMount () {
@@ -167,6 +168,33 @@ class SemesterViewer extends Component {
         courseList.removeChild(courseBox);
     }
 
+    updateColor(type) {
+        let newColor;
+
+        switch(type){
+            case 'core':
+                newColor = document.getElementById('core-color').value;
+                document.querySelectorAll('.course-core').forEach(element => {
+                    element.style.color = newColor;
+                });
+            case 'elective':
+                newColor = document.getElementById('elective-color').value;
+                document.querySelectorAll('.course-elective').forEach(element => {
+                    element.style.color = newColor;
+                });
+            case 'minor':
+                newColor = document.getElementById('minor-color').value;
+                document.querySelectorAll('.course-minor').forEach(element => {
+                    element.style.color = newColor;
+                });
+            case 'extra':
+                newColor = document.getElementById('extra-color').value;
+                document.querySelectorAll('.course-extra').forEach(element => {
+                    element.style.color = newColor;
+                });
+        }
+    }
+
     render() {
         return (
             <div>
@@ -206,8 +234,7 @@ class SemesterViewer extends Component {
                 </section>                    
                 <div className=" drag-container">
                     <ul className="drag-list">
-                        <li className="drag-column">
-                            {/* For Dean to add student info from backend */}              
+                        <li className="drag-column">            
                             <table>
                                 <tr>
                                     <td rowspan="2"><span className="student-info-header"><h2>Current Status</h2></span></td>
@@ -226,10 +253,10 @@ class SemesterViewer extends Component {
                                     <div class="column left legend-title">Courses Legend</div>
                                     <div class="column right legend-scale">
                                         <ul class="legend-labels">
-                                            <li><span class="core"></span>Core</li>
-                                            <li><span class="electives"></span>Electives</li>
-                                            <li><span class="minor"></span>Minor</li>
-                                            <li><span class="cs-hss"></span>CS/HSS</li>
+                                            <li><input type="color" id="core-color" defaultValue="#F47C7C" onChange={() => this.updateColor('core')}/>Core</li>
+                                            <li><input type="color" id="elective-color" defaultValue="#70A1D7" onChange={() => this.updateColor('elective')}/>Elective</li>
+                                            <li><input type="color" id="minor-color" defaultValue="#A1DE93" onChange={() => this.updateColor('minor')}/>Minor</li>
+                                            <li><input type="color" id="extra-color" defaultValue="#F7F48B" onChange={() => this.updateColor('extra')}/>Extra</li>
                                         </ul>
                                     </div>
                                 </div>
