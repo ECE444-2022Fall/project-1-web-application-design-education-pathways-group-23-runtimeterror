@@ -122,15 +122,6 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You have already added this course.";
             return;
         }
-        API.post("/api/get_course_category", {course: newCourseBox.id}).then(res => {
-            if (res.status === 200) {
-                //Valentina: Do stuff to change course colour
-                console.log(res.data.category)
-            } else if (res.status === 404) {
-                document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
-                return;
-            }
-        });
 
         newCourseBox.innerHTML = newCourseName;
         newCourseBox.id = String(newCourseName);
@@ -140,16 +131,27 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You can add maximum 6 courses per semester.";
             return;
         } 
-        
-        API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id}).then(res => {
-            this.setState({
-                earned_credits: res.data.earned_credits,
-                planned_credits: res.data.planned_credits
-            },
-            );
+
+        API.post("/api/get_course_category", {course: newCourseBox.id}).then(res => {
+            if (res.status === 200) {
+                //Valentina: Do stuff to change course colour
+                console.log(res.data.category)
+
+                API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id}).then(res => {
+                    this.setState({
+                        earned_credits: res.data.earned_credits,
+                        planned_credits: res.data.planned_credits
+                    },
+                    );
+                });
+                courseList.appendChild(newCourseBox);
+                document.getElementById("notification-" + column_id).innerHTML = "";
+
+            } else if (res.status === 204) {
+                document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
+                return;
+            }
         });
-        courseList.appendChild(newCourseBox);
-        document.getElementById("notification-" + column_id).innerHTML = "";
     }
 
     removeCourseBox(column_id){

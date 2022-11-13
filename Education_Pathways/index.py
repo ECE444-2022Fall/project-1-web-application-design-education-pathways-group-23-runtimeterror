@@ -132,27 +132,28 @@ def get_course_category():
         student = Student.deserialize(session["student"])
 
         # Check if course code is valid
-        if(not list(config.course_collection.find({"Code": course}))):
-            resp = jsonify({})
-            resp.status_code = 404
+        if(list(config.course_collection.find({"Code": course}))):
+            course_info = list(config.course_collection.find({"Code": course}))[0]
 
-        course = list(config.course_collection.find({"Code": course}))[0]
+            # Temporarily hardcoded
+            major_code = "AEESCBASEL"
+            major = Major.load_from_collection(major_code)
+            
+            if(any(course in requirement for requirement in major.requirements.core_requirements)):
+                category = "core"
+            elif(any(course in requirement for requirement in major.requirements.elective_requirements)):
+                category = "elective"
+            elif(course_info["MinorsOutcomes"]):
+                category = "minor"
+            else:
+                category = "extra"
 
-        # Temporarily hardcoded
-        major_code = "AEESCBASEL"
-        major = Major.load_from_collection(major_code)
+            resp = jsonify({"category": category})
+            resp.status_code = 200
 
-        if(course in major.requirements.core_requirements):
-            category = "core"
-        elif(course in major.requirements.core_requirements):
-            category = "elective"
-        elif(course["MinorsOutcomes"]):
-            category = "minor"
         else:
-            category = "extra"
-
-        resp = jsonify({"category": category})
-        resp.status_code = 200
+            resp = jsonify({})
+            resp.status_code = 204
     
     else:
         resp = jsonify({})
