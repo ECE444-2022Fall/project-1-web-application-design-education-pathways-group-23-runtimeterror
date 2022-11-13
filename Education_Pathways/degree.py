@@ -218,3 +218,9 @@ class Minor(Degree):
 
         return True
 
+    @classmethod
+    def load_from_collection(cls, code):
+        minor_collection = config.db["minors"]
+        minor = list(minor_collection.find({"code":code}))[0]
+        minor = cls(name=minor["name"], requirements=minor["requirements"])
+        return minor

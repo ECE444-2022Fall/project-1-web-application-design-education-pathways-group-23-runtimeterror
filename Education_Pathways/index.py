@@ -138,12 +138,16 @@ def get_course_category():
             # Temporarily hardcoded
             major_code = "AEESCBASEL"
             major = Major.load_from_collection(major_code)
-            
+
+            minor_code = "AEMINBUS"
+            minor = Minor.load_from_collection(minor_code)
+
+
             if(any(course in requirement for requirement in major.requirements.core_requirements)):
                 category = "core"
             elif(any(course in requirement for requirement in major.requirements.elective_requirements)):
                 category = "elective"
-            elif(course_info["MinorsOutcomes"]):
+            elif(course in minor.requirements):
                 category = "minor"
             else:
                 category = "extra"
@@ -154,6 +158,48 @@ def get_course_category():
         else:
             resp = jsonify({})
             resp.status_code = 204
+    
+    else:
+        resp = jsonify({})
+        resp.status_code = 400
+
+    return resp
+
+# SV API for checking multiple course categories
+@app.route("/api/get_course_categories", methods=["GET"])
+def get_course_categories():
+
+    if(session.get("student")):
+        student = Student.deserialize(session["student"])
+
+        categories = []
+
+        # Temporarily hardcoded
+        major_code = "AEESCBASEL"
+        major = Major.load_from_collection(major_code)
+
+        minor_code = "AEMINBUS"
+        minor = Minor.load_from_collection(minor_code)
+
+        for semester in student.semesters.values():
+            semester_categories = []
+            for course in semester.get_courses():
+                if(any(course in requirement for requirement in major.requirements.core_requirements)):
+                    category = "core"
+                elif(any(course in requirement for requirement in major.requirements.elective_requirements)):
+                    category = "elective"
+                elif(any(course in requirement for requirement in minor.requirements)):
+                    category = "minor"
+                else:
+                    category = "extra"
+                
+                semester_categories.append(category)
+
+            categories.append(semester_categories)
+        print(categories)
+        print(student.get_courses())
+        resp = jsonify({"categories": categories})
+        resp.status_code = 200
     
     else:
         resp = jsonify({})
