@@ -211,6 +211,7 @@ def get_major():
     else:
         major_code = "AEESCBASEL"
         major = Major.load_from_collection(major_code)
+        session["major"] = major.serialize()
 
     return major
     
@@ -221,6 +222,7 @@ def get_minor():
     else:
         minor_code = "AEMINBUS"
         minor = Minor.load_from_collection(minor_code)
+        session["minor"] = minor.serialize()
 
     return minor
 
