@@ -85,8 +85,8 @@ class CourseDescriptionPage extends Component {
         }
 
 
-        let syllabus_link = "/Users/mehakkalra/project-1-web-application-design-education-pathways-group-23-runtimeterror/Education_Pathways/Syllabi" + this.props.code + ".pdf"
-         
+        let syllabus_link = "https://github.com/ECE444-2022Fall/project-1-web-application-design-education-pathways-group-23-runtimeterror/tree/feat/6.2/Add_syllabus/Education_Pathways/Syllabi/" + res.data.course.code + ".pdf"
+
         this.setState({syllabus : syllabus_link})
 
         let temp_graph = []
@@ -101,11 +101,12 @@ class CourseDescriptionPage extends Component {
   }
 
 
+
   openLink = () => {
-    const newWindow = window.open(this.state.syllabus, '_blacnk', 'noopener,noreferrer');
-    if (newWindow) {
-      newWindow.opener = null;
-    }
+    let x = "ECE361"
+    //let syllabus_link = "project-1-web-application-design-education-pathways-group-23-runtimeterror/Education_Pathways/Syllabi/" + this.props.code + ".pdf"
+    window.open(this.state.syllabus);
+
   }
 
 	render() {
