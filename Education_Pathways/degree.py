@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import config
 
 class Degree(ABC):
     """
@@ -152,6 +153,27 @@ class Major(Degree):
 
         return False
         
+    @classmethod
+    def load_from_collection(cls, code):
+        major_collection = config.db["majors"]
+        major = list(major_collection.find({"code":code}))[0]
+        major = cls(name=major["name"], requirements=(major["core_requirements"], major["elective_requirements"]))
+        return major
+
+    def serialize(self):
+        """
+            Returns a dictionary representation of major for jsonification purposes
+        """
+        return {
+            "name" : self.name,
+            "core_requirements" : self.requirements.core_requirements,
+            "elective_requirements" :  self.requirements.elective_requirements
+        }
+
+    @classmethod
+    def deserialize(cls, dict):
+        major = cls(name=dict["name"], requirements=(dict["core_requirements"], dict["elective_requirements"]))
+        return major
 
 class Minor(Degree):
     """
@@ -210,3 +232,23 @@ class Minor(Degree):
 
         return True
 
+    @classmethod
+    def load_from_collection(cls, code):
+        minor_collection = config.db["minors"]
+        minor = list(minor_collection.find({"code":code}))[0]
+        minor = cls(name=minor["name"], requirements=minor["requirements"])
+        return minor
+
+    def serialize(self):
+        """
+            Returns a dictionary representation of minor for jsonification purposes
+        """
+        return {
+            "name" : self.name,
+            "requirements" : self.requirements
+        }
+
+    @classmethod
+    def deserialize(cls, dict):
+        minor = cls(name=dict["name"], requirements=dict["requirements"])
+        return minor
