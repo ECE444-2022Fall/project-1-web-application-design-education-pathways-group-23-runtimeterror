@@ -3,6 +3,6 @@ venv
 *.DS_Store
 __pycache__
 test.db
-Education_Pathways/frontend/node_modules
-Education_Pathways/frontend/build
+Maple/frontend/node_modules
+Maple/frontend/build
 #track build 

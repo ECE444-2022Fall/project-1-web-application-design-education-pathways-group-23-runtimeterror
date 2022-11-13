@@ -89,7 +89,7 @@ class SearchResultDisplay extends Component {
         return (
             <div className="SearchQuery">
                 <div style={{ marginTop: "10%" }}>
-                    <h1> Education Pathways</h1>
+                    <h1> Maple</h1>
                     <br></br>
                     <form onSubmit={this.handleSubmit} className={"search"}>
                         <select id="minor" name="minor" className={"minor-dropdown"}>

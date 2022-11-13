@@ -9,6 +9,6 @@ ENV FLASK_ENV development
 ENV FLASK_RUN_HOST=0.0.0.0
 EXPOSE 5000
 
-WORKDIR Education_Pathways
+WORKDIR Maple
 
 CMD ["flask", "--app", "index", "--debug", "run"]
