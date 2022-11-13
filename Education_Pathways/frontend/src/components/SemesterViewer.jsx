@@ -54,6 +54,9 @@ class SemesterViewer extends Component {
             else if(res.status === 204) {
                 this.openForm()
             }
+            else {
+                alert("System Error. Please refresh")
+            }
         });
     }
 
@@ -153,6 +156,8 @@ class SemesterViewer extends Component {
             } else if (res.status === 204) {
                 document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
                 return;
+            } else {
+                alert("System Error. Please refresh")
             }
         });
     }
