@@ -310,19 +310,6 @@
     background-color: #e5e5e5
 }
 
-.core{
-    background-color: #F47C7C;
-}
-.electives{
-    background-color: #70A1D7;
-}
-.minor{
-    background-color: #A1DE93;
-}
-.cs-hss{
-    background-color: #F7F48B;
-}
-
 .column {
     float: left;
     padding: 10px;
@@ -355,12 +342,12 @@
 .course-core{
     color: #F47C7C;
 }
-.course-electives{
+.course-elective{
     color: #70A1D7;
 }
 .course-minor{
     color: #A1DE93;
 }
-.course-cs-hss{
+.course-extra{
     color: #F7F48B;
 }

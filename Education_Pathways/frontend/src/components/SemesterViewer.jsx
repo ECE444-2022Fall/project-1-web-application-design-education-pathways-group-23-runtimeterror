@@ -55,6 +55,9 @@ class SemesterViewer extends Component {
             else if(res.status === 204) {
                 this.openForm()
             }
+            else {
+                alert("System Error. Please refresh")
+            }
         });
     }
 
@@ -95,20 +98,24 @@ class SemesterViewer extends Component {
     }
 
     restoreSemsterViewer() {
-        for(let i=0; i<this.state.semesters.length; i++){
-            
-            for(let j=0; j<this.state.semesters[i].courses.length; j++) {
-                var newCourseBox = document.createElement("li");
-                newCourseBox.className = "drag-item";
+        API.get("/api/get_course_categories").then(res => {
+            for(let i=0; i<this.state.semesters.length; i++){
+                for(let j=0; j<this.state.semesters[i].courses.length; j++) {
+                    var newCourseBox = document.createElement("li");
+                    newCourseBox.className = "drag-item";
+                    
+                    var newCourseName = this.state.semesters[i].courses[j];
+                    newCourseBox.innerHTML = newCourseName;
+                    newCourseBox.id = String(newCourseName);
+                    
+                    newCourseBox.classList.add("course-" + res.data.categories[i][j]);
 
-                var newCourseName = this.state.semesters[i].courses[j];
-                newCourseBox.innerHTML = newCourseName;
-                newCourseBox.id = String(newCourseName);
+                    var courseList = document.getElementById(i+1);
+                    courseList.appendChild(newCourseBox);
+                }
+            } 
 
-                var courseList = document.getElementById(i+1);
-                courseList.appendChild(newCourseBox);
-            }
-        } 
+        });
         return;
     }
 
@@ -123,10 +130,6 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You have already added this course.";
             return;
         }
-        if (newCourseName == "") {
-            document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
-            return;
-        }
 
         newCourseBox.innerHTML = newCourseName;
         newCourseBox.id = String(newCourseName);
@@ -136,16 +139,28 @@ class SemesterViewer extends Component {
             document.getElementById("notification-" + column_id).innerHTML = "You can add maximum 6 courses per semester.";
             return;
         } 
-        
-        API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id}).then(res => {
-            this.setState({
-                earned_credits: res.data.earned_credits,
-                planned_credits: res.data.planned_credits
-            },
-            );
+
+        API.post("/api/get_course_category", {course: newCourseBox.id}).then(res => {
+            if (res.status === 200) {
+                newCourseBox.classList.add("course-" + res.data.category);
+
+                API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id, category: res.data.category}).then(res => {
+                    this.setState({
+                        earned_credits: res.data.earned_credits,
+                        planned_credits: res.data.planned_credits
+                    },
+                    );
+                });
+                courseList.appendChild(newCourseBox);
+                document.getElementById("notification-" + column_id).innerHTML = "";
+
+            } else if (res.status === 204) {
+                document.getElementById("notification-" + column_id).innerHTML = "Please enter a valid course name.";
+                return;
+            } else {
+                alert("System Error. Please refresh")
+            }
         });
-        courseList.appendChild(newCourseBox);
-        document.getElementById("notification-" + column_id).innerHTML = "";
     }
 
     removeCourseBox(column_id){
