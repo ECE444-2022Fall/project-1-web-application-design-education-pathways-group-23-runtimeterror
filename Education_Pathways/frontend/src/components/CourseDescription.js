@@ -85,7 +85,7 @@ class CourseDescriptionPage extends Component {
         }
 
 
-        let syllabus_link = "https://github.com/ECE444-2022Fall/project-1-web-application-design-education-pathways-group-23-runtimeterror/tree/develop/Education_Pathways/Syllabi" + res.data.course.code + ".pdf"
+        let syllabus_link = "https://github.com/ECE444-2022Fall/project-1-web-application-design-education-pathways-group-23-runtimeterror/tree/develop/Education_Pathways/Syllabi/" + res.data.course.code + ".pdf"
 
         this.setState({syllabus : syllabus_link})
 
