@@ -31,6 +31,14 @@
     flex-direction: row;
 }
 
+.single-requirement-courselist-container {
+    width: 90%;
+}
+
+.single-requirement-check-container {
+    width: 10%;
+}
+
 .single-requirement-check-container img{
     height:50px;
 }
