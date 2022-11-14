@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 import config
 
+
 class Degree(ABC):
     """
         Abstract base class for Degree Requirements (Majors and Minors)
     """
+
     def __init__(self, name: str, requirements):
         self.name = name
         self.requirements = requirements
@@ -18,8 +20,13 @@ class Degree(ABC):
         pass
 
     @abstractmethod
+    def check_progress(self, course_list) -> list:
+        pass
+
+    @abstractmethod
     def check_completion(self, course_list) -> bool:
         pass
+
 
 class Major(Degree):
     """
@@ -47,6 +54,7 @@ class Major(Degree):
                                               while entries in the nested lists represents "Or" 
                                               requirements
         """
+
         def __init__(self, core_requirements: list, elective_requirements: list):
             self.core_requirements = core_requirements
             self.elective_requirements = elective_requirements
@@ -135,6 +143,40 @@ class Major(Degree):
         """
         return self.requirements.__contains__(course)
 
+    def check_progress(self, course_list) -> list:
+        """
+            Check which of the Major's requirements have and haven't been fulfilled
+            given a course list
+
+            Inputs
+            -----------------
+            course_list (list)  - A List of Courses taken by a student
+
+            Output
+            -----------------
+            requirement_list(list(tuple(requirement, bool)))
+                - A list of tuples containing each requirements and a boolean stating
+                  whether or not it's been satisfied
+        """
+
+        req_satisfaction = []
+
+        # Check all "And" Requirements in Minor
+        for requirement in (self.requirements.core_requirements + self.requirements.elective_requirements):
+            if(set(requirement).isdisjoint(course_list)):
+                req_satisfaction.append((requirement, False))
+
+            else:
+                # Fulfill the requirement with the first eligible course
+                # The way this is designed, we need to sort requirements in
+                # descending order of strictness
+                eligible_courses = set(requirement) & set(course_list)
+                course = eligible_courses.pop()
+                course_list.remove(course)
+                req_satisfaction.append((requirement, True))
+
+        return req_satisfaction
+
     def check_completion(self, course_list) -> bool:
         """
             Check whether the Major's requirements are fulfilled given a course list
@@ -152,12 +194,13 @@ class Major(Degree):
                 return True
 
         return False
-        
+
     @classmethod
     def load_from_collection(cls, code):
         major_collection = config.db["majors"]
-        major = list(major_collection.find({"code":code}))[0]
-        major = cls(name=major["name"], requirements=(major["core_requirements"], major["elective_requirements"]))
+        major = list(major_collection.find({"code": code}))[0]
+        major = cls(name=major["name"], requirements=(
+            major["core_requirements"], major["elective_requirements"]))
         return major
 
     def serialize(self):
@@ -165,15 +208,17 @@ class Major(Degree):
             Returns a dictionary representation of major for jsonification purposes
         """
         return {
-            "name" : self.name,
-            "core_requirements" : self.requirements.core_requirements,
-            "elective_requirements" :  self.requirements.elective_requirements
+            "name": self.name,
+            "core_requirements": self.requirements.core_requirements,
+            "elective_requirements":  self.requirements.elective_requirements
         }
 
     @classmethod
     def deserialize(cls, dict):
-        major = cls(name=dict["name"], requirements=(dict["core_requirements"], dict["elective_requirements"]))
+        major = cls(name=dict["name"], requirements=(
+            dict["core_requirements"], dict["elective_requirements"]))
         return major
+
 
 class Minor(Degree):
     """
@@ -188,7 +233,7 @@ class Minor(Degree):
 
     def __init__(self, name: str, requirements: list):
         super(Minor, self).__init__(name, requirements)
-    
+
     def __contains__(self, course) -> bool:
         """
             Check whether a course is listed as a requirement for this Minor
@@ -202,6 +247,38 @@ class Minor(Degree):
             bool:   Whether the course is a requirement for this Minor
         """
         return any(course in requirement for requirement in self.requirements)
+
+    def check_progress(self, course_list) -> list:
+        """
+            Check which of the Major's requirements have and haven't been fulfilled
+            given a course list
+
+            Inputs
+            -----------------
+            course_list (list)  - A List of Courses taken by a student
+
+            Output
+            -----------------
+            requirement_list(list(tuple(requirement, bool)))
+                - A list of tuples containing each requirements and a boolean stating
+                  whether or not it's been satisfied
+        """
+        req_satisfaction = []
+        # Check all "And" Requirements in Minor
+        for requirement in self.requirements:
+            if(set(requirement).isdisjoint(course_list)):
+                req_satisfaction.append((requirement, False))
+
+            else:
+                # Fulfill the requirement with the first eligible course
+                # The way this is designed, we need to sort requirements in
+                # descending order of strictness
+                eligible_courses = set(requirement) & set(course_list)
+                course = eligible_courses.pop()
+                course_list.remove(course)
+                req_satisfaction.append((requirement, True))
+
+        return req_satisfaction
 
     def check_completion(self, course_list) -> bool:
         """
@@ -235,7 +312,7 @@ class Minor(Degree):
     @classmethod
     def load_from_collection(cls, code):
         minor_collection = config.db["minors"]
-        minor = list(minor_collection.find({"code":code}))[0]
+        minor = list(minor_collection.find({"code": code}))[0]
         minor = cls(name=minor["name"], requirements=minor["requirements"])
         return minor
 
@@ -244,8 +321,8 @@ class Minor(Degree):
             Returns a dictionary representation of minor for jsonification purposes
         """
         return {
-            "name" : self.name,
-            "requirements" : self.requirements
+            "name": self.name,
+            "requirements": self.requirements
         }
 
     @classmethod
