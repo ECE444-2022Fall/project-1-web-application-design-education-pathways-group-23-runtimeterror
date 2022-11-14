@@ -7,6 +7,8 @@ from flask_restful import Api, Resource, reqparse
 import config
 from search import SearchCourse, search_course
 import semester_viewer as sv
+import minor_completion as mc
+
 
 class ShowCourse(Resource):
     def get(self):
@@ -44,6 +46,7 @@ class ShowCourse(Resource):
             resp.status_code = 500
             return resp
 
+
 def create_app():
     app = Flask(__name__, static_folder='frontend/build')
     app.config['SECRET_KEY'] = "Totally a secret"
@@ -54,7 +57,7 @@ def create_app():
     config.init_app(app)
     config.init_db()
     config.init_cors(app)
-        
+
     # API Endpoints
     rest_api = Api(app)
     rest_api.add_resource(SearchCourse, '/api/search')
@@ -67,10 +70,10 @@ def create_app():
     rest_api.add_resource(sv.AddCourse, '/api/add_course')
     rest_api.add_resource(sv.RemoveCourse, '/api/remove_course')
     rest_api.add_resource(sv.SwapSemester, '/api/swap_semester')
-
+    rest_api.add_resource(mc.CheckMinorRequirements,
+                          '/api/get_minor_completion')
 
     @app.route("/", defaults={'path': ''})
-
     @app.route('/<path:path>')
     def serve(path):
         if path != "" and os.path.exists(app.static_folder + '/' + path):
