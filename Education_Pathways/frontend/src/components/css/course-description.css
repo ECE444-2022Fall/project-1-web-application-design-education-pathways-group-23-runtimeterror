@@ -121,6 +121,8 @@ span.taken {
     margin-left: 0;
     line-height: 18px;
     margin-bottom: 2px;
+    text-transform: uppercase;
+    color: #5C779C;
 }
 
 .my-legend ul.legend-labels li span {
@@ -131,12 +133,6 @@ span.taken {
     margin-right: 5px;
     margin-left: 0;
     border: 1px solid #999;
-}
-
-.my-legend .legend-source {
-    font-size: 70%;
-    color: #999;
-    clear: both;
 }
 
 .taken {
