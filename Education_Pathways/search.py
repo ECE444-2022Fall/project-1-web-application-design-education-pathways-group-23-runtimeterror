@@ -57,18 +57,6 @@ def search_course(search_term, minor="", mse_theme=""):
         return []
     if len(course_ids) > 10:
         course_ids = course_ids[:10]
-        
-    if(session.get("student")):
-        student = Student.deserialize(session.get("student"))
-        resp = jsonify(student.serialize())
-        resp.status_code = 200
-        
-    else:
-        resp = jsonify({})
-        resp.status_code = 204
-    
-    taken = student.get_courses()
-    
 
     res = []
     for i, course_id in enumerate(course_ids):
@@ -78,15 +66,10 @@ def search_course(search_term, minor="", mse_theme=""):
             'name': course_id['Name'],
             'description': course_id["Course Description"],
             'syllabus': "Course syllabus here.",
-            # 'prereq': course_id["Pre-requisites"],
+            'prereq': course_id["Pre-requisites"],
             'coreq': course_id["Corequisite"],
             'exclusion': course_id["Exclusion"],
         }
-        temp = []
-        for j in course_id["Pre-requisites"]:
-            if j not in taken:
-                temp.append(j)
-        res_d['prereq'] = temp   
         res.append(res_d)
     return res
 

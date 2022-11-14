@@ -1,8 +1,9 @@
 import os
 
 # this is the flask core
-from flask import Flask, send_from_directory, jsonify, request
+from flask import Flask, send_from_directory, jsonify, request, session
 from flask_restful import Api, Resource, reqparse
+from student import Student
 
 import config
 from search import SearchCourse, search_course
@@ -17,6 +18,16 @@ class ShowCourse(Resource):
             resp.status_code = 404
             return resp
         try:
+            
+            if(session.get("student")):
+                student = Student.deserialize(session.get("student"))
+                taken = student.get_courses()
+                for i, course_id in enumerate(courses):
+                    temp = []
+                    for j in course_id["prereq"]:
+                        if j not in taken:
+                            temp.append(j)
+                    courses[i]['prereq'] = temp  
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
@@ -36,6 +47,15 @@ class ShowCourse(Resource):
             resp.status_code = 404
             return resp
         try:
+            if(session.get("student")):
+                student = Student.deserialize(session.get("student"))
+                taken = student.get_courses()
+                for i, course_id in enumerate(courses):
+                    temp = []
+                    for j in course_id["prereq"]:
+                        if j not in taken:
+                            temp.append(j)
+                    courses[i]['prereq'] = temp  
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
