@@ -14,6 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - uses: nanasess/setup-chromedriver@v1
     - name: Start containers
       run: docker-compose -f "docker-compose.yml" up -d --build
       env:
@@ -24,9 +25,8 @@ jobs:
         python-version: "3.10"
     - name: Test with selenium
       run: |
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
-        sudo apt-get update -qqy
-        sudo apt-get -qqy install google-chrome-stable
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
         pip install pytest selenium
         pytest Education_Pathways/tests/test_sv_frontend.py
