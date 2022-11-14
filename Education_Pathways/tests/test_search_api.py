@@ -20,6 +20,7 @@ def client(app):
 def runner(app):
     return app.test_cli_runner()
 
+# Valentina Manferrari
 def test_search_api(client):
     with client:
         input = "ECE444"
