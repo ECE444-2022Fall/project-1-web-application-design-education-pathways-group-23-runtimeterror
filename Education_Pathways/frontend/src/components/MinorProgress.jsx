@@ -90,36 +90,10 @@ class MinorProgress extends Component {
             {this.minorList.map((minor_name) => {
               return <option value={{ minor_name }}> {minor_name} </option>;
             })}
-            {/* <option value="Engineering Business">Engineering Business</option>
-                    <option value="Artificial Intelligence">Artificial Intelligence</option> */}
           </Form.Select>
         </div>
         <div id="requirements-container" class="section">
           <ListGroup>
-            {/* <ListGroup.Item>
-              <div class="single-requirement-container">
-                <div class="single-requirement-">
-                  <h3>Requirement One</h3>
-                  <h4>Must take:</h4>
-                  <p>APS360</p>
-                </div>
-                <div class="single-requirement-check-container">
-                  <img src={this.checkIcon}></img>
-                </div>
-              </div>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <div class="single-requirement-container">
-                <div class="single-requirement-">
-                  <h3>Requirement Two</h3>
-                  <h4>Select one from:</h4>
-                  <p>CSC263H1, ECE345H1, ECE358H1, MIE335H1</p>
-                </div>
-                <div class="single-requirement-check-container">
-                  <img src={this.inprogressIcon}></img>
-                </div>
-              </div>
-            </ListGroup.Item> */}
             {this.getRequirementElements()}
           </ListGroup>
         </div>
