@@ -16,7 +16,6 @@ class CheckMinorRequirements(Resource):
         parser.add_argument('minor_name', type=str)
         data = parser.parse_args()
         minor_name = data['minor_name'] if data['minor_name'] else ""
-        print('This is error output', file=sys.stderr)
 
         if not session.get("student"):
             resp = jsonify(
@@ -45,7 +44,6 @@ class CheckMinorRequirements(Resource):
             name=minor_db_object["name"], requirements=minor_db_object[""]
         )
         completion = minor.check_progress(student.get_courses)
-        print(f'This is completion: {completion}', file=sys.stderr)
         resp = jsonify({'completion': completion})
         resp.status_code = 200
 
@@ -56,7 +54,6 @@ class CheckMinorRequirements(Resource):
         parser.add_argument('minor_name', type=str)
         data = parser.parse_args()
         minor_name = data['minor_name'] if data['minor_name'] else ""
-        print('This is error output', file=sys.stderr)
 
         if not session.get("student"):
             resp = jsonify(
@@ -81,11 +78,11 @@ class CheckMinorRequirements(Resource):
             resp.status_code = 400
             return resp
 
+        minor_db_object = minor_db_object[0]
         minor = Minor(
-            name=minor_db_object["name"], requirements=minor_db_object[""]
+            name=minor_db_object["name"], requirements=minor_db_object["requirements"]
         )
-        completion = minor.check_progress(student.get_courses)
-        print(f'This is completion: {completion}', file=sys.stderr)
+        completion = minor.check_progress(student.get_courses())
         resp = jsonify({'completion': completion})
         resp.status_code = 200
 
