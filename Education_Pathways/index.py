@@ -18,16 +18,16 @@ class ShowCourse(Resource):
             resp.status_code = 404
             return resp
         try:
-            
             if(session.get("student")):
                 student = Student.deserialize(session.get("student"))
                 taken = student.get_courses()
                 for i, course_id in enumerate(courses):
-                    temp = []
+                    overall_prereq = []
                     for j in course_id["prereq"]:
-                        if j not in taken:
-                            temp.append(j)
-                    courses[i]['prereq'] = temp  
+                        if j in taken: continue
+                        #temp.append(j)
+                        overall_prereq = self.nested(j, taken, overall_prereq)
+                    courses[i]['prereq'] = overall_prereq  
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
@@ -35,6 +35,19 @@ class ShowCourse(Resource):
             resp = jsonify({'error': 'something went wrong'})
             resp.status_code = 500
             return resp
+
+    def nested(self, courses, taken, overall_prereq):
+        overall_prereq.append(courses)
+        local = search_course(courses)[0]['prereq']
+        for j in local:
+            if j in taken: continue
+            overall_prereq.append(j)
+            sub_local = search_course(j)[0]['prereq']
+            for k in sub_local:
+                if k in taken: continue
+                overall_prereq.append(k)
+        return overall_prereq
+
 
     def post(self):
         parser = reqparse.RequestParser()
