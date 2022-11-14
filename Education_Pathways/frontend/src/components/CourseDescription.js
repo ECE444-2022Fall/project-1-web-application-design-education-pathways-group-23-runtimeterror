@@ -25,6 +25,7 @@ class CourseDescriptionPage extends Component {
       course_description: "",
       syllabus: "",
       prerequisites: "",
+      prerequisitestaken: "",
       corequisites: "",
       exclusions: "",
       starred: false,
@@ -56,6 +57,21 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({prerequisites : res.data.course.prereq})
         }
+        let takenreq_len = res.data.course.takenreq.length
+        if (takenreq_len > 1) {
+          let takenreq_str = ""
+          for (let i = 0; i < takenreq_len; i++) {
+            takenreq_str += res.data.course.takenreq[i]
+              if (i !== takenreq_len - 1) {
+                takenreq_str += ", "
+              }
+          }
+          this.setState({prerequisitestaken : takenreq_str})
+        } else {
+          this.setState({prerequisitestaken : res.data.course.takenreq})
+        }
+
+
         let coreq_len = res.data.course.coreq.length
         if (coreq_len > 1) {
           let coreq_str = ""
@@ -146,7 +162,7 @@ class CourseDescriptionPage extends Component {
             <Row>
               <Col className="requisites-display">
                 <h4>Pre-Requisites</h4>
-                <p>{this.state.prerequisites}</p>
+                <p>{this.state.prerequisites} <span class="taken">{this.state.prerequisitestaken}</span></p>
               </Col>
               <Col className="requisites-display">
                 <h4>Co-Requisites</h4>
