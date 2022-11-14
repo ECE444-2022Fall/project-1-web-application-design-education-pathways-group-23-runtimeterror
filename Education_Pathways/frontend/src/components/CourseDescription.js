@@ -33,21 +33,6 @@ class CourseDescriptionPage extends Component {
     }
   }
 
-
-//   pre_req_remover() {
-//     var array = []
-//     API.get("/api/get_course_categories").then(res => {
-//         for(let i=0; i<this.state.semesters.length; i++){
-//             for(let j=0; j<this.state.semesters[i].courses.length; j++) {
-//                 var newCourseName = this.state.semesters[i].courses[j];
-//                 array.append(newCourseName);
-//             }
-//         } 
-
-//     });
-//     return array;
-// }
-
   componentDidMount() {
     API.get(`/course/details?code=${this.props.match.params.code}`, {
       code: this.props.course_code
@@ -59,19 +44,13 @@ class CourseDescriptionPage extends Component {
         this.setState({course_description : res.data.course.description})
         this.setState({graph: res.data.course.graph})
         let prereq_len = res.data.course.prereq.length
-        // var prereq = 
-        // SemesterViewer.restoreSemsterViewer()
-        // console.log(SemesterViewer)
         if (prereq_len > 1) {
           let prereq_str = ""
           for (let i = 0; i < prereq_len; i++) {
-            // if(res.data.course.prereq[i] in prereq){}
-            // else{
               prereq_str += res.data.course.prereq[i]
               if (i !== prereq_len - 1) {
                 prereq_str += ", "
               }
-            // }
           }
           this.setState({prerequisites : prereq_str})
         } else {
