@@ -2,9 +2,9 @@ name: Docker Test
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "test/docker" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "test/docker" ]
 
 jobs:
 
