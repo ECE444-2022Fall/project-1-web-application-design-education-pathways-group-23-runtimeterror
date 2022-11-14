@@ -1,4 +1,3 @@
-import pprint
 import pytest
 from degree import Major, Minor
 
@@ -64,7 +63,6 @@ def test_minor_progress(minor):
     incorrect_course_list2 = ["APS360H1", "ECE358H1",
                               "ROB311H1", "CSC311H1", "CHE507H1"]
     progress_list = minor.check_progress(incorrect_course_list2)
-    print(progress_list)
     for req in progress_list:
         if req[0] == ['CHE507H1', 'CSC401H1', 'CHE507H1', 'CSC401H1', 'CSC420H1', 'CSC413H1', 'CSC485H1', 'CSC486H1', 'ECE368H1', 'HPS345H1', 'HPS346H1', 'MIE368H1', 'MIE451H1', 'MIE457H1', 'MIE562H1', 'MIE566H1', 'MSE403H1', 'ROB501H1', 'AER336H1', 'BME595H1', 'CHE322H1', 'CSC343H1', 'CSC412H1', 'ECE344H1', 'ECE353H1', 'ECE356H1', 'ECE367H1', 'ECE411H1', 'ECE419H1', 'ECE431H1', 'ECE444H1', 'ECE454H1', 'ECE470H1', 'ECE516H1', 'ECE532H1', 'ECE557H1', 'ECE568H1', 'MAT336H1', 'MAT389H1', 'STA302H1', 'STA410H1']:
             assert req[1] == False,\
@@ -143,7 +141,6 @@ def test_major_progress(major):
     # Check blank list
     incorrect_course_list1 = []
     progress_list = major.check_progress(incorrect_course_list1)
-    first_dupl_req = True
     for req in progress_list:
         assert req[1] == False,\
             f"The Major requirement {req} should not be fulfilled"
@@ -151,8 +148,8 @@ def test_major_progress(major):
     # Check incorrect list with course that fulfills multiple requirements
     incorrect_course_list2 = ["ESC499Y1", "MIE429H1",
                               "MIE451H1", "ECE352H1", "CSC310H1"]
+    first_dupl_req = True
     progress_list = major.check_progress(incorrect_course_list2)
-    pprint.pprint(progress_list)
     for req in progress_list:
         if first_dupl_req and req[0] == ['CSC310H1', 'CSC413H1', 'CSC401H1', 'CSC420H1', 'CSC485H1', 'CSC486H1', 'MIE424H1', 'MIE457H1', 'MIE566H1', 'ECE352H1', 'ECE419H1']:
             assert req[1] == True,\

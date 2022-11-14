@@ -36,8 +36,8 @@ class CheckMinorRequirements(Resource):
 
         if len(minor_db_object) == 0:
             resp = jsonify(
-                {'error': 'Either minor or student course list hasn\'t been set'})
-            resp.status_code = 400
+                {'error': 'Could not find minor in list'})
+            resp.status_code = 500
             return resp
 
         minor = Minor(
