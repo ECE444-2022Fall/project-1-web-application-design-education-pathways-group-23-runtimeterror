@@ -23,12 +23,16 @@ class ShowCourse(Resource):
             if(session.get("student")):
                 student = Student.deserialize(session.get("student"))
                 taken = student.get_courses()
+                takenreq = []
                 for i, course_id in enumerate(courses):
                     overall_prereq = []
                     for j in course_id["prereq"]:
-                        if j in taken: continue
-                        overall_prereq = self.nested(j, taken, overall_prereq)
+                        if j in taken: 
+                            takenreq.append(j)
+                            continue
+                        overall_prereq, takenreq = self.nested(j, taken, overall_prereq, takenreq)
                     courses[i]['prereq'] = overall_prereq  
+                    courses[i]['takenreq'] = takenreq
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
@@ -37,17 +41,21 @@ class ShowCourse(Resource):
             resp.status_code = 500
             return resp
 
-    def nested(self, courses, taken, overall_prereq):
+    def nested(self, courses, taken, overall_prereq, takenreq):
         overall_prereq.append(courses)
         local = search_course(courses)[0]['prereq']
         for j in local:
-            if j in taken: continue
+            if j in taken: 
+                takenreq.append(j)
+                continue
             overall_prereq.append(j)
             sub_local = search_course(j)[0]['prereq']
             for k in sub_local:
-                if k in taken: continue
+                if k in taken: 
+                    takenreq.append(k)
+                    continue
                 overall_prereq.append(k)
-        return overall_prereq
+        return overall_prereq, takenreq
 
 
     def post(self):
@@ -64,12 +72,16 @@ class ShowCourse(Resource):
             if(session.get("student")):
                 student = Student.deserialize(session.get("student"))
                 taken = student.get_courses()
+                takenreq = []
                 for i, course_id in enumerate(courses):
                     overall_prereq = []
                     for j in course_id["prereq"]:
-                        if j in taken: continue
-                        overall_prereq = self.nested(j, taken, overall_prereq)
+                        if j in taken: 
+                            takenreq.append(j)
+                            continue
+                        overall_prereq, takenreq = self.nested(j, taken, overall_prereq, takenreq)
                     courses[i]['prereq'] = overall_prereq  
+                    courses[i]['takenreq'] = takenreq
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
