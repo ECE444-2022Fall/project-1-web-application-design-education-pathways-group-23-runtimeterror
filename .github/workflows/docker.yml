@@ -24,5 +24,9 @@ jobs:
         python-version: "3.10"
     - name: Test with selenium
       run: |
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update -qqy
+        sudo apt-get -qqy install google-chrome-stable
         pip install pytest selenium
         pytest Education_Pathways/tests/test_sv_frontend.py
