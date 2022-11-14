@@ -15,7 +15,6 @@ class MinorProgress extends Component {
     this.minorList = ["Engineering Business", "Artificial Intelligence"];
     this.state = {
       minor_name: "",
-      minor_selected: false,
       completion: [],
     };
 
@@ -24,9 +23,7 @@ class MinorProgress extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.setState({ minor_selected: true }, () => {
-      this.getData();
-    });
+    this.getData();
   }
 
   getData() {
@@ -88,7 +85,6 @@ class MinorProgress extends Component {
             id="minor-select"
             name="minor"
             onChange={this.handleSubmit}
-            disabled={this.state.minor_selected}
           >
             <option>Select Minor</option>
             {this.minorList.map((minor_name) => {
