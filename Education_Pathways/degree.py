@@ -161,7 +161,7 @@ class Major(Degree):
 
         req_satisfaction = []
 
-        # Check all "And" Requirements in Minor
+        # Check all "And" Requirements in Major
         for requirement in (self.requirements.core_requirements + self.requirements.elective_requirements):
             if(set(requirement).isdisjoint(course_list)):
                 req_satisfaction.append((requirement, False))

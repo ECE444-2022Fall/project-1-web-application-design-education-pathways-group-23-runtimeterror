@@ -1,11 +1,9 @@
-from datetime import date
-
 from flask import jsonify, session
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 
 import config
 from student import Student
-from degree import Major, Minor
+from degree import Minor
 
 # Minor Completion API
 # MC API for receiving minor completion for a student
