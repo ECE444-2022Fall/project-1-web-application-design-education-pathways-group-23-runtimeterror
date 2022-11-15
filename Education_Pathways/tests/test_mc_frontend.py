@@ -84,6 +84,8 @@ def test_mc_frontend():
     assert requirement_3_check.get_attribute("src") \
         == "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Sign-check-icon.png/800px-Sign-check-icon.png"
 
+    driver.close()
+
 
 
 
