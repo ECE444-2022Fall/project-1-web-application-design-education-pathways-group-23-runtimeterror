@@ -53,7 +53,7 @@ def test_sv_frontend():
     time.sleep(1)
 
     notification = drag_container.find_element(By.ID, "notification-1").text
-    assert notification == "Please enter a valid course name."
+    assert notification == "Please enter a valid course code."
 
     drag_container.find_element(By.XPATH,"//ul[@class='drag-list']/li[3]/form/input").clear()
     drag_container.find_element(By.XPATH,"//ul[@class='drag-list']/li[3]/form/input").send_keys("ECE444H1")
