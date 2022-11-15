@@ -182,7 +182,11 @@ class AddCourse(Resource):
             student = Student.deserialize(session["student"])
             student.get_semester(index=int(semester)).add_course(course)
             session["categories"][int(semester)].append(category)
+
             student.calculate_credits()
+            major = get_major()
+            student.check_major_status(major)
+
             session["student"] = student.serialize()
 
 
@@ -211,9 +215,12 @@ class RemoveCourse(Resource):
 
             index = student.get_semester(index=int(semester)).get_courses().index(course)
             del session["categories"][int(semester)][index]
-
             student.get_semester(index=int(semester)).remove_course(course)
+            
             student.calculate_credits()
+            major = get_major()
+            student.check_major_status(major)
+    
             session["student"] = student.serialize()
             
             resp = jsonify(student.serialize())

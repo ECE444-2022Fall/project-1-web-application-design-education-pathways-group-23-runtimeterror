@@ -85,11 +85,17 @@ class Student:
 
         Attributes
         ----------------
-        major ()                - What a student is majoring in
+        major (str)             - What a student is majoring in
         year (int)              - What year a student will graduate
         minors (list)           - A list of minors (using the Minor class)
                                   a student is interested in
         semesters (OrderedDict) - A Dictionary of Semesters
+        earned_credits (float)  - Number of credits from complete and in
+                                  progress courses
+        planned_credits (float) - Number of credits from planned courses
+        major_status(str)       - Whether the student has fulfilled major
+                                  requirements ["Complete", "On-Track",
+                                  "Incomplete"]
                         
     """
     def __init__(self, major, year: int, minors: list=[], semesters: OrderedDict=None):
@@ -102,6 +108,7 @@ class Student:
         self.semesters = semesters
         self.earned_credits = self.get_credits(status = ["complete", "in progress"])
         self.planned_credits = self.get_credits(status = ["planned"])
+        self.major_status = "Incomplete"
 
     def set_major(self, major):
         """
@@ -244,15 +251,6 @@ class Student:
             list(self.semesters.values())[indices[0]].remove_course(course)
             list(self.semesters.values())[indices[1]].add_course(course)
 
-    def calculate_credits(self):
-        """
-            Calculate the number of earned (complete and in progress) and planned credits
-        """
-
-        self.earned_credits = self.get_credits(status = ["complete", "in progress"])
-        self.planned_credits = self.get_credits(status = ["planned"])
-
-
     def get_credits(self, status=["complete"]) -> float:
         """
             Returns a number of credits from applicable Semesters
@@ -282,6 +280,29 @@ class Student:
                 credits += 0.5
 
         return credits
+
+    def calculate_credits(self):
+        """
+            Calculate the number of earned (complete and in progress) and planned credits
+        """
+
+        self.earned_credits = self.get_credits(status = ["complete", "in progress"])
+        self.planned_credits = self.get_credits(status = ["planned"])
+
+    def check_major_status(self, major):
+        """
+            Checks whether the major requires have been met
+        """
+        complete_courses = self.get_courses(["complete", "in progress"])
+        all_courses = self.get_courses()
+
+        if(major.check_completion(complete_courses)):
+            self.major_status = "Complete"
+        elif(major.check_completion(all_courses)):
+            self.major_status = "On-Track"
+        else:
+            self.major_status = "Incomplete"
+        
         
     def serialize(self):
         """

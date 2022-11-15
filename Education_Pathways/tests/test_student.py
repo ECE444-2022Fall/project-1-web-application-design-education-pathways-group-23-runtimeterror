@@ -1,5 +1,6 @@
 import pytest
 from student import Semester, Student
+from degree import Major
 from collections import OrderedDict
 
 @pytest.fixture
@@ -33,7 +34,7 @@ def test_semester_add_remove_courses(semester):
 def student():
     # Test data
     major = "Electrical and Computer Engineering"
-    year = 4
+    year = 2024
     minors = ["Robotics and Mechatronics Minor"]
 
     name_1 = "Fall 2022"
@@ -75,8 +76,12 @@ def test_student_get_courses(student):
            + "and courses_1"
 
 def test_student_get_credits(student):
-    # Check get_credits
+    # Check get_credits and calculate_credits()
     assert student.get_credits() == 3, "There should be 3 credits"
+
+    student.calculate_credits()
+    assert student.earned_credits == 6, "There should be 6 credits"
+    assert student.planned_credits == 0, "There should be 0 credits"
 
 def test_student_add_remove_minor(student):
     # Check adding and removing minors
@@ -105,3 +110,51 @@ def test_student_course_swap(student):
     student.swap_course("ECE396Y1", indices=(0, 1))
     assert not "ECE396Y1" in student.get_semester(index=0)
     assert "ECE396Y1" in student.get_semester(index=1)
+
+
+def test_check_major_status():
+    # Test Student
+    major = "Test Major"
+    year = 2023
+    minors = [""]
+
+    student = Student(major, year, minors)
+
+    # Test Major
+    name = "Test Major"
+    core_requirements = [
+        ["ESC499Y1"],
+        ["MIE429H1"],
+        ["MIE451H1"],
+    ]
+    elective_requirements = [
+        ["ECE444H1"],
+        ["ECE419H1"]
+    ]
+    requirements = (core_requirements, elective_requirements)
+
+    major = Major(name=name, requirements=requirements)
+
+    student.check_major_status(major)
+    assert student.major_status == "Incomplete"
+
+    name = "Fall 2021"
+    status = "complete"
+    courses = ["ESC499Y1", "ECE444H1", "MIE451H1", "ECE552H1", "ECE568H1"]
+    student.add_semester(name=name, status=status, courses=courses)
+
+    student.check_major_status(major)
+    assert student.major_status == "Incomplete"
+
+    name = "Fall 2022"
+    status = "planned"
+    courses = ["MIE429H1", "ECE424H1", "ECE526H1", "CSC413H1", "ECE419H1"]
+    student.add_semester(name=name, status=status, courses=courses)
+    
+    student.check_major_status(major)
+    assert student.major_status == "On-Track"
+
+    student.get_semester("Fall 2022").status = "in progress"
+    
+    student.check_major_status(major)
+    assert student.major_status == "Complete"
