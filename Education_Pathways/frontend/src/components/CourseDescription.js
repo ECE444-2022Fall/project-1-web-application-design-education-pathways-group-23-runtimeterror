@@ -19,8 +19,8 @@ class CourseDescriptionPage extends Component {
     this.state = {
       course_code: "",
       course_name: "",
-      division: "Faculty of Applied Science and Engineering",
-      department: "Department of Edward S. Rogers Sr. Dept. of Electrical & Computer Engineering",
+      division: "",
+      department: "",
       graph: "",
       course_description: "",
       syllabus: "",
@@ -41,6 +41,8 @@ class CourseDescriptionPage extends Component {
       .then(res => {
         console.log(res.data.course)
         this.setState({ course_code: res.data.course.code })
+        this.setState({ division: res.data.course.division })
+        this.setState({ department: res.data.course.department })
         this.setState({ course_name: res.data.course.name })
         this.setState({ course_description: res.data.course.description })
         this.setState({ graph: res.data.course.graph })
@@ -69,19 +71,6 @@ class CourseDescriptionPage extends Component {
           this.setState({ prerequisitestaken: takenreq_str })
         } else {
           this.setState({ prerequisitestaken: res.data.course.takenreq })
-        }
-        let takenreq_len = res.data.course.takenreq.length
-        if (takenreq_len > 1) {
-          let takenreq_str = ""
-          for (let i = 0; i < takenreq_len; i++) {
-            takenreq_str += res.data.course.takenreq[i]
-              if (i !== takenreq_len - 1) {
-                takenreq_str += ", "
-              }
-          }
-          this.setState({prerequisitestaken : takenreq_str})
-        } else {
-          this.setState({prerequisitestaken : res.data.course.takenreq})
         }
 
         let coreq_len = res.data.course.coreq.length

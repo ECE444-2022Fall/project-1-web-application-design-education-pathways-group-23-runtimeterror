@@ -64,6 +64,8 @@ def search_course(search_term, minor="", mse_theme=""):
             '_id': i,
             'code': course_id['Code'],
             'name': course_id['Name'],
+            'division': course_id['Division'],
+            'department': course_id['Department'],
             'description': course_id["Course Description"],
             'syllabus': "Course syllabus here.",
             'prereq': course_id["Pre-requisites"],
