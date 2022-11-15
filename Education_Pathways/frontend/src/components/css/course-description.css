@@ -9,7 +9,7 @@ p {
     color: #8198B8;
 }
 
-span.taken {
+span.taken2 {
     color: rgb(9, 154, 9);
 }
 
@@ -103,7 +103,7 @@ span.taken {
     margin-top: 2% !important;
 }
 
-.my-legend{
+.my-legend {
     display: inline-block;
 }
 
@@ -138,10 +138,10 @@ span.taken {
 .taken {
     background-color: #099a09;
 }
+
 .wishlist {
     background-color: #8198B8;
 }
-
 
 #syllabus-row {
     height: 500px;
@@ -149,7 +149,7 @@ span.taken {
 }
 
 #syllabus-title-row {
-    height:20%;
+    height: 20%;
 }
 
 #syllabus-iframe-row {

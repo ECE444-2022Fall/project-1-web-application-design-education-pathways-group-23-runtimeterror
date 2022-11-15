@@ -85,6 +85,19 @@ class SearchCourse(Resource):
         courses = search_course(input, minor, mse_theme)
         # courses =[{'_id': 1, 'code': 'ECE444', 'name': 'SE'}]
         try:
+            if(session.get("student")):
+                student = Student.deserialize(session.get("student"))
+                taken = student.get_courses()
+                
+                for id, course in enumerate(courses):
+                    count = len(course['prereq'])
+                    for j in taken:
+                        if j in course['prereq']:
+                            count -= 1
+                    if (count <= 0):
+                        courses[id]['starred'] = True
+                    else: courses[id]['starred'] = False
+            
             resp = jsonify(courses)
             resp.status_code = 200
             return resp
@@ -106,6 +119,21 @@ class SearchCourse(Resource):
 
         courses = search_course(input, minor, mse_theme)
         try:
+            
+            if(session.get("student")):
+                student = Student.deserialize(session.get("student"))
+                taken = student.get_courses()
+                
+                for id, course in enumerate(courses):
+                    count = len(course['prereq'])
+                    for j in taken:
+                        if j in course['prereq']:
+                            count -= 1
+                    if (count <= 0):
+                        courses[id]['starred'] = True
+                    else: courses[id]['starred'] = False
+            
+            
             resp = jsonify(courses)
             resp.status_code = 200
             return resp

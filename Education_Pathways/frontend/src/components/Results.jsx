@@ -17,9 +17,9 @@ class Result extends Component{
     this.state = {
       course_code : this.props.course_code,
       course_name: this.props.course_name,
-      division: "Division of Computer Engineering",
-      faculty: "Faculty of Applied Science and Engineering",
-      starred: false,
+      division: this.props.division,
+      faculty: this.props.faculty,
+      starred: this.props.starred,
       username: localStorage.getItem('username')
     };
     star = unstarred
@@ -43,7 +43,15 @@ class Result extends Component{
             </Col>
             <Col>{this.state.division}</Col>
             <Col>{this.state.faculty}</Col>
-            {/* <Col><img src={star} alt=""/></Col> */}
+
+            {
+                this.state.starred == true ? (
+                  <Col><img src={star} alt=""/></Col>
+                ) : (
+                    // <h4>Select one from:</h4>
+                    <Col></Col>
+                )
+              }
         </Row>
         </a>
       </Container>

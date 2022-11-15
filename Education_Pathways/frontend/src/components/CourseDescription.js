@@ -175,7 +175,7 @@ class CourseDescriptionPage extends Component {
                 <h4>Pre-Requisites</h4>
                 <p>
                   {this.state.prerequisites}{" "}
-                  <span class="taken">{this.state.prerequisitestaken}</span>
+                  <span class="taken2">{this.state.prerequisitestaken}</span>
                 </p>
               </Col>
               <Col className="requisites-display">
@@ -187,7 +187,7 @@ class CourseDescriptionPage extends Component {
                 <p>{this.state.exclusions}</p>
               </Col>
             </Row>
-            <Row>
+            {/* <Row>
               <div className={"req-graph"}>
                 <img
                   style={{ width: "70%", marginBottom: "3%" }}
@@ -199,7 +199,7 @@ class CourseDescriptionPage extends Component {
                   alt=""
                 ></img>
               </div>
-            </Row>
+            </Row> */}
           </Row>
           <Row id="syllabus-row" className="col-item">
             <Row id="syllabus-title-row">
