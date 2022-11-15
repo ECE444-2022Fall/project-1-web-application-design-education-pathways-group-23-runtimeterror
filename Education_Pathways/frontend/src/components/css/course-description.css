@@ -145,6 +145,7 @@ span.taken {
 
 #syllabus-row {
     height: 500px;
+    display: block;
 }
 
 #syllabus-title-row {
@@ -152,5 +153,6 @@ span.taken {
 }
 
 #syllabus-iframe-row {
+    margin: 0;
     height: 80%;
 }
