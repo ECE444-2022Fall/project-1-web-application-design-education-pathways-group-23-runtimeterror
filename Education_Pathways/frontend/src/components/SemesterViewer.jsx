@@ -16,6 +16,7 @@ class SemesterViewer extends Component {
             semesters: [{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""},{name: ""}],
             earned_credits: 0.0,
             planned_credits: 0.0,
+            major_status: "Incomplete",
             core: "#F47C7C",
             elective: "#70A1D7",
             minor: "#A1DE93",
@@ -52,7 +53,8 @@ class SemesterViewer extends Component {
                     minors: res.data.minors,
                     semesters: res.data.semesters,
                     earned_credits: res.data.earned_credits,
-                    planned_credits: res.data.planned_credits
+                    planned_credits: res.data.planned_credits,
+                    major_status: res.data.major_status
                 },
                 this.restoreSemsterViewer
                 );
@@ -95,7 +97,8 @@ class SemesterViewer extends Component {
                 minors: res.data.minors,
                 semesters: res.data.semesters,
                 earned_credits: res.data.earned_credits,
-                planned_credits: res.data.planned_credits
+                planned_credits: res.data.planned_credits,
+                major_status: res.data.major_status
                 },
             );
         });
@@ -154,7 +157,8 @@ class SemesterViewer extends Component {
                 API.post("/api/add_course", {semester: column_id-1, course: newCourseBox.id, category: res.data.category}).then(res => {
                     this.setState({
                         earned_credits: res.data.earned_credits,
-                        planned_credits: res.data.planned_credits
+                        planned_credits: res.data.planned_credits,
+                        major_status: res.data.major_status
                     },
                     );
                 });
@@ -186,7 +190,8 @@ class SemesterViewer extends Component {
         API.post("/api/remove_course", {semester: column_id-1, course: CourseName}).then(res => {
             this.setState({
                 earned_credits: res.data.earned_credits,
-                planned_credits: res.data.planned_credits
+                planned_credits: res.data.planned_credits,
+                major_status: res.data.major_status
             },
             );
         });
@@ -422,7 +427,7 @@ class SemesterViewer extends Component {
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('8')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('8')}>Remove</button>
                             </form>
-                            <p className="notification" id="notification-4"> </p>
+                            <p className="notification" id="notification-8"> </p>
                         </li>
                     </ul>
                 </div>
