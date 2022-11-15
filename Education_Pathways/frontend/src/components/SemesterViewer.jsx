@@ -3,6 +3,7 @@ import './css/semester-viewer.css';
 
 import * as ReactDOM from 'react-dom';
 import Dragula from 'react-dragula';
+import {debounce} from "lodash";
 import API from '../api';
 
 class SemesterViewer extends Component {
@@ -193,6 +194,8 @@ class SemesterViewer extends Component {
         courseList.removeChild(courseBox);
     }
 
+    handleColorChange = debounce((type) => {this.updateColor(type)}, 250)
+
     updateColor(type) {
         let color = type.concat('-color');
         let newColor = document.getElementById(color).value;
@@ -300,10 +303,10 @@ class SemesterViewer extends Component {
                                     <div class="column left legend-title">Courses Legend</div>
                                     <div class="column right legend-scale">
                                         <ul class="legend-labels">
-                                            <li><input type="color" id="core-color" value={this.state.core} onChange={() => this.updateColor('core')}/>Core</li>
-                                            <li><input type="color" id="elective-color" value={this.state.elective} onChange={() => this.updateColor('elective')}/>Elective</li>
-                                            <li><input type="color" id="minor-color" value={this.state.minor} onChange={() => this.updateColor('minor')}/>Minor</li>
-                                            <li><input type="color" id="extra-color" value={this.state.extra} onChange={() => this.updateColor('extra')}/>Extra</li>
+                                            <li><input type="color" id="core-color" value={this.state.core} onChange={() => this.handleColorChange('core')}/>Core</li>
+                                            <li><input type="color" id="elective-color" value={this.state.elective} onChange={() => this.handleColorChange('elective')}/>Elective</li>
+                                            <li><input type="color" id="minor-color" value={this.state.minor} onChange={() => this.handleColorChange('minor')}/>Minor</li>
+                                            <li><input type="color" id="extra-color" value={this.state.extra} onChange={() => this.handleColorChange('extra')}/>Extra</li>
                                         </ul>
                                     </div>
                                 </div>
