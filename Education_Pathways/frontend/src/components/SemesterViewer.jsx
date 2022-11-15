@@ -129,7 +129,7 @@ class SemesterViewer extends Component {
         var newCourseBox = document.createElement("li");
         newCourseBox.className = "drag-item";
 
-        var newCourseName = document.getElementById("course_name_" + column_id).value;
+        var newCourseName = document.getElementById("course_code_" + column_id).value;
         var isValid = (document.getElementById(newCourseName) === null) ? true : false;
         // console.log(isValid);
         if (!isValid) {
@@ -171,7 +171,7 @@ class SemesterViewer extends Component {
     }
 
     removeCourseBox(column_id){
-        var CourseName = document.getElementById("course_name_" + column_id).value;
+        var CourseName = document.getElementById("course_code_" + column_id).value;
         var courseBox = document.getElementById(CourseName);
         var courseList = document.getElementById(column_id);
         if (courseBox === null)  {
@@ -319,8 +319,8 @@ class SemesterViewer extends Component {
                             <ul className="drag-inner-list" id={1}>
                             </ul>
                             <form className="add-course">
-                                <label htmlFor="course_name_1" className="form-input">Course Code:</label>
-                                <input type="text" className="form-input" id="course_name_1" />
+                                <label htmlFor="course_code_1" className="form-input">Course Code:</label>
+                                <input type="text" className="form-input" id="course_code_1" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('1')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('1')}>Remove</button>
                             </form>
@@ -333,8 +333,8 @@ class SemesterViewer extends Component {
                             <ul className="drag-inner-list" id={2}>
                             </ul>
                             <form className="add-course">
-                                <label htmlFor="course_name_2" className="form-input">Course Code:</label>
-                                <input type="text" className="form-input" id="course_name_2" />
+                                <label htmlFor="course_code_2" className="form-input">Course Code:</label>
+                                <input type="text" className="form-input" id="course_code_2" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('2')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('2')}>Remove</button>
                             </form>
@@ -347,8 +347,8 @@ class SemesterViewer extends Component {
                             <ul className="drag-inner-list" id={3}>
                             </ul>
                             <form className="add-course">
-                                <label htmlFor="course_name_3" className="form-input">Course Code:</label>
-                                <input type="text" className="form-input" id="course_name_3" />
+                                <label htmlFor="course_code_3" className="form-input">Course Code:</label>
+                                <input type="text" className="form-input" id="course_code_3" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('3')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('3')}>Remove</button>
                             </form>
@@ -361,8 +361,8 @@ class SemesterViewer extends Component {
                             <ul className="drag-inner-list" id={4}>
                             </ul>
                             <form className="add-course">
-                                <label htmlFor="course_name_4" className="form-input">Course Code:</label>
-                                <input type="text" className="form-input" id="course_name_4" />
+                                <label htmlFor="course_code_4" className="form-input">Course Code:</label>
+                                <input type="text" className="form-input" id="course_code_4" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('4')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('4')}>Remove</button>
                             </form>
@@ -375,8 +375,8 @@ class SemesterViewer extends Component {
                             <ul className="drag-inner-list" id={5}>
                             </ul>
                             <form className="add-course">
-                                <label htmlFor="course_name_5" className="form-input">Course Code:</label>
-                                <input type="text" className="form-input" id="course_name_5" />
+                                <label htmlFor="course_code_5" className="form-input">Course Code:</label>
+                                <input type="text" className="form-input" id="course_code_5" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('5')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('5')}>Remove</button>
                             </form>
@@ -389,8 +389,8 @@ class SemesterViewer extends Component {
                             <ul className="drag-inner-list" id={6}>
                             </ul>
                             <form className="add-course">
-                                <label htmlFor="course_name_6" className="form-input">Course Code:</label>
-                                <input type="text" className="form-input" id="course_name_6" />
+                                <label htmlFor="course_code_6" className="form-input">Course Code:</label>
+                                <input type="text" className="form-input" id="course_code_6" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('6')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('6')}>Remove</button>
                             </form>
@@ -403,8 +403,8 @@ class SemesterViewer extends Component {
                             <ul className="drag-inner-list" id={7}>
                             </ul>
                             <form className="add-course">
-                                <label htmlFor="course_name_7" className="form-input">Course Code:</label>
-                                <input type="text" className="form-input" id="course_name_7" />
+                                <label htmlFor="course_code_7" className="form-input">Course Code:</label>
+                                <input type="text" className="form-input" id="course_code_7" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('7')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('7')}>Remove</button>
                             </form>
@@ -417,8 +417,8 @@ class SemesterViewer extends Component {
                             <ul className="drag-inner-list" id={8}>
                             </ul>
                             <form className="add-course">
-                                <label htmlFor="course_name_8" className="form-input">Course Code:</label>
-                                <input type="text" className="form-input" id="course_name_8" />
+                                <label htmlFor="course_code_8" className="form-input">Course Code:</label>
+                                <input type="text" className="form-input" id="course_code_8" />
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('8')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('8')}>Remove</button>
                             </form>
