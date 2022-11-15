@@ -422,7 +422,7 @@ class SemesterViewer extends Component {
                                 <button type="button" className="form-button" onClick={() => this.addCourseBox('8')}>Add</button>
                                 <button type="button" className="form-button" onClick={() => this.removeCourseBox('8')}>Remove</button>
                             </form>
-                            <p className="notification" id="notification-4"> </p>
+                            <p className="notification" id="notification-8"> </p>
                         </li>
                     </ul>
                 </div>
