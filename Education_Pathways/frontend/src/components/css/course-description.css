@@ -141,3 +141,16 @@ span.taken {
 .wishlist {
     background-color: #8198B8;
 }
+
+
+#syllabus-row {
+    height: 500px;
+}
+
+#syllabus-title-row {
+    height:20%;
+}
+
+#syllabus-iframe-row {
+    height: 80%;
+}
