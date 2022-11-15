@@ -30,7 +30,7 @@ export default class NavbarComp extends Component {
 						</Nav>
 						<Nav>
 							<Nav.Link as={Link} to="/minor-progress">
-								Minor Progress
+								Minor Checker
 							</Nav.Link>
 						</Nav>
 						<Nav>

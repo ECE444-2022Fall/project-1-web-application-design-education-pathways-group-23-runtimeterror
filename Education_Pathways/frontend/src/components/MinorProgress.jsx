@@ -78,7 +78,7 @@ class MinorProgress extends Component {
     return (
       <div>
         <div id="minor-select-container" class="section">
-          <h1>Minor Progress</h1>
+          <h1>Minor Checker</h1>
           <Form.Select
             id="minor-select"
             name="minor"
