@@ -1,7 +1,9 @@
 import re
 import config
-from flask import jsonify, request
+from flask import jsonify, request, session
 from flask_restful import Resource, reqparse
+from student import Student
+
 # route functions
 
 
@@ -55,6 +57,7 @@ def search_course(search_term, minor="", mse_theme=""):
         return []
     if len(course_ids) > 10:
         course_ids = course_ids[:10]
+
     res = []
     for i, course_id in enumerate(course_ids):
         res_d = {
