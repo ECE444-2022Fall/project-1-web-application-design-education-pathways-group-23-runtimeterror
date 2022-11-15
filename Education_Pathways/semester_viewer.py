@@ -255,6 +255,9 @@ class SwapSemester(Resource):
             del session["categories"][int(source_semester)][index]
             session["categories"][int(target_semester)].append(category)
 
+            major = get_major()
+            student.check_major_status(major)
+
             student.swap_course(course, indices=(source_semester, target_semester))
             student.calculate_credits()
             session["student"] = student.serialize()
