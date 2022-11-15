@@ -68,7 +68,7 @@ span.taken {
 }
 
 .requisites-display {
-    height: 120px;
+    /* height: 120px; */
     margin-top: 2%;
     background-color: #EFF3FB;
     margin-left: 3%;
@@ -99,5 +99,45 @@ span.taken {
     width: 60%;
     margin-left: 5%;
     justify-content: center;
-    margin-bottom: 2%;
+    margin-bottom: 1% !important;
+    margin-top: 2% !important;
+}
+
+.my-legend{
+    display: inline-block;
+}
+
+.my-legend .legend-scale ul {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    float: left;
+    list-style: none;
+}
+
+.my-legend .legend-scale ul li {
+    font-size: 80%;
+    list-style: none;
+    margin-left: 0;
+    line-height: 18px;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    color: #5C779C;
+}
+
+.my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 16px;
+    width: 30px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid #999;
+}
+
+.taken {
+    background-color: #099a09;
+}
+.wishlist {
+    background-color: #8198B8;
 }

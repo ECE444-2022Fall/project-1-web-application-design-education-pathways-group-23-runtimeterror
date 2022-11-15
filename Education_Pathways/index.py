@@ -33,10 +33,10 @@ class ShowCourse(Resource):
                         overall_prereq, takenreq = self.nested(j, taken, overall_prereq, takenreq)
                     courses[i]['prereq'] = overall_prereq  
                     courses[i]['takenreq'] = takenreq
-
             else:
                 for i, course_id in enumerate(courses):
                     courses[i]['takenreq'] = []
+
 
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
@@ -90,6 +90,7 @@ class ShowCourse(Resource):
             else:
                 for i, course_id in enumerate(courses):
                     courses[i]['takenreq'] = []
+
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
