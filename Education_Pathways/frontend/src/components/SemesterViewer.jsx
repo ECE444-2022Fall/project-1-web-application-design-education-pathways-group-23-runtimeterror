@@ -174,11 +174,10 @@ class SemesterViewer extends Component {
         var CourseName = document.getElementById("course_name_" + column_id).value;
         var courseBox = document.getElementById(CourseName);
         var courseList = document.getElementById(column_id);
-
         if (courseBox === null)  {
             document.getElementById("notification-" + column_id).innerHTML = "This course does not exist.";
             return;
-        } else if(courseList.querySelector(CourseName) === null) {
+        } else if(courseBox.parentElement != courseList) {
             document.getElementById("notification-" + column_id).innerHTML = "This course is not in this semester.";
             return;
 
