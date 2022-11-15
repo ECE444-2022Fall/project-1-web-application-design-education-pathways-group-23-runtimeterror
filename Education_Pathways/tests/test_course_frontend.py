@@ -21,7 +21,7 @@ def test_course_frontend():
         + "developing large software systems; CASE tools and software " \
         + "development environments. Software testing, documentation and maintenance."
 
-    prerequisites = driver.find_element(By.XPATH, "//div[@class='col-item course-requisite row']/div[2]/div[1]")
+    prerequisites = driver.find_element(By.XPATH, "//div[@class='col-item course-requisite row']/div[3]/div[1]")
     assert prerequisites.text == "Pre-Requisites\n" \
         + "ECE344H1, ECE353H1"
 
