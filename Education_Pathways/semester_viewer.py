@@ -69,7 +69,7 @@ class GetCourseCategory(Resource):
         parser.add_argument('course', required=True)
         data = parser.parse_args()
 
-        course = data['course']
+        course = data['course'].upper()
 
         if(session.get("student")):
             student = Student.deserialize(session["student"])
@@ -285,6 +285,5 @@ class SetColor(Resource):
 
         resp = jsonify({"color": session["color"]})
         resp.status_code = 200
-        print(color)
 
         return resp
