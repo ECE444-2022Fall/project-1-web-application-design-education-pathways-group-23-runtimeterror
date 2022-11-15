@@ -33,6 +33,11 @@ class ShowCourse(Resource):
                         overall_prereq, takenreq = self.nested(j, taken, overall_prereq, takenreq)
                     courses[i]['prereq'] = overall_prereq  
                     courses[i]['takenreq'] = takenreq
+            else:
+                for i, course_id in enumerate(courses):
+                    courses[i]['takenreq'] = []
+
+
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
@@ -82,6 +87,10 @@ class ShowCourse(Resource):
                         overall_prereq, takenreq = self.nested(j, taken, overall_prereq, takenreq)
                     courses[i]['prereq'] = overall_prereq  
                     courses[i]['takenreq'] = takenreq
+            else:
+                for i, course_id in enumerate(courses):
+                    courses[i]['takenreq'] = []
+
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
@@ -114,6 +123,9 @@ def create_app():
     rest_api.add_resource(sv.AddCourse, '/api/add_course')
     rest_api.add_resource(sv.RemoveCourse, '/api/remove_course')
     rest_api.add_resource(sv.SwapSemester, '/api/swap_semester')
+    rest_api.add_resource(sv.GetColor, '/api/get_color')
+    rest_api.add_resource(sv.SetColor, '/api/set_color')
+
     rest_api.add_resource(mc.CheckMinorRequirements,
                           '/api/get_minor_completion')
 
@@ -128,6 +140,7 @@ def create_app():
     return app
 
 
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     app.run(threaded=True, port=5000)

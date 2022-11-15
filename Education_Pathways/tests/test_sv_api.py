@@ -165,3 +165,22 @@ def test_get_course_categories(client):
         expected_categories[-1].append(categories[3])
 
         assert response.json["categories"] == expected_categories
+
+def test_color(client):
+    with client:
+        DEFAULT_COLORS = {"core": "#F47C7C", "elective": "#70A1D7", "minor": "#A1DE93", "extra": "#F7F48B"}
+
+        response = client.get("/api/get_color")
+
+        assert response.status_code == 200
+        assert response.json["color"]  == DEFAULT_COLORS
+
+        color = DEFAULT_COLORS
+        color["core"] = "#FFFFFF"
+
+        response = client.post("/api/set_color", json={"color": color})
+        assert response.status_code == 200
+
+        response = client.get("/api/get_color")
+        assert response.status_code == 200
+        assert response.json["color"]["core"] == "#FFFFFF"

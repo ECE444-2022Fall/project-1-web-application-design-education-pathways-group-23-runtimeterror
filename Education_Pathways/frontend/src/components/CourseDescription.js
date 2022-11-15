@@ -70,7 +70,19 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({ prerequisitestaken: res.data.course.takenreq })
         }
-
+        let takenreq_len = res.data.course.takenreq.length
+        if (takenreq_len > 1) {
+          let takenreq_str = ""
+          for (let i = 0; i < takenreq_len; i++) {
+            takenreq_str += res.data.course.takenreq[i]
+              if (i !== takenreq_len - 1) {
+                takenreq_str += ", "
+              }
+          }
+          this.setState({prerequisitestaken : takenreq_str})
+        } else {
+          this.setState({prerequisitestaken : res.data.course.takenreq})
+        }
 
         let coreq_len = res.data.course.coreq.length
         if (coreq_len > 1) {

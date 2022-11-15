@@ -1,3 +1,4 @@
+import ast
 from datetime import date
 
 from flask import jsonify, session
@@ -68,7 +69,7 @@ class GetCourseCategory(Resource):
         parser.add_argument('course', required=True)
         data = parser.parse_args()
 
-        course = data['course']
+        course = data['course'].upper()
 
         if(session.get("student")):
             student = Student.deserialize(session["student"])
@@ -182,7 +183,11 @@ class AddCourse(Resource):
             student = Student.deserialize(session["student"])
             student.get_semester(index=int(semester)).add_course(course)
             session["categories"][int(semester)].append(category)
+
             student.calculate_credits()
+            major = get_major()
+            student.check_major_status(major)
+
             session["student"] = student.serialize()
 
 
@@ -211,9 +216,12 @@ class RemoveCourse(Resource):
 
             index = student.get_semester(index=int(semester)).get_courses().index(course)
             del session["categories"][int(semester)][index]
-
             student.get_semester(index=int(semester)).remove_course(course)
+            
             student.calculate_credits()
+            major = get_major()
+            student.check_major_status(major)
+    
             session["student"] = student.serialize()
             
             resp = jsonify(student.serialize())
@@ -247,6 +255,9 @@ class SwapSemester(Resource):
             del session["categories"][int(source_semester)][index]
             session["categories"][int(target_semester)].append(category)
 
+            major = get_major()
+            student.check_major_status(major)
+
             student.swap_course(course, indices=(source_semester, target_semester))
             student.calculate_credits()
             session["student"] = student.serialize()
@@ -257,5 +268,32 @@ class SwapSemester(Resource):
         else:
             resp = jsonify({})
             resp.status_code = 400
+
+        return resp
+
+DEFAULT_COLORS = {"core": "#F47C7C", "elective": "#70A1D7", "minor": "#A1DE93", "extra": "#F7F48B"}
+
+class GetColor(Resource):
+    def get(self):
+        if(not session.get("color")):
+            session["color"] = DEFAULT_COLORS
+        
+        resp = jsonify({"color": session["color"]})
+        resp.status_code = 200
+
+        return resp
+        
+
+class SetColor(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('color', required=True)
+
+        data = parser.parse_args()
+        color = ast.literal_eval(data["color"])
+        session["color"] = color
+
+        resp = jsonify({"color": session["color"]})
+        resp.status_code = 200
 
         return resp

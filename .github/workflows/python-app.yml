@@ -41,6 +41,6 @@ jobs:
         # Integration Tests
         pytest Education_Pathways/tests/test_search.py
         # API endpoints Tests
-        pytest Education_Pathways/tests/test_sv_api.py
+        pytest Education_Pathways/tests/test_sv_api.py Education_Pathways/tests/test_mc_api.py Education_Pathways/tests/test_search_api.py
       env:
         MONGO_PASS: ${{ secrets.MONGO_PASS }} 

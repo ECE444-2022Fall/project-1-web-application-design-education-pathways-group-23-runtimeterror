@@ -29,4 +29,4 @@ jobs:
         chromedriver --url-base=/wd/hub &
         sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
         pip install pytest selenium
-        pytest Education_Pathways/tests/test_sv_frontend.py
+        pytest Education_Pathways/tests/test_sv_frontend.py Education_Pathways/tests/test_mc_frontend.py Education_Pathways/tests/test_course_frontend.py
