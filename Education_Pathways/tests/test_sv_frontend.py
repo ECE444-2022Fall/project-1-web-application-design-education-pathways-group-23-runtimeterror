@@ -1,12 +1,11 @@
 import time
 import pytest
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.color import Color
 
-def test_frontend():
+def test_sv_frontend():
     driver = webdriver.Chrome()
     driver.maximize_window()
     driver.get("http://localhost:3000/semester-viewer")
