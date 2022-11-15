@@ -168,7 +168,6 @@ class CourseDescriptionPage extends Component {
                     <ul class={'legend-labels'}>
                       <li><span class="taken"></span>Course Taken</li>
                       <li><span class="wishlist"></span>Wishlist</li>
-                      <li><span class="requirement"></span>Requirement</li>
                     </ul>
                   </div>
                 </div>
