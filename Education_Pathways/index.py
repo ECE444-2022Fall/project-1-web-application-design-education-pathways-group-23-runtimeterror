@@ -1,12 +1,15 @@
 import os
 
 # this is the flask core
-from flask import Flask, send_from_directory, jsonify, request
+from flask import Flask, send_from_directory, jsonify, request, session
 from flask_restful import Api, Resource, reqparse
+from student import Student
 
 import config
 from search import SearchCourse, search_course
 import semester_viewer as sv
+import minor_completion as mc
+
 
 class ShowCourse(Resource):
     def get(self):
@@ -17,6 +20,19 @@ class ShowCourse(Resource):
             resp.status_code = 404
             return resp
         try:
+            if(session.get("student")):
+                student = Student.deserialize(session.get("student"))
+                taken = student.get_courses()
+                takenreq = []
+                for i, course_id in enumerate(courses):
+                    overall_prereq = []
+                    for j in course_id["prereq"]:
+                        if j in taken: 
+                            takenreq.append(j)
+                            continue
+                        overall_prereq, takenreq = self.nested(j, taken, overall_prereq, takenreq)
+                    courses[i]['prereq'] = overall_prereq  
+                    courses[i]['takenreq'] = takenreq
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
@@ -24,6 +40,23 @@ class ShowCourse(Resource):
             resp = jsonify({'error': 'something went wrong'})
             resp.status_code = 500
             return resp
+
+    def nested(self, courses, taken, overall_prereq, takenreq):
+        overall_prereq.append(courses)
+        local = search_course(courses)[0]['prereq']
+        for j in local:
+            if j in taken: 
+                takenreq.append(j)
+                continue
+            overall_prereq.append(j)
+            sub_local = search_course(j)[0]['prereq']
+            for k in sub_local:
+                if k in taken: 
+                    takenreq.append(k)
+                    continue
+                overall_prereq.append(k)
+        return overall_prereq, takenreq
+
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -36,6 +69,19 @@ class ShowCourse(Resource):
             resp.status_code = 404
             return resp
         try:
+            if(session.get("student")):
+                student = Student.deserialize(session.get("student"))
+                taken = student.get_courses()
+                takenreq = []
+                for i, course_id in enumerate(courses):
+                    overall_prereq = []
+                    for j in course_id["prereq"]:
+                        if j in taken: 
+                            takenreq.append(j)
+                            continue
+                        overall_prereq, takenreq = self.nested(j, taken, overall_prereq, takenreq)
+                    courses[i]['prereq'] = overall_prereq  
+                    courses[i]['takenreq'] = takenreq
             resp = jsonify({'course': courses[0]})
             resp.status_code = 200
             return resp
@@ -43,6 +89,7 @@ class ShowCourse(Resource):
             resp = jsonify({'error': 'something went wrong'})
             resp.status_code = 500
             return resp
+
 
 def create_app():
     app = Flask(__name__, static_folder='frontend/build')
@@ -54,7 +101,7 @@ def create_app():
     config.init_app(app)
     config.init_db()
     config.init_cors(app)
-        
+
     # API Endpoints
     rest_api = Api(app)
     rest_api.add_resource(SearchCourse, '/api/search')
@@ -70,9 +117,10 @@ def create_app():
     rest_api.add_resource(sv.GetColor, '/api/get_color')
     rest_api.add_resource(sv.SetColor, '/api/set_color')
 
+    rest_api.add_resource(mc.CheckMinorRequirements,
+                          '/api/get_minor_completion')
 
     @app.route("/", defaults={'path': ''})
-
     @app.route('/<path:path>')
     def serve(path):
         if path != "" and os.path.exists(app.static_folder + '/' + path):

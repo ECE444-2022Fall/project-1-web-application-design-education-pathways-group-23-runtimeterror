@@ -1,0 +1,32 @@
+name: Docker Test
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: nanasess/setup-chromedriver@v1
+    - name: Start containers
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        MONGO_PASS: ${{ secrets.MONGO_PASS }}
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Test with selenium
+      run: |
+        export DISPLAY=:99
+        chromedriver --url-base=/wd/hub &
+        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+        pip install pytest selenium
+        pytest Education_Pathways/tests/test_sv_frontend.py

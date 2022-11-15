@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row'
 import requisite_label from './img/requisite-label.png'
 import empty_star from './img/star.png'
 import API from '../api';
+import SemesterViewer from './SemesterViewer'
 
 let star = empty_star;
 
@@ -24,6 +25,7 @@ class CourseDescriptionPage extends Component {
       course_description: "",
       syllabus: "",
       prerequisites: "",
+      prerequisitestaken: "",
       corequisites: "",
       exclusions: "",
       starred: false,
@@ -31,8 +33,6 @@ class CourseDescriptionPage extends Component {
       username: localStorage.getItem('username')
     }
   }
-
-
 
   componentDidMount() {
     API.get(`/course/details?code=${this.props.match.params.code}`, {
@@ -48,15 +48,30 @@ class CourseDescriptionPage extends Component {
         if (prereq_len > 1) {
           let prereq_str = ""
           for (let i = 0; i < prereq_len; i++) {
-            prereq_str += res.data.course.prereq[i]
-            if (i !== prereq_len - 1) {
-              prereq_str += ", "
-            }
+              prereq_str += res.data.course.prereq[i]
+              if (i !== prereq_len - 1) {
+                prereq_str += ", "
+              }
           }
           this.setState({prerequisites : prereq_str})
         } else {
           this.setState({prerequisites : res.data.course.prereq})
         }
+        let takenreq_len = res.data.course.takenreq.length
+        if (takenreq_len > 1) {
+          let takenreq_str = ""
+          for (let i = 0; i < takenreq_len; i++) {
+            takenreq_str += res.data.course.takenreq[i]
+              if (i !== takenreq_len - 1) {
+                takenreq_str += ", "
+              }
+          }
+          this.setState({prerequisitestaken : takenreq_str})
+        } else {
+          this.setState({prerequisitestaken : res.data.course.takenreq})
+        }
+
+
         let coreq_len = res.data.course.coreq.length
         if (coreq_len > 1) {
           let coreq_str = ""
@@ -83,7 +98,10 @@ class CourseDescriptionPage extends Component {
         } else {
           this.setState({exclusions : res.data.course.exclusion})
         }
-        let syllabus_link = "http://courses.skule.ca/course/" + this.props.code
+
+
+        let syllabus_link = "https://github.com/ECE444-2022Fall/project-1-web-application-design-education-pathways-group-23-runtimeterror/tree/develop/Education_Pathways/Syllabi/" + res.data.course.code + ".pdf"
+
         this.setState({syllabus : syllabus_link})
 
         let temp_graph = []
@@ -98,11 +116,12 @@ class CourseDescriptionPage extends Component {
   }
 
 
+
   openLink = () => {
-    const newWindow = window.open(this.state.syllabus, '_blacnk', 'noopener,noreferrer');
-    if (newWindow) {
-      newWindow.opener = null;
-    }
+    let x = "ECE361"
+    //let syllabus_link = "project-1-web-application-design-education-pathways-group-23-runtimeterror/Education_Pathways/Syllabi/" + this.props.code + ".pdf"
+    window.open(this.state.syllabus);
+
   }
 
 	render() {
@@ -128,7 +147,7 @@ class CourseDescriptionPage extends Component {
               <p>{this.state.department}</p>
             </Col>
             <Col className="col-item">
-              <h3>Past Tests and Syllabi</h3>
+              <h3>Course Syllabus</h3>
               <button className={"syllabus-link"} onClick={this.openLink}>View</button>
             </Col>
           </Row>
@@ -143,7 +162,7 @@ class CourseDescriptionPage extends Component {
             <Row>
               <Col className="requisites-display">
                 <h4>Pre-Requisites</h4>
-                <p>{this.state.prerequisites}</p>
+                <p>{this.state.prerequisites} <span class="taken">{this.state.prerequisitestaken}</span></p>
               </Col>
               <Col className="requisites-display">
                 <h4>Co-Requisites</h4>
