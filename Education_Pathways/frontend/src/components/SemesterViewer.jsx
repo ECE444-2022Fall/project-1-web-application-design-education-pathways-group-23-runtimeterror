@@ -288,10 +288,11 @@ class SemesterViewer extends Component {
                                 <tr>
                                     <td rowspan="2"><span className="student-info-header"><h2>Current Status</h2></span></td>
                                     <td className="student-info">Your Major is: {this.state.major}</td>
+                                    <td className="student-info" style={{paddingLeft: "40px"}}>Earned Credits: {this.state.earned_credits}</td>
                                 </tr>
                                 <tr>
-                                    <td className="student-info">Earned Credits: {this.state.earned_credits}</td>
-                                    <td className="student-info">Planned Credits: {this.state.planned_credits}</td>
+                                    <td className="student-info">Major Completion: Incomplete</td>
+                                    <td className="student-info" style={{paddingLeft: "40px"}}>Planned Credits: {this.state.planned_credits}</td>
                                 </tr>
                             </table>
                             
