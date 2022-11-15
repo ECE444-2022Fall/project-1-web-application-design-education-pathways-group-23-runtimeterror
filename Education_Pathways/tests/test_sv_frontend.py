@@ -8,6 +8,7 @@ from selenium.webdriver.support.color import Color
 
 def test_frontend():
     driver = webdriver.Chrome()
+    driver.maximize_window()
     driver.get("http://localhost:3000/semester-viewer")
 
     time.sleep(0.5)
@@ -106,5 +107,22 @@ def test_frontend():
 
     course = drag_container.find_element(By.XPATH, "//ul[@class='drag-list']/li[3]/ul/li[1]").text
     assert not course == "ECE444H1"
+
+    # Test page persistance
+    driver.find_element(By.XPATH, "//div/div[2]/a[@class='nav-link']").click()
+    driver.find_element(By.XPATH, "//div/div[1]/a[@class='nav-link']").click()
+
+    time.sleep(1)
+
+    drag_container = driver.find_element(By.CLASS_NAME, "drag-container")
+    course = drag_container.find_element(By.XPATH, "//ul[@class='drag-list']/li[3]/ul/li").text
+    color = drag_container.find_element(By.XPATH, "//ul[@class='drag-list']/li[3]/ul/li").value_of_css_property("color")
+    color = Color.from_string(color).hex.upper()
+
+    assert course == "MIE451H1"
+    assert color == "#F47C7C"
+
+    course = drag_container.find_element(By.XPATH, "//ul[@class='drag-list']/li[4]/ul/li").text
+    assert course == "ECO101H1"
 
     driver.close()
