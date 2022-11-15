@@ -84,7 +84,7 @@ def test_search_api_minor_and_theme(client):
         assert course['name'] == "Biomaterials"
         assert course['code'] == "MSE343H1"
 
-def test2_search_api_minor_and_theme(client):
+def test_search_api_minor_and_theme_2(client):
     with client:
         # Given
         input = ""
