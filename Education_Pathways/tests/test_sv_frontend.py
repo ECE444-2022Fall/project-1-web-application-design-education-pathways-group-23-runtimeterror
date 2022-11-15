@@ -39,7 +39,9 @@ def test_frontend():
 
     student_info = driver.find_element(By.CLASS_NAME, "drag-column")
     assert student_info.find_element(By.XPATH,"//table/tr[1]/td[2]").text == "Your Major is: EngSci"
-    assert student_info.find_element(By.XPATH,"//table/tr[2]/td[1]").text == "Earned Credits: 0"
+    assert student_info.find_element(By.XPATH,"//table/tr[1]/td[3]").text == "Earned Credits: 0"
+    assert student_info.find_element(By.XPATH,"//table/tr[2]/td[1]").text == "Major Completion: Incomplete"
+    assert student_info.find_element(By.XPATH,"//table/tr[2]/td[2]").text == "Planned Credits: 0"
 
     drag_container = driver.find_element(By.CLASS_NAME, "drag-container")
     assert drag_container.find_element(By.XPATH,"//ul[@class='drag-list']/li[3]/span/h2").text == "FALL 2020"
