@@ -15,7 +15,7 @@ export default class NavbarComp extends Component {
 						<Nav.Link
 							as={Link}
 							to="/"
-							style={{ color: "white", display: "inline" }}
+							style={{ color: "white", display: "inline", textTransform:"uppercase", margin:0 }}
 						>
 							Maple
 						</Nav.Link>
