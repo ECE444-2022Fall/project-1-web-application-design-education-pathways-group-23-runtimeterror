@@ -54,12 +54,12 @@ class MinorProgress extends Component {
         <ListGroup.Item key={idx}>
           <div class="single-requirement-container">
             <div class="single-requirement-courselist-container">
-              <h3>Requirement {idx+1}</h3>
+              <h4>Requirement {idx+1}</h4>
               {
                 requirement_list.length == 1 ? (
-                    <h4>Must take:</h4>
+                    <p>Must take:</p>
                 ) : (
-                    <h4>Select one from:</h4>
+                    <p>Select one from:</p>
                 )
               }
               <p>{requirement_list.join(", ")}</p>
@@ -78,9 +78,7 @@ class MinorProgress extends Component {
     return (
       <div>
         <div id="minor-select-container" class="section">
-          <label for="minor">
-            <b>Minor</b>
-          </label>
+          <h1>Minor Checker</h1>
           <Form.Select
             id="minor-select"
             name="minor"
