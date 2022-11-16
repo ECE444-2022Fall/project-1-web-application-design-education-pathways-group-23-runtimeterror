@@ -17,7 +17,7 @@ export default class NavbarComp extends Component {
 							to="/"
 							style={{ color: "white", display: "inline" }}
 						>
-							Education Pathways
+							Maple
 						</Nav.Link>
 					</Navbar.Brand>
 
