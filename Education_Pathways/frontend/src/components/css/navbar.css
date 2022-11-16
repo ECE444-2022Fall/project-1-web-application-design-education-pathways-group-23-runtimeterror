@@ -7,7 +7,14 @@
   color: white;
   font-weight: bold;
   font-size: 20px;
-  margin-right: 20px;
+  margin-right: 50px;
+
+}
+
+.nav-link{
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 120%;
 }
 
 .nav-item a:hover {
@@ -18,14 +25,13 @@
   margin-left: 20px;
   max-width: 40px;
 }
-/* make the text go down */
-.body_text {
-  font-family: 'Times New Roman', Times, serif;
-  position: relative;
-  font-size: 150%;
-  margin-left: 40px;
-  margin-right: 50px;
-  margin-top: 170px;
-  margin-bottom: 10px;
 
+.body_text {
+  font-size: 120%;
+  position: relative;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 5%;
+  letter-spacing: 0 !important;
+  text-align: justify;
 }
