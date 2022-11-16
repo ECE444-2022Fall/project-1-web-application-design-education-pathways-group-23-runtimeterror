@@ -10,6 +10,8 @@ from degree import Major, Minor
 
 # Semester Viewer API
 # SV API for loading student information
+
+
 class LoadStudent(Resource):
     def get(self):
         if session.get("student"):
@@ -236,7 +238,8 @@ class RemoveCourse(Resource):
             student = Student.deserialize(session["student"])
 
             index = (
-                student.get_semester(index=int(semester)).get_courses().index(course)
+                student.get_semester(index=int(semester)
+                                     ).get_courses().index(course)
             )
             del session["categories"][int(semester)][index]
             student.get_semester(index=int(semester)).remove_course(course)
@@ -285,7 +288,8 @@ class SwapSemester(Resource):
             major = get_major()
             student.check_major_status(major)
 
-            student.swap_course(course, indices=(source_semester, target_semester))
+            student.swap_course(course, indices=(
+                source_semester, target_semester))
             student.calculate_credits()
             session["student"] = student.serialize()
 

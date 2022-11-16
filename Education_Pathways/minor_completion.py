@@ -36,7 +36,8 @@ class CheckMinorRequirements(Resource):
             resp.status_code = 204
             return resp
 
-        minor = Minor(name=minor_db_object["name"], requirements=minor_db_object[""])
+        minor = Minor(name=minor_db_object["name"],
+                      requirements=minor_db_object[""])
         completion = minor.check_progress(student.get_courses)
         resp = jsonify({"completion": completion})
         resp.status_code = 200

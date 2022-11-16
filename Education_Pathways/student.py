@@ -109,7 +109,8 @@ class Student:
         self.year = year
         self.minors = minors
         self.semesters = semesters
-        self.earned_credits = self.get_credits(status=["complete", "in progress"])
+        self.earned_credits = self.get_credits(
+            status=["complete", "in progress"])
         self.planned_credits = self.get_credits(status=["planned"])
         self.major_status = "Incomplete"
 
@@ -185,7 +186,8 @@ class Student:
         status (str)    - The status of the Semester
         courses (list)  - (Optional) A list of courses taken in the Semester
         """
-        self.semesters[name] = Semester(name=name, status=status, courses=courses)
+        self.semesters[name] = Semester(
+            name=name, status=status, courses=courses)
 
     def remove_semester(self, name):
         """
@@ -288,7 +290,8 @@ class Student:
         Calculate the number of earned (complete and in progress) and planned credits
         """
 
-        self.earned_credits = self.get_credits(status=["complete", "in progress"])
+        self.earned_credits = self.get_credits(
+            status=["complete", "in progress"])
         self.planned_credits = self.get_credits(status=["planned"])
 
     def check_major_status(self, major):

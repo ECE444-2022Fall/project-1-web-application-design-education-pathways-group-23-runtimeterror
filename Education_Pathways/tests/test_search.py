@@ -25,7 +25,8 @@ def test_search_name(initialize_db):
 def test_search_name_minor(initialize_db):
     # Course name, minor
     assert (
-        search_course("Algorithms and Data Structures", minor="AEMINAIEN")[0]["code"]
+        search_course("Algorithms and Data Structures",
+                      minor="AEMINAIEN")[0]["code"]
         == "ECE345H1"
     ), "Incorrect course found or course not found"
 
@@ -50,5 +51,6 @@ def test_search_name_theme(initialize_db):
 def test_search_code_theme(initialize_db):
     # Course code, theme
     assert (
-        search_course("BME331H1", mse_theme="Biomaterials")[0]["code"] == "BME331H1"
+        search_course("BME331H1", mse_theme="Biomaterials")[
+            0]["code"] == "BME331H1"
     ), "Incorrect course found or course not found"

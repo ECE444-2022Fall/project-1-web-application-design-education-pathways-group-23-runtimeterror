@@ -79,7 +79,8 @@ def test_student_get_courses(student):
         student.get_courses(status=["in progress"]) == courses_1
     ), "The courses in progress should match courses_1"
     assert (
-        student.get_courses(status=["complete", "in progress"]) == courses_2 + courses_1
+        student.get_courses(
+            status=["complete", "in progress"]) == courses_2 + courses_1
     ), ("The courses in progress should match the sum of course_2" + "and courses_1")
 
 
@@ -107,7 +108,8 @@ def test_student_add_remove_semester(student):
     student.add_semester("Winter 2022", "planned")
     student.remove_semester("Winter 2021")
     assert student.has_semester("Winter 2022"), "Should have this Semester"
-    assert not student.has_semester("Winter 2021"), "Should not have this Semester"
+    assert not student.has_semester(
+        "Winter 2021"), "Should not have this Semester"
 
 
 def test_student_course_swap(student):

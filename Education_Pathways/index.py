@@ -130,7 +130,8 @@ def create_app():
     rest_api.add_resource(sv.GetColor, "/api/get_color")
     rest_api.add_resource(sv.SetColor, "/api/set_color")
 
-    rest_api.add_resource(mc.CheckMinorRequirements, "/api/get_minor_completion")
+    rest_api.add_resource(mc.CheckMinorRequirements,
+                          "/api/get_minor_completion")
 
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")

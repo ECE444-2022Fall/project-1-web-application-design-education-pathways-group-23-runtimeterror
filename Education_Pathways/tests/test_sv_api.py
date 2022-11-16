@@ -4,6 +4,8 @@ from index import create_app
 from student import Student
 
 # Test template from https://flask.palletsprojects.com/en/2.2.x/testing/
+
+
 @pytest.fixture()
 def app():
     app = create_app()
@@ -92,19 +94,23 @@ def test_get_course_category(client):
         )
         assert response.status_code == 204
 
-        response = client.post("/api/get_course_category", json={"course": "ESC101H1"})
+        response = client.post("/api/get_course_category",
+                               json={"course": "ESC101H1"})
         assert response.status_code == 200
         assert response.json["category"] == "core"
 
-        response = client.post("/api/get_course_category", json={"course": "ECE444H1"})
+        response = client.post("/api/get_course_category",
+                               json={"course": "ECE444H1"})
         assert response.status_code == 200
         assert response.json["category"] == "elective"
 
-        response = client.post("/api/get_course_category", json={"course": "JRE420H1"})
+        response = client.post("/api/get_course_category",
+                               json={"course": "JRE420H1"})
         assert response.status_code == 200
         assert response.json["category"] == "minor"
 
-        response = client.post("/api/get_course_category", json={"course": "ECE344H1"})
+        response = client.post("/api/get_course_category",
+                               json={"course": "ECE344H1"})
         assert response.status_code == 200
         assert response.json["category"] == "extra"
 
@@ -171,8 +177,10 @@ def test_swap_semester(client):
         assert response.status_code == 200
 
         student = Student.deserialize(session.get("student"))
-        assert course in student.get_semester(index=target_semester).get_courses()
-        assert not course in student.get_semester(index=source_semester).get_courses()
+        assert course in student.get_semester(
+            index=target_semester).get_courses()
+        assert not course in student.get_semester(
+            index=source_semester).get_courses()
 
 
 def test_get_course_categories(client):

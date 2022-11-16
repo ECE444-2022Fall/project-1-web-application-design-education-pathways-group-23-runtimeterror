@@ -206,7 +206,8 @@ class Major(Degree):
         major = list(major_collection.find({"code": code}))[0]
         major = cls(
             name=major["name"],
-            requirements=(major["core_requirements"], major["elective_requirements"]),
+            requirements=(major["core_requirements"],
+                          major["elective_requirements"]),
         )
         return major
 
@@ -224,7 +225,8 @@ class Major(Degree):
     def deserialize(cls, dict):
         major = cls(
             name=dict["name"],
-            requirements=(dict["core_requirements"], dict["elective_requirements"]),
+            requirements=(dict["core_requirements"],
+                          dict["elective_requirements"]),
         )
         return major
 
