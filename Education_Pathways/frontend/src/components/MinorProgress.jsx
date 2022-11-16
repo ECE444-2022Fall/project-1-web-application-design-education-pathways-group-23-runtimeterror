@@ -40,7 +40,9 @@ class MinorProgress extends Component {
       if (res.status == 200) {
         this.setState({ completion: res.data.completion });
       } else {
-        alert("Either the courses haven't been selected or this minor doesn't exist");
+        alert(
+          "Either the courses haven't been selected or this minor doesn't exist"
+        );
       }
     });
   }
@@ -54,19 +56,17 @@ class MinorProgress extends Component {
         <ListGroup.Item key={idx}>
           <div class="single-requirement-container">
             <div class="single-requirement-courselist-container">
-              <h4>Requirement {idx+1}</h4>
-              {
-                requirement_list.length == 1 ? (
-                    <p>Must take:</p>
-                ) : (
-                    <p>Select one from:</p>
-                )
-              }
+              <h4>Requirement {idx + 1}</h4>
+              {requirement_list.length == 1 ? (
+                <p>Must take:</p>
+              ) : (
+                <p>Select one from:</p>
+              )}
               <p>{requirement_list.join(", ")}</p>
             </div>
 
             <div class="single-requirement-check-container">
-              <img src={satisfied? this.checkIcon : this.inprogressIcon}></img>
+              <img src={satisfied ? this.checkIcon : this.inprogressIcon}></img>
             </div>
           </div>
         </ListGroup.Item>
@@ -91,9 +91,7 @@ class MinorProgress extends Component {
           </Form.Select>
         </div>
         <div id="requirements-container" class="section">
-          <ListGroup>
-            {this.getRequirementElements()}
-          </ListGroup>
+          <ListGroup>{this.getRequirementElements()}</ListGroup>
         </div>
       </div>
     );

@@ -1,60 +1,73 @@
-
 class Course:
     """
-        Class for representing and checking the requirements of a Course
+    Class for representing and checking the requirements of a Course
 
-        Attributes
-        ----------------
-        _id (str)                           - The MongoDB document ID
-        Code (str)                          - The course code
-        Name (str)                          - The course's name
-        Division (str)                      - Which faculty/campus offers the course
-        Course Description (str)            - The course's description
-        Department (str)                    - The department that offers the course
-        Pre-requisites (list)               - A list containing course codes that are pre-requisites for this course
-        Course Level (str)                  - The course's level
-        UTSC Breadth (list)                 - A list of which UTSC Breadth requirements this course satisfies
-        APSC Electives (list)               - A list of which APSC elective requirements this course satisfies
-        Campus (str)                        - The campus that offers this course
-        Term (list)                         - A list containing the terms this course is offered e.g. ['Winter 2022']
-        Activity (str)                      - An html string of the table element for this course
-        Last updated (str)                  - A date string of the datetime this information was last updated
-        Exclusion (list)                    - A list of course codes that cannot be taken with this course
-        UTM Distribution (str)              - Which distribution at UTM offers this course
-        Corequisite (list)                  - A list of course codes for courses that must be taken at the same time
-        Recommended Preparation (list)      - A list of courses codes for courses that are recommended to take before this course
-        Arts and Science Breadth (str)      - Which Arts and Sciences breadth requirements this course satisfies
-        Arts and Science Distribution (str) - Which distribution in the Arts and Science Faculty requires this course
-        Later term course details (str)     - A file path URL to the course that follows this course
-        Course (str)                        - An HTML anchor tag for this course's dedicated page
-        fase_available (bool)                - Boolean for whether or not FASE is available
-        maybe_restricted (bool)              - Boolean value for whether or not enrollment for this course is restricted
-        majors_outcomes (str)                - Major IDs for which this course satisfies a requirement
-        minors_outcomes (str)                - Minor IDs for which this course satisfies a requirement
-        ai_prereqs (str)                     - Not Sure tbh
+    Attributes
+    ----------------
+    _id (str)                           - The MongoDB document ID
+    Code (str)                          - The course code
+    Name (str)                          - The course's name
+    Division (str)                      - Which faculty/campus offers the course
+    Course Description (str)            - The course's description
+    Department (str)                    - The department that offers the course
+    Pre-requisites (list)               - A list containing course codes that are pre-requisites for this course
+    Course Level (str)                  - The course's level
+    UTSC Breadth (list)                 - A list of which UTSC Breadth requirements this course satisfies
+    APSC Electives (list)               - A list of which APSC elective requirements this course satisfies
+    Campus (str)                        - The campus that offers this course
+    Term (list)                         - A list containing the terms this course is offered e.g. ['Winter 2022']
+    Activity (str)                      - An html string of the table element for this course
+    Last updated (str)                  - A date string of the datetime this information was last updated
+    Exclusion (list)                    - A list of course codes that cannot be taken with this course
+    UTM Distribution (str)              - Which distribution at UTM offers this course
+    Corequisite (list)                  - A list of course codes for courses that must be taken at the same time
+    Recommended Preparation (list)      - A list of courses codes for courses that are recommended to take before this course
+    Arts and Science Breadth (str)      - Which Arts and Sciences breadth requirements this course satisfies
+    Arts and Science Distribution (str) - Which distribution in the Arts and Science Faculty requires this course
+    Later term course details (str)     - A file path URL to the course that follows this course
+    Course (str)                        - An HTML anchor tag for this course's dedicated page
+    fase_available (bool)                - Boolean for whether or not FASE is available
+    maybe_restricted (bool)              - Boolean value for whether or not enrollment for this course is restricted
+    majors_outcomes (str)                - Major IDs for which this course satisfies a requirement
+    minors_outcomes (str)                - Minor IDs for which this course satisfies a requirement
+    ai_prereqs (str)                     - Not Sure tbh
     """
 
     def __init__(self, mongo_db_doc):
 
-        required_fields = ['_id', 'Code', 'Name', 'Division',
-                           'Course Description', 'Department',
-                           'Pre-requisites', 'Course Level',
-                           'UTSC Breadth', 'APSC Electives',
-                           'Campus', 'Term', 'Activity',
-                           'Last updated', 'Exclusion',
-                           'UTM Distribution', 'Corequisite',
-                           'Recommended Preparation',
-                           'Arts and Science Breadth',
-                           'Arts and Science Distribution',
-                           'Later term course details',
-                           'Course', 'FASEAvailable',
-                           'MaybeRestricted', 'MajorsOutcomes',
-                           'MinorsOutcomes', 'AIPreReqs'
-                           ]
+        required_fields = [
+            "_id",
+            "Code",
+            "Name",
+            "Division",
+            "Course Description",
+            "Department",
+            "Pre-requisites",
+            "Course Level",
+            "UTSC Breadth",
+            "APSC Electives",
+            "Campus",
+            "Term",
+            "Activity",
+            "Last updated",
+            "Exclusion",
+            "UTM Distribution",
+            "Corequisite",
+            "Recommended Preparation",
+            "Arts and Science Breadth",
+            "Arts and Science Distribution",
+            "Later term course details",
+            "Course",
+            "FASEAvailable",
+            "MaybeRestricted",
+            "MajorsOutcomes",
+            "MinorsOutcomes",
+            "AIPreReqs",
+        ]
 
         for field in required_fields:
             if field not in mongo_db_doc:
-                raise Exception(f'Field missing from mongo_db_doc: {field}')
+                raise Exception(f"Field missing from mongo_db_doc: {field}")
 
         self._id = mongo_db_doc["_id"]
         self.code = mongo_db_doc["Code"]
@@ -89,21 +102,20 @@ class Course:
 
     def get_course_weight(self) -> float:
         """
-            Check whether a the Minor requirements are fulfilled given a course list
+        Check whether a the Minor requirements are fulfilled given a course list
 
-            Inputs
-            ------------------
+        Inputs
+        ------------------
 
-            Output
-            ------------------
-            float: return the course weight, either 0.5 or 1.0
+        Output
+        ------------------
+        float: return the course weight, either 0.5 or 1.0
         """
 
         # We assume that a course code with a Y is a full year course
         # and worth 1.0 credits, while H is a half year course and
         # worth 0.5 credits
-        if(self.code[-2:-1] == "Y"):
+        if self.code[-2:-1] == "Y":
             return 1.0
-        elif(self.code[-2] == "H"):
+        elif self.code[-2] == "H":
             return 0.5
-
