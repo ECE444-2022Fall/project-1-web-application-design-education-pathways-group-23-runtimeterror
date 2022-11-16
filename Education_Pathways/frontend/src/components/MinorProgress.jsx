@@ -40,7 +40,7 @@ class MinorProgress extends Component {
       if (res.status == 200) {
         this.setState({ completion: res.data.completion });
       } else {
-        alert("Minor not found");
+        alert("Either the courses haven't been selected or this minor doesn't exist");
       }
     });
   }
