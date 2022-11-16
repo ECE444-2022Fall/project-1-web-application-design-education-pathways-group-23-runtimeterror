@@ -65,7 +65,7 @@ class SearchResultDisplay extends Component {
         return (
             <div className="SearchQuery">
                 <div style={{ marginTop: "7%" }}>   
-                <h1>Maple</h1>               
+                <h1 style={{fontSize:"350%" }}>MAPLE</h1>               
                     <form onSubmit={this.handleSubmit} className={"search"}>
                         <div class="container">
                         <input placeholder={"Search for course code or course name"} className={"text-input"} type="text" value={this.state.input} onChange={this.handleChange} />
