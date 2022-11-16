@@ -1,58 +1,58 @@
 .body {
-    background: #33363d;
-    color: white;
-    font-family: "Lato";
-    font-weight: 300;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+  background: #33363d;
+  color: white;
+  font-family: "Lato";
+  font-weight: 300;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 .section {
-    margin-top: 25px;
+  margin-top: 25px;
 }
 
 #minor-select-container {
-    width:500px;
-    margin-left: auto;
-    margin-right: auto;
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-#requirements-container  {
-    width:80%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
+#requirements-container {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
 }
 
 .single-requirement-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
 }
 
 .single-requirement-courselist-container {
-    width: 90%;
+  width: 90%;
 }
 
 .single-requirement-check-container {
-    width: 10%;
+  width: 10%;
 }
 
-.single-requirement-check-container img{
-    height:50px;
+.single-requirement-check-container img {
+  height: 50px;
 }
 
-.list-group-item{
-    margin: 10px !important;
-    border: 1px solid #ced4da !important;
-    border-radius: 15px !important;
+.list-group-item {
+  margin: 10px !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 15px !important;
 }
 
-.single-requirement-courselist-container{
-    padding-left: 3% !important;
+.single-requirement-courselist-container {
+  padding-left: 3% !important;
 }
 
-.single-requirement-courselist-container p{
-    margin: 0px !important;
+.single-requirement-courselist-container p {
+  margin: 0px !important;
 }

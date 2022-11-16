@@ -30,7 +30,7 @@ def init_db():
     client = MongoClient(CONNECTION_STRING)
 
     # Grab and store the test database and the course collection
-    db = client['test']
+    db = client["test"]
     course_collection = db["courses"]
     minors_collection = db["minors"]
 
@@ -44,7 +44,12 @@ def init_cors(app):
     CORS_ALLOW_ORIGIN = "*,*"
     CORS_EXPOSE_HEADERS = "*,*"
     CORS_ALLOW_HEADERS = "content-type,*"
-    cors = CORS(app, origins=CORS_ALLOW_ORIGIN.split(","), allow_headers=CORS_ALLOW_HEADERS.split(
-        ","), expose_headers=CORS_EXPOSE_HEADERS.split(","),   supports_credentials=True)
+    cors = CORS(
+        app,
+        origins=CORS_ALLOW_ORIGIN.split(","),
+        allow_headers=CORS_ALLOW_HEADERS.split(","),
+        expose_headers=CORS_EXPOSE_HEADERS.split(","),
+        supports_credentials=True,
+    )
 
     return cors
