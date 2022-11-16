@@ -20,13 +20,13 @@ class CheckMinorRequirements(Resource):
         if not session.get("student"):
             resp = jsonify(
                 {'error': 'Student course list has not been set'})
-            resp.status_code = 400
+            resp.status_code = 204
             return resp
 
         if minor_name == "":
             resp = jsonify(
                 {'error': 'Minor has not been provided'})
-            resp.status_code = 400
+            resp.status_code = 204
             return resp
         student = Student.deserialize(session["student"])
 
@@ -37,7 +37,7 @@ class CheckMinorRequirements(Resource):
         if len(minor_db_object) == 0:
             resp = jsonify(
                 {'error': 'Could not find minor in list'})
-            resp.status_code = 500
+            resp.status_code = 204
             return resp
 
         minor = Minor(
@@ -58,13 +58,13 @@ class CheckMinorRequirements(Resource):
         if not session.get("student"):
             resp = jsonify(
                 {'error': 'Student course list has not been set'})
-            resp.status_code = 400
+            resp.status_code = 204
             return resp
 
         if minor_name == "":
             resp = jsonify(
                 {'error': 'Minor has not been provided'})
-            resp.status_code = 400
+            resp.status_code = 204
             return resp
         student = Student.deserialize(session["student"])
 
@@ -74,8 +74,8 @@ class CheckMinorRequirements(Resource):
 
         if len(minor_db_object) == 0:
             resp = jsonify(
-                {'error': 'Either minor or student course list hasn\'t been set'})
-            resp.status_code = 400
+                {'error': 'Could not find minor in list'})
+            resp.status_code = 204
             return resp
 
         minor_db_object = minor_db_object[0]

@@ -39,7 +39,7 @@ def test_get_minor_completion_fail_when_no_student(client):
         
         # Test
         response = client.post('/api/get_minor_completion', json={"minor_name": minor_name})
-        assert response.status_code == 400
+        assert response.status_code == 204
 
 def test_get_ai_minor_completion_with_partially_incomplete_student(client):
     with client.session_transaction() as session:
