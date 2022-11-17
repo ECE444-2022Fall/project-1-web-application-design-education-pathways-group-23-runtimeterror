@@ -36,4 +36,11 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
+        # Unit Tests
         pytest Education_Pathways/tests/test_degree.py Education_Pathways/tests/test_student.py Education_Pathways/tests/test_course.py
+        # Integration Tests
+        pytest Education_Pathways/tests/test_search.py
+        # API endpoints Tests
+        pytest Education_Pathways/tests/test_sv_api.py Education_Pathways/tests/test_mc_api.py Education_Pathways/tests/test_search_api.py Education_Pathways/tests/test_course_api.py
+      env:
+        MONGO_PASS: ${{ secrets.MONGO_PASS }}
