@@ -175,7 +175,7 @@ def test_minor_progress(minor):
         else:
             assert req[1] == True, f"The Minor requirement {req} should be fulfilled"
 
-
+# The following Test Functions are written by: Dean Yu
 def test_minor_completion(minor):
     # Check minor completion
     # Check correct list
@@ -337,7 +337,7 @@ def test_major_progress(major):
     # assert not major.check_progress(
     #     incorrect_course_list2), "This course list should not fulfill major requirements"
 
-
+# Test Function written by: Dean Yu
 def test_major_completion(major):
     # Check Major completion
     # Check correct list
