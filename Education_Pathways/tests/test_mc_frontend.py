@@ -4,7 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
-
+# Test Function written by: Dean Yu
 def test_mc_frontend():
     # Initialize student
     driver = webdriver.Chrome()

@@ -1,7 +1,7 @@
 import pytest
 from degree import Major, Minor
 
-
+# The following Test Functions are written by: Dean Yu
 @pytest.fixture
 def minor():
     """

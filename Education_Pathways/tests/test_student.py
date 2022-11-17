@@ -3,7 +3,7 @@ from student import Semester, Student
 from degree import Major
 from collections import OrderedDict
 
-
+# The following Test Functions are written by: Dean Yu
 @pytest.fixture
 def semester():
     # Test data
