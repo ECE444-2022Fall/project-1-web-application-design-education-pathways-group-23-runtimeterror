@@ -22,6 +22,7 @@
       </ul>
     </li>
     <li><a href="#project-management">Project Management</a></li>
+    <li><a href="#CI-CD">CI/CD</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -138,6 +139,16 @@ git push heroku main
 ## Project Management
 
 Maple uses [GitHub Projects](https://github.com/orgs/ECE444-2022Fall/projects/2/views/2) track progress on the implementation of User Stories and Bugfixes. 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CI CD -->
+## CI/CD
+Maple uses [GitHub Actions](https://github.com/ECE444-2022Fall/project-1-web-application-design-education-pathways-group-23-runtimeterror/actions) for Continous Integration. Everytime a Pull Request is opened on the "develop" branch:
+- [Python App](https://github.com/ECE444-2022Fall/project-1-web-application-design-education-pathways-group-23-runtimeterror/actions/workflows/python-app.yml) runs our Unit Tests and Integration tests on the Backend using Pytest
+- [Docker Test](https://github.com/ECE444-2022Fall/project-1-web-application-design-education-pathways-group-23-runtimeterror/actions/workflows/docker.yml) builds the app using Docker and runs tests on the Frontend using Pytest and Selenium
+
+Maple uses Heroku's GitHub integration to automatically deploy the main branch to: https://maple-course-selection.herokuapp.com/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
