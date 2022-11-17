@@ -93,7 +93,7 @@ def test_minor_contains(minor):
     assert "CSC401H1" in minor, "CSC401H1 should be in " + minor
     assert not "APS111H1" in minor, "APS111H1 should not be in " + minor
 
-
+# The following test is not written by Dean
 def test_minor_progress(minor):
     # Check minor progress
 
@@ -267,7 +267,7 @@ def test_major_contains(major):
     assert "MIE451H1" in major, "CSC401H1 should be in " + major
     assert not "APS111H1" in major, "APS111H1 should not be in " + major
 
-
+# The following test is not written by Dean
 def test_major_progress(major):
     # Check Major completion
     # Check correct list
